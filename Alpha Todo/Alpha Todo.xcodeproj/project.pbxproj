@@ -97,6 +97,13 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		B6A2F5A72B303A7500432876 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
 		B6AD6A8C2B21BD9900D26F72 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +125,7 @@
 		B6AD6A972B21BD9900D26F72 /* Alpha Todo */ = {
 			isa = PBXGroup;
 			children = (
+				B6A2F5A72B303A7500432876 /* Features */,
 				B6907DF02B302F6E006D5044 /* AppViewController.swift */,
 				B6A2F5A62B30379700432876 /* Resources */,
 				B6A2F5A52B30378900432876 /* Application */,
