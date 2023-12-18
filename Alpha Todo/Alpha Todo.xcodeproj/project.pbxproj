@@ -7,19 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08B490FE962C8B43F0F7D20A /* Pods_Alpha_Todo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */; };
+		B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE32B302E9C006D5044 /* ViewPreview.swift */; };
+		B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE42B302E9C006D5044 /* TabBarControllerPreview.swift */; };
+		B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE52B302E9C006D5044 /* ViewControllerPreview.swift */; };
+		B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE62B302E9C006D5044 /* NavigationControllerPreview.swift */; };
+		B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE72B302E9C006D5044 /* PreviewTabBarItem.swift */; };
+		B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE92B302E9C006D5044 /* DesignTime+BackDeploy.swift */; };
+		B6907DF12B302F6E006D5044 /* AppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DF02B302F6E006D5044 /* AppViewController.swift */; };
 		B6AD6A992B21BD9900D26F72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */; };
 		B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */; };
-		B6AD6A9D2B21BD9900D26F72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD6A9C2B21BD9900D26F72 /* ViewController.swift */; };
 		B6AD6AA22B21BD9B00D26F72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B6907DE32B302E9C006D5044 /* ViewPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPreview.swift; sourceTree = "<group>"; };
+		B6907DE42B302E9C006D5044 /* TabBarControllerPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarControllerPreview.swift; sourceTree = "<group>"; };
+		B6907DE52B302E9C006D5044 /* ViewControllerPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerPreview.swift; sourceTree = "<group>"; };
+		B6907DE62B302E9C006D5044 /* NavigationControllerPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationControllerPreview.swift; sourceTree = "<group>"; };
+		B6907DE72B302E9C006D5044 /* PreviewTabBarItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewTabBarItem.swift; sourceTree = "<group>"; };
+		B6907DE92B302E9C006D5044 /* DesignTime+BackDeploy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DesignTime+BackDeploy.swift"; sourceTree = "<group>"; };
+		B6907DF02B302F6E006D5044 /* AppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewController.swift; sourceTree = "<group>"; };
 		B6AD6A952B21BD9900D26F72 /* Alpha Todo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Alpha Todo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B6AD6A9C2B21BD9900D26F72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6AD6AA62B21BD9B00D26F72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
+		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,17 +43,49 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08B490FE962C8B43F0F7D20A /* Pods_Alpha_Todo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B7C9DF82F821AEC14764A92 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */,
+				E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B6907DE22B302E9C006D5044 /* PreviewView */ = {
+			isa = PBXGroup;
+			children = (
+				B6907DE32B302E9C006D5044 /* ViewPreview.swift */,
+				B6907DE42B302E9C006D5044 /* TabBarControllerPreview.swift */,
+				B6907DE52B302E9C006D5044 /* ViewControllerPreview.swift */,
+				B6907DE62B302E9C006D5044 /* NavigationControllerPreview.swift */,
+				B6907DE72B302E9C006D5044 /* PreviewTabBarItem.swift */,
+			);
+			path = PreviewView;
+			sourceTree = "<group>";
+		};
+		B6907DE82B302E9C006D5044 /* PreviewViewLegacyOSCompileFix */ = {
+			isa = PBXGroup;
+			children = (
+				B6907DE92B302E9C006D5044 /* DesignTime+BackDeploy.swift */,
+			);
+			path = PreviewViewLegacyOSCompileFix;
+			sourceTree = "<group>";
+		};
 		B6AD6A8C2B21BD9900D26F72 = {
 			isa = PBXGroup;
 			children = (
 				B6AD6A972B21BD9900D26F72 /* Alpha Todo */,
 				B6AD6A962B21BD9900D26F72 /* Products */,
+				0B7C9DF82F821AEC14764A92 /* Pods */,
+				E5A591600CCBE33A9B2B8899 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,11 +102,21 @@
 			children = (
 				B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */,
 				B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */,
-				B6AD6A9C2B21BD9900D26F72 /* ViewController.swift */,
+				B6907DF02B302F6E006D5044 /* AppViewController.swift */,
 				B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */,
 				B6AD6AA62B21BD9B00D26F72 /* Info.plist */,
+				B6907DE22B302E9C006D5044 /* PreviewView */,
+				B6907DE82B302E9C006D5044 /* PreviewViewLegacyOSCompileFix */,
 			);
 			path = "Alpha Todo";
+			sourceTree = "<group>";
+		};
+		E5A591600CCBE33A9B2B8899 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,9 +126,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B6AD6AA92B21BD9B00D26F72 /* Build configuration list for PBXNativeTarget "Alpha Todo" */;
 			buildPhases = (
+				659BC175F8D878B9D87740BF /* [CP] Check Pods Manifest.lock */,
 				B6AD6A912B21BD9900D26F72 /* Sources */,
 				B6AD6A922B21BD9900D26F72 /* Frameworks */,
 				B6AD6A932B21BD9900D26F72 /* Resources */,
+				CD16A06B362F96B577BB09D3 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -125,14 +185,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		659BC175F8D878B9D87740BF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Alpha Todo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD16A06B362F96B577BB09D3 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B6AD6A912B21BD9900D26F72 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B6AD6A9D2B21BD9900D26F72 /* ViewController.swift in Sources */,
+				B6907DF12B302F6E006D5044 /* AppViewController.swift in Sources */,
+				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
+				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
+				B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */,
+				B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */,
 				B6AD6A992B21BD9900D26F72 /* AppDelegate.swift in Sources */,
 				B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */,
+				B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */,
+				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +368,7 @@
 		};
 		B6AD6AAA2B21BD9B00D26F72 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -292,6 +401,7 @@
 		};
 		B6AD6AAB2B21BD9B00D26F72 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
