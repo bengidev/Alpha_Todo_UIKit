@@ -79,6 +79,24 @@
 			path = PreviewViewLegacyOSCompileFix;
 			sourceTree = "<group>";
 		};
+		B6A2F5A52B30378900432876 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */,
+				B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */,
+				B6AD6AA62B21BD9B00D26F72 /* Info.plist */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		B6A2F5A62B30379700432876 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		B6AD6A8C2B21BD9900D26F72 = {
 			isa = PBXGroup;
 			children = (
@@ -100,11 +118,9 @@
 		B6AD6A972B21BD9900D26F72 /* Alpha Todo */ = {
 			isa = PBXGroup;
 			children = (
-				B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */,
-				B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */,
 				B6907DF02B302F6E006D5044 /* AppViewController.swift */,
-				B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */,
-				B6AD6AA62B21BD9B00D26F72 /* Info.plist */,
+				B6A2F5A62B30379700432876 /* Resources */,
+				B6A2F5A52B30378900432876 /* Application */,
 				B6907DE22B302E9C006D5044 /* PreviewView */,
 				B6907DE82B302E9C006D5044 /* PreviewViewLegacyOSCompileFix */,
 			);
@@ -377,7 +393,7 @@
 				DEVELOPMENT_TEAM = 2N64875GLV;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Alpha Todo/Info.plist";
+				INFOPLIST_FILE = "Alpha Todo/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -410,7 +426,7 @@
 				DEVELOPMENT_TEAM = 2N64875GLV;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Alpha Todo/Info.plist";
+				INFOPLIST_FILE = "Alpha Todo/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
