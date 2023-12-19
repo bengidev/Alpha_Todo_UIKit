@@ -19,11 +19,10 @@
 		B6AD6A992B21BD9900D26F72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD6A982B21BD9900D26F72 /* AppDelegate.swift */; };
 		B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */; };
 		B6AD6AA22B21BD9B00D26F72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */; };
-		B6AEB6192B31242C00FE492D /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6182B31242C00FE492D /* FirstViewController.swift */; };
-		B6AEB61B2B31243D00FE492D /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB61A2B31243D00FE492D /* SecondViewController.swift */; };
 		B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB61D2B313E5700FE492D /* UIFont+Extension.swift */; };
 		B6AEB6212B31441900FE492D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6202B31441900FE492D /* MainViewController.swift */; };
 		B6AEB6232B31447800FE492D /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6222B31447800FE492D /* ViewFactory.swift */; };
+		B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,11 +39,10 @@
 		B6AD6A9A2B21BD9900D26F72 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		B6AD6AA12B21BD9B00D26F72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B6AD6AA62B21BD9B00D26F72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B6AEB6182B31242C00FE492D /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		B6AEB61A2B31243D00FE492D /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		B6AEB61D2B313E5700FE492D /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		B6AEB6202B31441900FE492D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B6AEB6222B31447800FE492D /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
+		B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseOnboardingViewController.swift; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -179,8 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				B6A4938E2B31126C00A41402 /* OnboardingViewController.swift */,
-				B6AEB6182B31242C00FE492D /* FirstViewController.swift */,
-				B6AEB61A2B31243D00FE492D /* SecondViewController.swift */,
+				B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -326,9 +323,7 @@
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
 				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
-				B6AEB6192B31242C00FE492D /* FirstViewController.swift in Sources */,
 				B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */,
-				B6AEB61B2B31243D00FE492D /* SecondViewController.swift in Sources */,
 				B6AEB6232B31447800FE492D /* ViewFactory.swift in Sources */,
 				B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */,
 				B6AEB6212B31441900FE492D /* MainViewController.swift in Sources */,
@@ -336,6 +331,7 @@
 				B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */,
 				B6A4938F2B31126C00A41402 /* OnboardingViewController.swift in Sources */,
 				B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */,
+				B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
