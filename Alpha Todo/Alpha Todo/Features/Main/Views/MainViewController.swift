@@ -1,20 +1,20 @@
 //
-//  AppViewController.swift
+//  MainViewController.swift
 //  Alpha Todo
 //
-//  Created by Bambang Tri Rahmat Doni on 18/12/23.
+//  Created by Bambang Tri Rahmat Doni on 19/12/23.
 //
 
 import SnapKit
 import SwiftUI
 import UIKit
 
-final class AppViewController: UIViewController {
+final class MainViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
         
-        self.view.backgroundColor = .orange
+        self.view.backgroundColor = .init(resource: .appSecondary)
     }
     
     override func viewDidLoad() {
@@ -26,9 +26,10 @@ final class AppViewController: UIViewController {
 
 #if DEBUG
 @available(iOS 13, *)
-struct AppViewController_Previews: PreviewProvider {
+struct MainViewController_Previews: PreviewProvider {
     static var previews: some View {
-        ViewControllerPreview(AppViewController())
+        ViewControllerPreview(MainViewController())
+            .edgesIgnoringSafeArea(.all)
     }
 }
 #endif
