@@ -35,7 +35,7 @@ final class BaseOnboardingViewController: UIViewController {
         let lb = ViewFactory.buildLabel()
         lb.text = self.onboardingTitle
         lb.font = .preferredFont(forTextStyle: .title2).rounded().bold()
-        
+
         return lb
     }()
     
@@ -44,7 +44,7 @@ final class BaseOnboardingViewController: UIViewController {
         lb.text = self.onboardingBody
         lb.font = .preferredFont(forTextStyle: .body)
         lb.textColor = .gray
-        
+
         return lb
     }()
     
@@ -80,14 +80,14 @@ final class BaseOnboardingViewController: UIViewController {
     
     // MARK: Functions
     private func setupViews() -> Void {
-        self.view.backgroundColor = .init(resource: .appSecondary)
+        self.view.backgroundColor = .appSecondary
         self.view.addSubview(self.oneVStackView)
         
         self.oneVStackView.addArrangedSubview(self.onboardingImageView)
         self.oneVStackView.setCustomSpacing(10.0, after: self.onboardingImageView)
         
         self.oneVStackView.addArrangedSubview(self.onboardingTitleLabel)
-        self.oneVStackView.setCustomSpacing(20.0, after: self.onboardingTitleLabel)
+        self.oneVStackView.setCustomSpacing(10.0, after: self.onboardingTitleLabel)
         
         self.oneVStackView.addArrangedSubview(self.onboardingBodyLabel)
         self.oneVStackView.snp.makeConstraints { make in
@@ -95,15 +95,17 @@ final class BaseOnboardingViewController: UIViewController {
         }
         
         self.onboardingImageView.snp.makeConstraints { make in
-            make.horizontalEdges.equalTo(self.view).inset(10.0)
             make.height.equalTo(self.view.frame.height / 2)
+            make.horizontalEdges.equalTo(self.view).inset(10.0)
         }
         
         self.onboardingTitleLabel.snp.makeConstraints { make in
+            make.height.equalTo(80.0)
             make.horizontalEdges.equalTo(self.view).inset(10.0)
         }
         
         self.onboardingBodyLabel.snp.makeConstraints { make in
+            make.height.equalTo(120.0)
             make.horizontalEdges.equalTo(self.view).inset(10.0)
         }
     }
@@ -116,8 +118,8 @@ struct BaseOnboardingViewController_Previews: PreviewProvider {
         ViewControllerPreview(
             BaseOnboardingViewController(
                 image: "Rocket",
-                title: "Your Personal Productivity Assistant Has Arrived",
-                body: "Say hello to your new productivity assistant. Let our app help you tackle tasks with ease. From reminders to collaboration, we've got you covered"
+                title: "Your Personal Productivity Assistant Has Arrivedreminders to collaboration, we've got you covered",
+                body: "Say hello to your new productivity assistant. Let our app help you tackle tasks with ease. From reminders to collaboration, we've got you coveredreminders to collaboration, we've got you coveredreminders to collaboration, we've got you covered"
             )
         )
         .edgesIgnoringSafeArea(.all)
