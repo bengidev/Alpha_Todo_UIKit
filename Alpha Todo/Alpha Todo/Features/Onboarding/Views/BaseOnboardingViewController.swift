@@ -35,7 +35,7 @@ final class BaseOnboardingViewController: UIViewController {
         let lb = ViewFactory.buildLabel()
         lb.text = self.onboardingTitle
         lb.font = .preferredFont(forTextStyle: .title2).rounded().bold()
-
+        
         return lb
     }()
     
@@ -44,7 +44,7 @@ final class BaseOnboardingViewController: UIViewController {
         lb.text = self.onboardingBody
         lb.font = .preferredFont(forTextStyle: .body)
         lb.textColor = .gray
-
+        
         return lb
     }()
     
@@ -96,17 +96,17 @@ final class BaseOnboardingViewController: UIViewController {
         
         self.onboardingImageView.snp.makeConstraints { make in
             make.height.equalTo(self.view.frame.height / 2)
-            make.horizontalEdges.equalTo(self.view).inset(10.0)
+            make.horizontalEdges.equalTo(self.view)
         }
         
         self.onboardingTitleLabel.snp.makeConstraints { make in
             make.height.equalTo(80.0)
-            make.horizontalEdges.equalTo(self.view).inset(10.0)
+            make.horizontalEdges.equalTo(self.view)
         }
         
         self.onboardingBodyLabel.snp.makeConstraints { make in
             make.height.equalTo(120.0)
-            make.horizontalEdges.equalTo(self.view).inset(10.0)
+            make.horizontalEdges.equalTo(self.view)
         }
     }
 }
