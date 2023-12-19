@@ -23,6 +23,8 @@
 		B6AEB6212B31441900FE492D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6202B31441900FE492D /* MainViewController.swift */; };
 		B6AEB6232B31447800FE492D /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6222B31447800FE492D /* ViewFactory.swift */; };
 		B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */; };
+		B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB62A2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift */; };
+		B6AEB62D2B318A0600FE492D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 		B6AEB6202B31441900FE492D /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B6AEB6222B31447800FE492D /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseOnboardingViewController.swift; sourceTree = "<group>"; };
+		B6AEB62A2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapperBaseOnboardingViewController.swift; sourceTree = "<group>"; };
+		B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -177,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				B6A4938E2B31126C00A41402 /* OnboardingViewController.swift */,
+				B6AEB62A2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift */,
 				B6AEB6262B315A0900FE492D /* BaseOnboardingViewController.swift */,
 			);
 			path = Views;
@@ -186,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				B6AEB61D2B313E5700FE492D /* UIFont+Extension.swift */,
+				B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -323,6 +329,7 @@
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
 				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
+				B6AEB62D2B318A0600FE492D /* UIViewController+Extension.swift in Sources */,
 				B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */,
 				B6AEB6232B31447800FE492D /* ViewFactory.swift in Sources */,
 				B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */,
@@ -332,6 +339,7 @@
 				B6A4938F2B31126C00A41402 /* OnboardingViewController.swift in Sources */,
 				B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */,
 				B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */,
+				B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
