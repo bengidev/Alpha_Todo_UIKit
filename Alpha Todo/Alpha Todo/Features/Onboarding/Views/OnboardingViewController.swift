@@ -33,31 +33,10 @@ final class OnboardingViewController: UIViewController {
         return bt
     }()
     
-    private lazy var wrapperOnboardingView: UIView = {
-        // Add UIPageViewController into self to be child controller
-        // And self to be parent of UIPageViewController
-        self.add(self.wrapperOnboardingController)
-        
-        guard let vw = self.wrapperOnboardingController.view else { return .init() }
-        vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        
-        return vw
+    private lazy var pageControl: UIPageControl = {
+        return .init()
     }()
 
-    private lazy var pageControl: UIPageControl = {
-        let cl = UIPageControl()
-        cl.translatesAutoresizingMaskIntoConstraints = false
-        cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        cl.transform = .init(scaleX: 1.5, y: 1.5)
-        cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
-        cl.currentPageIndicatorTintColor = .appPrimary
-        cl.currentPage = 0
-        cl.numberOfPages = self.pages.count
-        
-        return cl
-    }()
-    
     // MARK: Lifecycles
     override func loadView() {
         super.loadView()
@@ -76,8 +55,6 @@ final class OnboardingViewController: UIViewController {
         self.view.backgroundColor = .init(.appSecondary)
         self.view.addSubview(self.nextButton)
         self.view.addSubview(self.skipButton)
-        self.view.addSubview(self.wrapperOnboardingView)
-        self.view.addSubview(self.pageControl)
         
         self.nextButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -87,18 +64,6 @@ final class OnboardingViewController: UIViewController {
         self.skipButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(10.0)
-        }
-
-        self.wrapperOnboardingView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(10.0)
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(40.0)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(40.0)
-        }
-        
-        self.pageControl.snp.makeConstraints { make in
-            make.height.equalTo(30.0)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(5.0)
         }
     }
     
@@ -124,37 +89,34 @@ final class OnboardingViewController: UIViewController {
         self.pages.append(pageThree)
     }
     
-    private func updatePageControll() -> Void {
-        // Remove current UIPageControl
-        self.pageControl.removeFromSuperview()
+    private func updatePageControll(isHidden: Bool = false) -> Void {
+        lazy var pageControl: UIPageControl = {
+            let cl = UIPageControl()
+            cl.translatesAutoresizingMaskIntoConstraints = false
+            cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            cl.transform = .init(scaleX: 1.5, y: 1.5)
+            cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
+            cl.currentPageIndicatorTintColor = .appPrimary
+            cl.currentPage = 0
+            cl.numberOfPages = self.pages.count
+            
+            return cl
+        }()
         
-        // Remake UIPageControl for new value
-        let cl = UIPageControl()
-        cl.translatesAutoresizingMaskIntoConstraints = false
-        cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        cl.transform = .init(scaleX: 1.5, y: 1.5)
-        cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
-        cl.currentPageIndicatorTintColor = .appPrimary
-        cl.currentPage = 0
-        cl.numberOfPages = self.pages.count
-        
-        // Change old UIPageControl to new value
-        self.pageControl = cl
-        self.view.addSubview(cl)
-        
-        cl.snp.makeConstraints { make in
+        self.pageControl = pageControl
+        self.view.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
             make.height.equalTo(30.0)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(5.0)
         }
+        
+        pageControl.isHidden = false
+        
         self.view.layoutIfNeeded()
     }
     
     private func updateWrapperOnboardingView() -> Void {
-        // Remove current WrapperBaseOnboardingViewController from stack
-        self.wrapperOnboardingController.remove()
-        self.wrapperOnboardingView.removeFromSuperview()
-        
         // Change old to new WrapperBaseOnboardingViewController
         self.wrapperOnboardingController = WrapperBaseOnboardingViewController(
             pageControl: self.pageControl,
@@ -163,32 +125,57 @@ final class OnboardingViewController: UIViewController {
             skipButton: self.skipButton,
             didChangePageControlValue: self.didChangePageControlValue(_:)
         )
-        self.add(self.wrapperOnboardingController)
         
-        // Remake view for new WrapperBaseOnboardingViewController
-        guard let vw = self.wrapperOnboardingController.view else { return }
-        vw.translatesAutoresizingMaskIntoConstraints = false
-        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        lazy var wrapperOnboardingView: UIView = {
+            // Add UIPageViewController into self to be child controller
+            // And self to be parent of UIPageViewController
+            self.add(self.wrapperOnboardingController)
+            
+            guard let vw = self.wrapperOnboardingController.view else { return .init() }
+            vw.translatesAutoresizingMaskIntoConstraints = false
+            vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            return vw
+        }()
         
-        self.view.addSubview(vw)
-        vw.snp.makeConstraints { make in
+        self.view.addSubview(wrapperOnboardingView)
+        wrapperOnboardingView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(10.0)
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(40.0)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(40.0)
         }
+        
         self.view.layoutIfNeeded()
     }
     
     private func didChangePageControlValue(_ control: UIPageControl) -> Void {
-        self.updateSkipButton(with: control)
+        self.hasReachedEndPage(with: control) { shouldHide in
+            self.hideSkipButton(shouldHide)
+            self.hidePageControl(shouldHide)
+        }
     }
     
-    private func updateSkipButton(with control: UIPageControl) -> Void {
-        self.skipButton.isHidden = control.currentPage == self.pages.count - 1
-        self.view.layoutIfNeeded()
+    private func hasReachedEndPage(with control: UIPageControl, isEndPage: (Bool) -> Void) -> Void {
+        if control.currentPage == self.pages.count - 1 {
+            isEndPage(true)
+        } else {
+            isEndPage(false)
+        }
     }
-
     
+    private func hideSkipButton(_ isHidden: Bool = false) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.skipButton.isHidden = isHidden
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func hidePageControl(_ isHidden: Bool = false) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.pageControl.isHidden = isHidden
+            self.view.layoutIfNeeded()
+        }
+    }
 }
 
 #if DEBUG
