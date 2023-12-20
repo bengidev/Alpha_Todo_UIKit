@@ -95,17 +95,17 @@ final class BaseOnboardingViewController: UIViewController {
         }
         
         self.onboardingImageView.snp.makeConstraints { make in
-            make.height.equalTo(self.view.frame.height / 2)
+            make.height.equalTo(self.view.frame.height / 2.4)
             make.horizontalEdges.equalTo(self.view)
         }
         
         self.onboardingTitleLabel.snp.makeConstraints { make in
-            make.height.equalTo(80.0)
+            make.height.equalTo(60.0)
             make.horizontalEdges.equalTo(self.view)
         }
         
         self.onboardingBodyLabel.snp.makeConstraints { make in
-            make.height.equalTo(120.0)
+            make.height.equalTo(100.0)
             make.horizontalEdges.equalTo(self.view)
         }
     }
