@@ -12,12 +12,21 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
     // MARK: Properties
     private var pageControl: UIPageControl?
     private var pages: [UIViewController]?
+    private var nextButton: UIButton?
+    private var skipButton: UIButton?
     
     // MARK: Initializers
-    init(pageControl: UIPageControl? = nil, pages: [UIViewController]? = nil) {
+    init(
+        pageControl: UIPageControl? = nil,
+        pages: [UIViewController]? = nil,
+        nextButton: UIButton? = nil,
+        skipButton: UIButton? = nil
+    ) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
         self.pageControl = pageControl
         self.pages = pages
+        self.nextButton = nextButton
+        self.skipButton = skipButton
     }
     
     required init?(coder: NSCoder) {
@@ -32,16 +41,54 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupData()
+        self.pageControl?.addTarget(
+            self,
+            action: #selector(self.didTapPageControl(_:)),
+            for: .valueChanged
+        )
+        self.nextButton?.addTarget(
+            self,
+            action: #selector(self.didTapNextButton(_:)),
+            for: .touchUpInside
+        )
+        self.skipButton?.addTarget(
+            self,
+            action: #selector(self.didTapSkipButton(_:)),
+            for: .touchUpInside
+        )
     }
     
     // MARK: Functions
     private func setupData() -> Void {
         self.dataSource = self
         self.delegate = self
-
+        
         // Set initial viewController to be displayed
         // Note: We are not passing in all the viewControllers here. Only the one to be displayed.
         self.setViewControllers([self.pages?.first ?? .init()], direction: .forward, animated: true)
+    }
+    
+    @objc
+    private func didTapPageControl(_ sender: UIPageControl) -> Void {
+        guard let pages = self.pages else { return }
+        self.goToSpecificPage(index: sender.currentPage, ofControllers: pages)
+        
+        print("Page Control was tapped at: \(sender.currentPage)")
+    }
+
+    @objc
+    private func didTapNextButton(_ sender: UIButton) -> Void {
+        self.goToNextPage()
+        
+        print("Next Button was tapped")
+    }
+    
+    @objc
+    private func didTapSkipButton(_ sender: UIButton) -> Void {
+        guard let pages = self.pages else { return }
+        self.goToSpecificPage(index: pages.count - 1, ofControllers: pages)
+        
+        print("Skip Button was tapped")
     }
 }
 
@@ -68,7 +115,6 @@ extension WrapperBaseOnboardingViewController: UIPageViewControllerDataSource {
             return pages.first              // wrap to first
         }
     }
-    
 }
 
 // MARK: Delegates
@@ -79,7 +125,73 @@ extension WrapperBaseOnboardingViewController: UIPageViewControllerDelegate {
         guard let viewControllers = pageViewController.viewControllers else { return }
         guard let currentIndex = pages.firstIndex(of: viewControllers[0]) else { return }
         
+        // Pass back data into initializers
         self.pageControl?.currentPage = currentIndex
+    }
+}
+
+extension WrapperBaseOnboardingViewController {
+    func goToNextPage(
+        animated: Bool = true,
+        completion: ((Bool) -> Void)? = nil
+    ) -> Void {
+        guard let pageControl = self.pageControl else { return }
+        guard let pages = self.pages else { return }
+        guard let currentPage = self.viewControllers?
+            .first else { return }
+        guard let nextPage = self.dataSource?
+            .pageViewController(self, viewControllerAfter: currentPage) else { return }
+        
+        self.setViewControllers(
+            [nextPage],
+            direction: .forward,
+            animated: animated,
+            completion: completion
+        )
+        
+        if pageControl.currentPage < pages.count - 1 {
+            pageControl.currentPage += 1
+        } else {
+            pageControl.currentPage = 0
+        }
+    }
+    
+    func goToPreviousPage(
+        animated: Bool = true,
+        completion: ((Bool) -> Void)? = nil
+    ) -> Void {
+        guard let pageControl = self.pageControl else { return }
+        guard let currentPage = self.viewControllers?
+            .first else { return }
+        guard let previousPage = self.dataSource?
+            .pageViewController(self, viewControllerBefore: currentPage) else { return }
+        
+        self.setViewControllers(
+            [previousPage],
+            direction: .forward,
+            animated: animated,
+            completion: completion
+        )
+        
+        pageControl.currentPage -= 1
+    }
+    
+    func goToSpecificPage(
+        index: Int,
+        ofControllers pages: [UIViewController],
+        animated: Bool = true,
+        completion: ((Bool) -> Void)? = nil
+    ) -> Void {
+        guard let pageControl = self.pageControl else { return }
+        
+        self.setViewControllers(
+            [pages[index]],
+            direction: .forward,
+            animated: animated,
+            completion: completion
+        )
+        
+        pageControl.currentPage = index
     }
 }
 

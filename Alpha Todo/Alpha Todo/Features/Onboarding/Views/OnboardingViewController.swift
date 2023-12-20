@@ -50,6 +50,7 @@ final class OnboardingViewController: UIViewController {
         let cl = UIPageControl()
         cl.translatesAutoresizingMaskIntoConstraints = false
         cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        cl.transform = .init(scaleX: 1.5, y: 1.5)
         cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
         cl.currentPageIndicatorTintColor = .appPrimary
         cl.currentPage = 0
@@ -132,6 +133,7 @@ final class OnboardingViewController: UIViewController {
         let cl = UIPageControl()
         cl.translatesAutoresizingMaskIntoConstraints = false
         cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        cl.transform = .init(scaleX: 1.5, y: 1.5)
         cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
         cl.currentPageIndicatorTintColor = .appPrimary
         cl.currentPage = 0
@@ -157,7 +159,9 @@ final class OnboardingViewController: UIViewController {
         // Change old to new WrapperBaseOnboardingViewController
         self.wrapperOnboardingController = WrapperBaseOnboardingViewController(
             pageControl: self.pageControl,
-            pages: self.pages
+            pages: self.pages,
+            nextButton: self.nextButton,
+            skipButton: self.skipButton
         )
         self.add(self.wrapperOnboardingController)
         
