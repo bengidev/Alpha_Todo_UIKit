@@ -181,8 +181,6 @@ final class OnboardingViewController: UIViewController {
     
     private func didChangePageControlValue(_ control: UIPageControl) -> Void {
         self.updateSkipButton(with: control)
-        
-        print("Page Control changed at: \(pageControl.currentPage)")
     }
     
     private func updateSkipButton(with control: UIPageControl) -> Void {

@@ -78,8 +78,6 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
         
         self.goToSpecificPage(index: sender.currentPage, ofControllers: pages)
         self.didChangePageControlValue?(pageControl)
-        
-        print("Page Control was tapped at: \(sender.currentPage)")
     }
 
     @objc
@@ -88,8 +86,6 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
         
         self.goToNextPage()
         self.didChangePageControlValue?(pageControl)
-        
-        print("Next Button was tapped")
     }
     
     @objc
@@ -99,15 +95,12 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
         
         self.goToSpecificPage(index: pages.count - 1, ofControllers: pages)
         self.didChangePageControlValue?(pageControl)
-        
-        print("Skip Button was tapped")
     }
 }
 
 // MARK: Datasources
 extension WrapperBaseOnboardingViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let pageControl = self.pageControl else { return nil }
         guard let pages = self.pages else { return nil }
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         
