@@ -46,7 +46,7 @@ final class OnboardingViewController: UIViewController {
     private lazy var pageControl: UIPageControl = {
         return .init()
     }()
-
+    
     // MARK: Lifecycles
     override func loadView() {
         super.loadView()
@@ -202,8 +202,40 @@ final class OnboardingViewController: UIViewController {
         UIView.animate(withDuration: 1.0) {
             self.getStartedButton.isHidden = isHidden
             self.getStartedButton.isUserInteractionEnabled = !isHidden
+            self.getStartedButton.addTarget(
+                self,
+                action: #selector(self.didTapGetStartedButton(_:)),
+                for: .touchUpInside
+            )
             self.view.layoutIfNeeded()
         }
+    }
+    
+    @objc
+    private func didTapGetStartedButton(_ sender: UIButton) -> Void {
+        self.setHasOnboardingCompleted(true)
+        self.navigateToHomeScreen()
+    }
+    
+    private func setHasOnboardingCompleted(_ value: Bool) -> Void {
+        UserDefaults.standard.set(
+            value,
+            forKey: AppUserDefaults.onboarding.rawValue
+        )
+    }
+    
+    private func navigateToHomeScreen() -> Void {
+        // Access the SceneDelegate
+        guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+        
+        // Add a crossfade transition animation
+        let transition = CATransition()
+        transition.type = .fade
+        transition.duration = 0.3
+        
+        // Change the rootViewController into HomeViewController
+        sceneDelegate.window?.layer.add(transition, forKey: kCATransition)
+        sceneDelegate.window?.rootViewController = HomeViewController()
     }
 }
 
