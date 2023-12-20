@@ -41,7 +41,7 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
 
         // Set initial viewController to be displayed
         // Note: We are not passing in all the viewControllers here. Only the one to be displayed.
-        self.setViewControllers([pages?[0] ?? .init()], direction: .forward, animated: true)
+        self.setViewControllers([self.pages?.first ?? .init()], direction: .forward, animated: true)
     }
 }
 
