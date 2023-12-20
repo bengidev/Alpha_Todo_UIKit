@@ -33,6 +33,16 @@ final class OnboardingViewController: UIViewController {
         return bt
     }()
     
+    private lazy var getStartedButton: UIButton = {
+        let bt = ViewFactory.buildTextButton()
+        bt.setTitle("Get Started", for: .normal)
+        bt.setTitleColor(.appSecondary, for: .normal)
+        bt.backgroundColor = .appPrimary
+        bt.isHidden = true
+        
+        return bt
+    }()
+    
     private lazy var pageControl: UIPageControl = {
         return .init()
     }()
@@ -55,6 +65,7 @@ final class OnboardingViewController: UIViewController {
         self.view.backgroundColor = .init(.appSecondary)
         self.view.addSubview(self.nextButton)
         self.view.addSubview(self.skipButton)
+        self.view.addSubview(self.getStartedButton)
         
         self.nextButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
@@ -64,6 +75,13 @@ final class OnboardingViewController: UIViewController {
         self.skipButton.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
             make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(10.0)
+        }
+        
+        self.getStartedButton.snp.makeConstraints { make in
+            make.width.equalTo(150.0)
+            make.height.equalTo(50.0)
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(10.0)
         }
     }
     
@@ -142,7 +160,7 @@ final class OnboardingViewController: UIViewController {
         wrapperOnboardingView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(10.0)
             make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(40.0)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(40.0)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(70.0)
         }
         
         self.view.layoutIfNeeded()
@@ -150,8 +168,9 @@ final class OnboardingViewController: UIViewController {
     
     private func didChangePageControlValue(_ control: UIPageControl) -> Void {
         self.hasReachedEndPage(with: control) { shouldHide in
-            self.hideSkipButton(shouldHide)
-            self.hidePageControl(shouldHide)
+            self.skipButtonVisibility(shouldHide)
+            self.pageControlVisibility(shouldHide)
+            self.getStartedButtonVisibility(!shouldHide)
         }
     }
     
@@ -163,7 +182,7 @@ final class OnboardingViewController: UIViewController {
         }
     }
     
-    private func hideSkipButton(_ isHidden: Bool = false) -> Void {
+    private func skipButtonVisibility(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.skipButton.isHidden = isHidden
             self.skipButton.isUserInteractionEnabled = !isHidden
@@ -171,10 +190,18 @@ final class OnboardingViewController: UIViewController {
         }
     }
     
-    private func hidePageControl(_ isHidden: Bool = false) -> Void {
+    private func pageControlVisibility(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.pageControl.isHidden = isHidden
             self.pageControl.isUserInteractionEnabled = !isHidden
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func getStartedButtonVisibility(_ isHidden: Bool = false) -> Void {
+        UIView.animate(withDuration: 1.0) {
+            self.getStartedButton.isHidden = isHidden
+            self.getStartedButton.isUserInteractionEnabled = !isHidden
             self.view.layoutIfNeeded()
         }
     }
