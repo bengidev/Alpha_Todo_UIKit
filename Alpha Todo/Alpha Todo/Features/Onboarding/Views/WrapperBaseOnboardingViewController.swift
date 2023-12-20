@@ -14,19 +14,22 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
     private var pages: [UIViewController]?
     private var nextButton: UIButton?
     private var skipButton: UIButton?
+    private var didChangePageControlValue: ((UIPageControl) -> Void)?
     
     // MARK: Initializers
     init(
         pageControl: UIPageControl? = nil,
         pages: [UIViewController]? = nil,
         nextButton: UIButton? = nil,
-        skipButton: UIButton? = nil
+        skipButton: UIButton? = nil,
+        didChangePageControlValue: ((UIPageControl) -> Void)? = nil
     ) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
         self.pageControl = pageControl
         self.pages = pages
         self.nextButton = nextButton
         self.skipButton = skipButton
+        self.didChangePageControlValue = didChangePageControlValue
     }
     
     required init?(coder: NSCoder) {
@@ -70,23 +73,32 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
     
     @objc
     private func didTapPageControl(_ sender: UIPageControl) -> Void {
+        guard let pageControl = self.pageControl else { return }
         guard let pages = self.pages else { return }
+        
         self.goToSpecificPage(index: sender.currentPage, ofControllers: pages)
+        self.didChangePageControlValue?(pageControl)
         
         print("Page Control was tapped at: \(sender.currentPage)")
     }
 
     @objc
     private func didTapNextButton(_ sender: UIButton) -> Void {
+        guard let pageControl = self.pageControl else { return }
+        
         self.goToNextPage()
+        self.didChangePageControlValue?(pageControl)
         
         print("Next Button was tapped")
     }
     
     @objc
     private func didTapSkipButton(_ sender: UIButton) -> Void {
+        guard let pageControl = self.pageControl else { return }
         guard let pages = self.pages else { return }
+        
         self.goToSpecificPage(index: pages.count - 1, ofControllers: pages)
+        self.didChangePageControlValue?(pageControl)
         
         print("Skip Button was tapped")
     }
@@ -95,6 +107,7 @@ class WrapperBaseOnboardingViewController: UIPageViewController {
 // MARK: Datasources
 extension WrapperBaseOnboardingViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let pageControl = self.pageControl else { return nil }
         guard let pages = self.pages else { return nil }
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         
@@ -121,12 +134,17 @@ extension WrapperBaseOnboardingViewController: UIPageViewControllerDataSource {
 extension WrapperBaseOnboardingViewController: UIPageViewControllerDelegate {
     // How we keep our pageControl in sync with viewControllers
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard let pageControl = self.pageControl else { return }
         guard let pages = self.pages else { return }
         guard let viewControllers = pageViewController.viewControllers else { return }
         guard let currentIndex = pages.firstIndex(of: viewControllers[0]) else { return }
         
         // Pass back data into initializers
-        self.pageControl?.currentPage = currentIndex
+        pageControl.currentPage = currentIndex
+        
+        // Pass callback with UIPageControl current value 
+        // when UIPageViewController finish animated
+        self.didChangePageControlValue?(pageControl)
     }
 }
 
