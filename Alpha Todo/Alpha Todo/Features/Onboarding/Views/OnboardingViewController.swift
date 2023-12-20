@@ -11,9 +11,8 @@ import UIKit
 
 final class OnboardingViewController: UIViewController {
     // MARK: Properties
-    private var pages: [UIViewController] = []
     private var wrapperOnboardingController = WrapperBaseOnboardingViewController()
-    
+    private var pages: [UIViewController] = []
     
     // MARK: Views
     private lazy var skipButton: UIButton = {
@@ -161,7 +160,8 @@ final class OnboardingViewController: UIViewController {
             pageControl: self.pageControl,
             pages: self.pages,
             nextButton: self.nextButton,
-            skipButton: self.skipButton
+            skipButton: self.skipButton,
+            didChangePageControlValue: self.didChangePageControlValue(_:)
         )
         self.add(self.wrapperOnboardingController)
         
@@ -178,6 +178,19 @@ final class OnboardingViewController: UIViewController {
         }
         self.view.layoutIfNeeded()
     }
+    
+    private func didChangePageControlValue(_ control: UIPageControl) -> Void {
+        self.updateSkipButton(with: control)
+        
+        print("Page Control changed at: \(pageControl.currentPage)")
+    }
+    
+    private func updateSkipButton(with control: UIPageControl) -> Void {
+        self.skipButton.isHidden = control.currentPage == self.pages.count - 1
+        self.view.layoutIfNeeded()
+    }
+
+    
 }
 
 #if DEBUG
