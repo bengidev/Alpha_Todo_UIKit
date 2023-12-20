@@ -166,6 +166,7 @@ final class OnboardingViewController: UIViewController {
     private func hideSkipButton(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.skipButton.isHidden = isHidden
+            self.skipButton.isUserInteractionEnabled = !isHidden
             self.view.layoutIfNeeded()
         }
     }
@@ -173,6 +174,7 @@ final class OnboardingViewController: UIViewController {
     private func hidePageControl(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
             self.pageControl.isHidden = isHidden
+            self.pageControl.isUserInteractionEnabled = !isHidden
             self.view.layoutIfNeeded()
         }
     }
