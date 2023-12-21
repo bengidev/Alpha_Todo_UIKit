@@ -16,7 +16,7 @@ final class OnboardingViewController: UIViewController {
     
     // MARK: Views
     private lazy var skipButton: UIButton = {
-        let bt = ViewFactory.buildTextButton()
+        let bt = AppViewFactory.buildTextButton()
         bt.setTitle("Skip", for: .normal)
         bt.setTitleColor(.appPrimary, for: .normal)
         bt.backgroundColor = .clear
@@ -25,7 +25,7 @@ final class OnboardingViewController: UIViewController {
     }()
     
     private lazy var nextButton: UIButton = {
-        let bt = ViewFactory.buildTextButton()
+        let bt = AppViewFactory.buildTextButton()
         bt.setTitle("Next", for: .normal)
         bt.setTitleColor(.appPrimary, for: .normal)
         bt.backgroundColor = .clear
@@ -34,7 +34,7 @@ final class OnboardingViewController: UIViewController {
     }()
     
     private lazy var getStartedButton: UIButton = {
-        let bt = ViewFactory.buildTextButton()
+        let bt = AppViewFactory.buildTextButton()
         bt.setTitle("Get Started", for: .normal)
         bt.setTitleColor(.appSecondary, for: .normal)
         bt.backgroundColor = .appPrimary
