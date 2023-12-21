@@ -13,7 +13,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func buildView() -> UIView {
-        let vw = UIView()
+        let vw = UIView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -68,7 +68,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func buildLabel() -> UILabel {
-        let lb = UILabel()
+        let lb = UILabel(frame: .zero)
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         lb.textAlignment = .center
@@ -80,7 +80,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func buildTextView() -> UITextView {
-        let vw = UITextView()
+        let vw = UITextView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.textAlignment = .center
@@ -96,7 +96,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func buildStackView() -> UIStackView {
-        let vw = UIStackView()
+        let vw = UIStackView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.axis = .vertical
@@ -117,8 +117,15 @@ final class AppViewFactory: NSObject {
         return vw
     }
     
-    class func buildCollectionView() -> UICollectionView {
-        let vw = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    class func buildCollectionView(scrollDirection: UICollectionView.ScrollDirection = .vertical) -> UICollectionView {
+        let fl = UICollectionViewFlowLayout()
+        fl.scrollDirection = scrollDirection
+        fl.minimumInteritemSpacing = 10.0
+        fl.minimumLineSpacing = 10.0
+        fl.itemSize = UICollectionViewFlowLayout.automaticSize
+        fl.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let vw = UICollectionView(frame: .zero, collectionViewLayout: fl)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
@@ -126,7 +133,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func imageView() -> UIImageView {
-        let vw = UIImageView()
+        let vw = UIImageView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.setContentHuggingPriority(.defaultLow, for: .vertical)
