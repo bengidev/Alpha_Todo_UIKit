@@ -110,10 +110,17 @@ final class AppViewFactory: NSObject {
         let vw = UITableView(frame: .zero, style: .grouped)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.allowsSelection = true
         vw.separatorStyle = .none
         vw.rowHeight = UITableView.automaticDimension
-        vw.estimatedRowHeight = 250.0
+        vw.estimatedRowHeight = UITableView.automaticDimension
+        
+        return vw
+    }
+    
+    class func buildCollectionView() -> UICollectionView {
+        let vw = UICollectionView(frame: .zero, collectionViewLayout: .init())
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
         return vw
     }
