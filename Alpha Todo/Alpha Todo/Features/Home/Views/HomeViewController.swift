@@ -13,6 +13,8 @@ final class HomeViewController: UIViewController {
     // MARK: Properties
     private let viewModel = HomeViewModel()
     
+    private var selectedCategory: Set<Category> = []
+    
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
@@ -27,24 +29,24 @@ final class HomeViewController: UIViewController {
         vw.backgroundColor = .blue
         return vw
     }()
-
+    
     private lazy var oneVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         vw.axis = .vertical
         
         return vw
     }()
-
+    
     private lazy var helloLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.textAlignment = .left
         lb.text = "Hello,"
         lb.font = .preferredFont(forTextStyle: .largeTitle).rounded()
         lb.textColor = .gray
-
+        
         return lb
     }()
-
+    
     private lazy var nameLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.textAlignment = .left
@@ -63,7 +65,7 @@ final class HomeViewController: UIViewController {
         
         return vw
     }()
-
+    
     private lazy var categoryCollectionView: UICollectionView = {
         let vw = AppViewFactory.buildCollectionView(scrollDirection: .horizontal)
         vw.dataSource = self
@@ -87,8 +89,17 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
+    }
+    
+    @objc
+    private func didTapCategoryButton(_ sender: UIButton) -> Void {
+        // Retrieve the indexPath using the tag
+        let indexPath = IndexPath(item: sender.tag, section: 0)
+        
+        // Access the data or perform any action with the indexPath
+        print("Category Button tapped in cell at indexPath: \(indexPath)")
     }
     
     // MARK: Functionalities
@@ -146,10 +157,10 @@ extension HomeViewController: UICollectionViewDataSource {
         ) as? CategoryCollectionViewCell else { return .init() }
         
         
-        cell.updateCategoryButton(
-            with: self.viewModel.categories[indexPath.item],
-            tag: indexPath.item
-        )
+        cell.updateCategoryButton(with: self.viewModel.categories[indexPath.item])
+        let categoryButton = cell.getCategoryButton()
+        categoryButton.tag = indexPath.item
+        categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
         
         return cell
     }
@@ -170,7 +181,6 @@ extension HomeViewController: UICollectionViewDelegateFlowLayout {
         return .init(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
     }
 }
-
 
 #if DEBUG
 @available(iOS 13, *)
