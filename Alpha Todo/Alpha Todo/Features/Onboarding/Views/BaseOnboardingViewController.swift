@@ -19,20 +19,20 @@ final class BaseOnboardingViewController: UIViewController {
     
     // MARK: Views
     private lazy var oneVStackView: UIStackView = {
-        let vw = ViewFactory.buildStackView()
+        let vw = AppViewFactory.buildStackView()
         
         return vw
     }()
     
     private lazy var onboardingImageView: UIImageView = {
-        let vw = ViewFactory.imageView()
+        let vw = AppViewFactory.imageView()
         vw.image = .init(named: self.onboardingImage ?? "")
         
         return vw
     }()
     
     private lazy var onboardingTitleLabel: UILabel = {
-        let lb = ViewFactory.buildLabel()
+        let lb = AppViewFactory.buildLabel()
         lb.text = self.onboardingTitle
         lb.font = .preferredFont(forTextStyle: .title2).rounded().bold()
         
@@ -40,7 +40,7 @@ final class BaseOnboardingViewController: UIViewController {
     }()
     
     private lazy var onboardingBodyLabel: UILabel = {
-        let lb = ViewFactory.buildLabel()
+        let lb = AppViewFactory.buildLabel()
         lb.text = self.onboardingBody
         lb.font = .preferredFont(forTextStyle: .body)
         lb.textColor = .gray
