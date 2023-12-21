@@ -122,7 +122,6 @@ final class AppViewFactory: NSObject {
         let vw = UIImageView()
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        vw.contentMode = .scaleAspectFit
         vw.setContentHuggingPriority(.defaultLow, for: .vertical)
         vw.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         vw.setContentHuggingPriority(.defaultLow, for: .horizontal)
