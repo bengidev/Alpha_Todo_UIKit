@@ -20,7 +20,7 @@ final class AppViewFactory: NSObject {
         return vw
     }
     
-    class func buildImageTextButton() -> UIButton {
+    class func buildImageTextButton(isImageOnRight: Bool = false) -> UIButton {
         let bt = UIButton(type: .system)
         bt.translatesAutoresizingMaskIntoConstraints = false
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -30,8 +30,9 @@ final class AppViewFactory: NSObject {
         bt.tintColor = .label
         bt.backgroundColor = .systemBlue
         bt.layer.cornerRadius = 15.0
-        bt.titleEdgeInsets.right = -10
-        bt.imageEdgeInsets.left = -10
+        bt.semanticContentAttribute = isImageOnRight ? .forceRightToLeft : .unspecified
+        bt.titleEdgeInsets.right = isImageOnRight ? 5.0 : -10.0
+        bt.imageEdgeInsets.left = isImageOnRight ? 5.0 : -10.0
         
         return bt
     }
