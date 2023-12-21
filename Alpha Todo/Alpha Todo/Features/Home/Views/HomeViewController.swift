@@ -11,14 +11,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     // MARK: Properties
-    private var categories: [String] = [
-        "Personal",
-        "Work",
-        "Health",
-        "Finance",
-        "Study",
-        "SocialSocialSocial",
-    ]
+    private let viewModel = HomeViewModel()
     
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
@@ -143,7 +136,7 @@ extension HomeViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.categories.count
+        return self.viewModel.categories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -152,7 +145,11 @@ extension HomeViewController: UICollectionViewDataSource {
             for: indexPath
         ) as? CategoryCollectionViewCell else { return .init() }
         
-        cell.updateViews(title: self.categories[indexPath.item], systemImage: "\(indexPath.item).circle")
+        
+        cell.updateCategoryButton(
+            with: self.viewModel.categories[indexPath.item],
+            tag: indexPath.item
+        )
         
         return cell
     }
@@ -165,6 +162,10 @@ extension HomeViewController: UICollectionViewDelegate {
 }
 
 extension HomeViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20.0
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return .init(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
     }
