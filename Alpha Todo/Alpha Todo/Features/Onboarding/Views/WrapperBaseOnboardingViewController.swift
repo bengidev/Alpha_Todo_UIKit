@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-class WrapperBaseOnboardingViewController: UIPageViewController {
+final class WrapperBaseOnboardingViewController: UIPageViewController {
     // MARK: Properties
     private var pageControl: UIPageControl?
     private var pages: [UIViewController]?
