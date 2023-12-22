@@ -11,8 +11,8 @@ import UIKit
 
 final class OnboardingViewController: UIViewController {
     // MARK: Properties
+    private var viewModel = OnboardingViewModel()
     private var wrapperOnboardingController = WrapperBaseOnboardingViewController()
-    private var pages: [UIViewController] = []
     
     // MARK: Views
     private lazy var skipButton: UIButton = {
@@ -55,7 +55,6 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupData()
         self.updatePageControll()
         self.updateWrapperOnboardingView()
     }
@@ -85,28 +84,6 @@ final class OnboardingViewController: UIViewController {
         }
     }
     
-    private func setupData() -> Void {
-        let pageOne = BaseOnboardingViewController(
-            image: "Rocket",
-            title: "Your Personal Productivity Assistant Has Arrived",
-            body: "Say hello to your new productivity assistant. Let our app help you tackle tasks with ease. From reminders to collaboration, we've got you covered"
-        )
-        let pageTwo = BaseOnboardingViewController(
-            image: "MakeThingsHappen",
-            title: "Elevate Your Task Management Experience Today",
-            body: "Elevate your task management experience with our feature-rich app. Discover tools to boost efficiency and stay on top of your to-do list. Welcome to a more productive you"
-        )
-        let pageThree = BaseOnboardingViewController(
-            image: "YouCanDoIt",
-            title: "Your Gateway to Organized Living Starts Now",
-            body: "Step through the gateway to organized living. Our app is your key to a clutter-free and productive lifestyle. Start your journey to organized living now"
-        )
-        
-        self.pages.append(pageOne)
-        self.pages.append(pageTwo)
-        self.pages.append(pageThree)
-    }
-    
     private func updatePageControll(isHidden: Bool = false) -> Void {
         lazy var pageControl: UIPageControl = {
             let cl = UIPageControl()
@@ -116,7 +93,7 @@ final class OnboardingViewController: UIViewController {
             cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
             cl.currentPageIndicatorTintColor = .appPrimary
             cl.currentPage = 0
-            cl.numberOfPages = self.pages.count
+            cl.numberOfPages = self.viewModel.pages.count
             
             return cl
         }()
@@ -138,7 +115,7 @@ final class OnboardingViewController: UIViewController {
         // Change old to new WrapperBaseOnboardingViewController
         self.wrapperOnboardingController = WrapperBaseOnboardingViewController(
             pageControl: self.pageControl,
-            pages: self.pages,
+            pages: self.viewModel.pages,
             nextButton: self.nextButton,
             skipButton: self.skipButton,
             didChangePageControlValue: self.didChangePageControlValue(_:)
@@ -175,7 +152,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func hasReachedEndPage(with control: UIPageControl, isEndPage: (Bool) -> Void) -> Void {
-        if control.currentPage == self.pages.count - 1 {
+        if control.currentPage == self.viewModel.pages.count - 1 {
             isEndPage(true)
         } else {
             isEndPage(false)
@@ -213,15 +190,12 @@ final class OnboardingViewController: UIViewController {
     
     @objc
     private func didTapGetStartedButton(_ sender: UIButton) -> Void {
-        self.setHasOnboardingCompleted(true)
+        self.setHasCompletedOnboarding(true)
         self.navigateToHomeScreen()
     }
     
-    private func setHasOnboardingCompleted(_ value: Bool) -> Void {
-        UserDefaults.standard.set(
-            value,
-            forKey: AppUserDefaults.onboarding.rawValue
-        )
+    private func setHasCompletedOnboarding(_ value: Bool) -> Void {
+        self.viewModel.setHasCompletedOnboarding(to: value)
     }
     
     private func navigateToHomeScreen() -> Void {
