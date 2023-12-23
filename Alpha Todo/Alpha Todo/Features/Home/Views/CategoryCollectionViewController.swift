@@ -12,12 +12,15 @@ import UIKit
 final class CategoryCollectionViewController: UICollectionViewController {
     // MARK: Properties
     private var categories: [Category]?
+    private var categoryButtonHandler: ((IndexPath) -> Void)?
     
     // MARK: Initializers
-    init(categories: [Category]? = nil) {
+    init(categories: [Category]? = nil, categoryButtonHandler: ((IndexPath) -> Void)? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         self.categories = categories
+        self.categoryButtonHandler = categoryButtonHandler
+        
         self.setupController()
     }
     
@@ -57,7 +60,24 @@ final class CategoryCollectionViewController: UICollectionViewController {
     
     @objc
     private func didTapCategoryButton(_ sender: UIButton) -> Void {
-        print("Category Button was tapped at: \(sender.tag)")
+        // Change selected category value when tap
+        self.categories?[sender.tag].toggleIsSelected()
+        self.categoryButtonHandler?(.init(item: sender.tag, section: 0))
+        
+        // Reset another categories to prevent multiple selected category
+        if let categories {
+            for (index, _) in categories.enumerated() {
+                if index != sender.tag {
+                    self.categories?[index].isSelected = false
+                    self.collectionView.reloadItems(at: [.init(item: index, section: 0)])
+                }
+            }
+        }
+        
+        // Update UICollectionView to reflect changed data for selected IndexPath
+        self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
+        
+        print("Category Button was tapped at: \(String(describing: sender.titleLabel?.text))")
     }
 
     
@@ -76,11 +96,11 @@ final class CategoryCollectionViewController: UICollectionViewController {
             for: indexPath
         ) as? CategoryCollectionViewCell else { return .init() }
         
-        
-        cell.updateCategoryButton(with: self.categories?[indexPath.item] ?? .empty)
         let categoryButton = cell.getCategoryButton()
         categoryButton.tag = indexPath.item
         categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
+        
+        cell.updateCategoryButton(with: self.categories?[indexPath.item] ?? .empty)
         
         return cell
     }
