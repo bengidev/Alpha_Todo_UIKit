@@ -13,17 +13,18 @@ final class OnboardingViewController: UIViewController {
     // MARK: Properties
     private var onboardingView = OnboardingView()
     private var onboardingViewModel = OnboardingViewModel()
-    private var wrapperOnboardingController = WrapperBaseOnboardingViewController()
     
     // MARK: Initializers
     init() { super.init(nibName: nil, bundle: nil) }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
         fatalError("init(coder:) has not been implemented")
     }
     
+    @available(*, unavailable)
     override class func awakeFromNib() {
         super.awakeFromNib()
         
@@ -44,20 +45,25 @@ final class OnboardingViewController: UIViewController {
     private func setupViews() -> Void {
         self.view = self.onboardingView
         
-        self.wrapperOnboardingController = WrapperBaseOnboardingViewController(
+        self.setupWrapperOnboardingController()
+    }
+    
+    private func setupWrapperOnboardingController() -> Void {
+        let wrapperOnboardingController = WrapperBaseOnboardingViewController(
             pageControl: self.onboardingView.getPageControl(),
             pages: self.onboardingViewModel.pages,
             nextButton: self.onboardingView.getNextButton(),
             skipButton: self.onboardingView.getSkipButton(),
             didChangePageControlValue: self.didChangePageControlValue(_:)
         )
+        
         // Include that child view controller in the parent's view controller life cycle.
-        self.add(self.wrapperOnboardingController)
+        self.add(wrapperOnboardingController)
         
         self.onboardingView.getPageControl().numberOfPages = self.onboardingViewModel.pages.count
-        self.onboardingView.updateWrapperOnboardingController(self.wrapperOnboardingController)
+        self.onboardingView.updateWrapperOnboardingController(wrapperOnboardingController)
     }
-    
+
     private func didChangePageControlValue(_ control: UIPageControl) -> Void {
         self.hasReachedEndPage(with: control) { shouldHide in
             self.skipButtonVisibility(shouldHide)
