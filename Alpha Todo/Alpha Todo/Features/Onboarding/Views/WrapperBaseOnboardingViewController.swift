@@ -55,7 +55,7 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.setupData()
+        self.setupDataDelegate()
         self.pageControl?.addTarget(
             self,
             action: #selector(self.didTapPageControl(_:)),
@@ -74,7 +74,7 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
     }
     
     // MARK: Functions
-    private func setupData() -> Void {
+    private func setupDataDelegate() -> Void {
         self.dataSource = self
         self.delegate = self
         
