@@ -17,7 +17,7 @@ final class BaseOnboardingViewController: UIViewController {
     private var onboardingTitle: String?
     private var onboardingBody: String?
     
-    // MARK: Views
+    // MARK: View Components
     private lazy var oneVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         
@@ -49,22 +49,28 @@ final class BaseOnboardingViewController: UIViewController {
     }()
     
     // MARK: Initializers
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        self.onboardingImage = ""
-        self.onboardingTitle = ""
-        self.onboardingBody = ""
-    }
+    init() { super.init(nibName: nil, bundle: nil) }
     
     init(image: String, title: String, body: String) {
         super.init(nibName: nil, bundle: nil)
+        
         self.onboardingImage = image
         self.onboardingTitle = title
         self.onboardingBody = body
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @available(*, unavailable)
+    override class func awakeFromNib() {
+        super.awakeFromNib()
+        
+        fatalError("awakeFromNib() has not been implemented")
     }
     
     // MARK: Lifecycles
@@ -78,7 +84,7 @@ final class BaseOnboardingViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    // MARK: Functions
+    // MARK: Functionalities
     private func setupViews() -> Void {
         self.view.backgroundColor = .appSecondary
         self.view.addSubview(self.oneVStackView)
