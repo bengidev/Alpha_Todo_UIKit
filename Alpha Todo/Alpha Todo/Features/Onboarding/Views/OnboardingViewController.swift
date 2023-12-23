@@ -11,41 +11,24 @@ import UIKit
 
 final class OnboardingViewController: UIViewController {
     // MARK: Properties
-    private var viewModel = OnboardingViewModel()
+    private var onboardingView = OnboardingView()
+    private var onboardingViewModel = OnboardingViewModel()
     private var wrapperOnboardingController = WrapperBaseOnboardingViewController()
     
-    // MARK: Views
-    private lazy var skipButton: UIButton = {
-        let bt = AppViewFactory.buildTextButton()
-        bt.setTitle("Skip", for: .normal)
-        bt.setTitleColor(.appPrimary, for: .normal)
-        bt.backgroundColor = .clear
-        
-        return bt
-    }()
+    // MARK: Initializers
+    init() { super.init(nibName: nil, bundle: nil) }
     
-    private lazy var nextButton: UIButton = {
-        let bt = AppViewFactory.buildTextButton()
-        bt.setTitle("Next", for: .normal)
-        bt.setTitleColor(.appPrimary, for: .normal)
-        bt.backgroundColor = .clear
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
         
-        return bt
-    }()
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    private lazy var getStartedButton: UIButton = {
-        let bt = AppViewFactory.buildTextButton()
-        bt.setTitle("Get Started", for: .normal)
-        bt.setTitleColor(.appSecondary, for: .normal)
-        bt.backgroundColor = .appPrimary
-        bt.isHidden = true
+    override class func awakeFromNib() {
+        super.awakeFromNib()
         
-        return bt
-    }()
-    
-    private lazy var pageControl: UIPageControl = {
-        return .init()
-    }()
+        fatalError("awakeFromNib() has not been implemented")
+    }
     
     // MARK: Lifecycles
     override func loadView() {
@@ -55,92 +38,24 @@ final class OnboardingViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updatePageControll()
-        self.updateWrapperOnboardingView()
     }
     
     // MARK: Functions
     private func setupViews() -> Void {
-        self.view.backgroundColor = .init(.appSecondary)
-        self.view.addSubview(self.nextButton)
-        self.view.addSubview(self.skipButton)
-        self.view.addSubview(self.getStartedButton)
+        self.view = self.onboardingView
         
-        self.nextButton.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            make.leading.equalTo(self.view.safeAreaLayoutGuide.snp.leading).inset(10.0)
-        }
-        
-        self.skipButton.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top)
-            make.trailing.equalTo(self.view.safeAreaLayoutGuide.snp.trailing).inset(10.0)
-        }
-        
-        self.getStartedButton.snp.makeConstraints { make in
-            make.width.equalTo(150.0)
-            make.height.equalTo(50.0)
-            make.centerX.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(10.0)
-        }
-    }
-    
-    private func updatePageControll(isHidden: Bool = false) -> Void {
-        lazy var pageControl: UIPageControl = {
-            let cl = UIPageControl()
-            cl.translatesAutoresizingMaskIntoConstraints = false
-            cl.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            cl.transform = .init(scaleX: 1.5, y: 1.5)
-            cl.pageIndicatorTintColor = .gray.withAlphaComponent(0.4)
-            cl.currentPageIndicatorTintColor = .appPrimary
-            cl.currentPage = 0
-            cl.numberOfPages = self.viewModel.pages.count
-            
-            return cl
-        }()
-        
-        self.pageControl = pageControl
-        self.view.addSubview(pageControl)
-        pageControl.snp.makeConstraints { make in
-            make.height.equalTo(30.0)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(5.0)
-        }
-        
-        pageControl.isHidden = false
-        
-        self.view.layoutIfNeeded()
-    }
-    
-    private func updateWrapperOnboardingView() -> Void {
-        // Change old to new WrapperBaseOnboardingViewController
         self.wrapperOnboardingController = WrapperBaseOnboardingViewController(
-            pageControl: self.pageControl,
-            pages: self.viewModel.pages,
-            nextButton: self.nextButton,
-            skipButton: self.skipButton,
+            pageControl: self.onboardingView.getPageControl(),
+            pages: self.onboardingViewModel.pages,
+            nextButton: self.onboardingView.getNextButton(),
+            skipButton: self.onboardingView.getSkipButton(),
             didChangePageControlValue: self.didChangePageControlValue(_:)
         )
+        // Include that child view controller in the parent's view controller life cycle.
+        self.add(self.wrapperOnboardingController)
         
-        lazy var wrapperOnboardingView: UIView = {
-            // Add UIPageViewController into self to be child controller
-            // And self to be parent of UIPageViewController
-            self.add(self.wrapperOnboardingController)
-            
-            guard let vw = self.wrapperOnboardingController.view else { return .init() }
-            vw.translatesAutoresizingMaskIntoConstraints = false
-            vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            
-            return vw
-        }()
-        
-        self.view.addSubview(wrapperOnboardingView)
-        wrapperOnboardingView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(10.0)
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).inset(40.0)
-            make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).inset(70.0)
-        }
-        
-        self.view.layoutIfNeeded()
+        self.onboardingView.getPageControl().numberOfPages = self.onboardingViewModel.pages.count
+        self.onboardingView.updateWrapperOnboardingController(self.wrapperOnboardingController)
     }
     
     private func didChangePageControlValue(_ control: UIPageControl) -> Void {
@@ -152,7 +67,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func hasReachedEndPage(with control: UIPageControl, isEndPage: (Bool) -> Void) -> Void {
-        if control.currentPage == self.viewModel.pages.count - 1 {
+        if control.currentPage == self.onboardingViewModel.pages.count - 1 {
             isEndPage(true)
         } else {
             isEndPage(false)
@@ -161,30 +76,31 @@ final class OnboardingViewController: UIViewController {
     
     private func skipButtonVisibility(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
-            self.skipButton.isHidden = isHidden
-            self.skipButton.isUserInteractionEnabled = !isHidden
-            self.view.layoutIfNeeded()
+            self.onboardingView.getSkipButton().isHidden = isHidden
+            self.onboardingView.getSkipButton().isUserInteractionEnabled = !isHidden
+            self.onboardingView.layoutIfNeeded()
         }
     }
     
     private func pageControlVisibility(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
-            self.pageControl.isHidden = isHidden
-            self.pageControl.isUserInteractionEnabled = !isHidden
-            self.view.layoutIfNeeded()
+            self.onboardingView.getPageControl().isHidden = isHidden
+            self.onboardingView.getPageControl().isUserInteractionEnabled = !isHidden
+            self.onboardingView.layoutIfNeeded()
         }
     }
     
     private func getStartedButtonVisibility(_ isHidden: Bool = false) -> Void {
         UIView.animate(withDuration: 1.0) {
-            self.getStartedButton.isHidden = isHidden
-            self.getStartedButton.isUserInteractionEnabled = !isHidden
-            self.getStartedButton.addTarget(
+            self.onboardingView.getGetStartedButton().isHidden = isHidden
+            self.onboardingView.getGetStartedButton().isUserInteractionEnabled = !isHidden
+            self.onboardingView.getGetStartedButton().addTarget(
                 self,
                 action: #selector(self.didTapGetStartedButton(_:)),
                 for: .touchUpInside
             )
-            self.view.layoutIfNeeded()
+            
+            self.onboardingView.layoutIfNeeded()
         }
     }
     
@@ -195,7 +111,7 @@ final class OnboardingViewController: UIViewController {
     }
     
     private func setHasCompletedOnboarding(_ value: Bool) -> Void {
-        self.viewModel.setHasCompletedOnboarding(to: value)
+        self.onboardingViewModel.setHasCompletedOnboarding(to: value)
     }
     
     private func navigateToHomeScreen() -> Void {
