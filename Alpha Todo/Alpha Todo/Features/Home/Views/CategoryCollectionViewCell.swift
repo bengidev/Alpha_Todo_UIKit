@@ -64,8 +64,10 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
     func updateCategoryButton(with category: Category) -> Void {
         self.categoryButton.setTitle(category.name, for: .normal)
         self.categoryButton.setImage(.init(systemName: category.imageName), for: .normal)
-        self.categoryButton.setTitleColor(category.isSelected ? .gray : .appSecondary, for: .normal)
-        self.categoryButton.tintColor = category.isSelected ? .gray : .appSecondary
+        self.categoryButton.setTitleColor(category.isSelected ? .systemBlue : .appSecondary, for: .normal)
+        self.categoryButton.tintColor = category.isSelected ? .systemBlue : .appSecondary
+        
+        print("Category Status: \(category)")
     }
     
     func getCategoryButton() -> UIButton {
