@@ -15,6 +15,10 @@ struct Category: Hashable, Identifiable {
     
     static let empty: Category = .init(name: "", imageName: "", isSelected: false)
     
+    mutating func change(to newCategory: Category) -> Void {
+        self = newCategory
+    }
+    
     mutating func changeName(_ name: String) -> Void {
         self.name = name
     }
@@ -23,7 +27,7 @@ struct Category: Hashable, Identifiable {
         self.imageName = imageName
     }
     
-    mutating func changeIsSelected(_ isSelected: Bool) -> Void {
-        self.isSelected = isSelected
+    mutating func toggleIsSelected() -> Void {
+        self.isSelected.toggle()
     }
 }
