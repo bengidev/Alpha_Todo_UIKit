@@ -73,7 +73,7 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
         )
     }
     
-    // MARK: Functions
+    // MARK: Functionalities
     private func setupDataDelegate() -> Void {
         self.dataSource = self
         self.delegate = self
