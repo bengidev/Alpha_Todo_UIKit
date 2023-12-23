@@ -25,6 +25,7 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
         didChangePageControlValue: ((UIPageControl) -> Void)? = nil
     ) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
+        
         self.pageControl = pageControl
         self.pages = pages
         self.nextButton = nextButton
@@ -32,8 +33,18 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
         self.didChangePageControlValue = didChangePageControlValue
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @available(*, unavailable)
+    override class func awakeFromNib() {
+        super.awakeFromNib()
+        
+        fatalError("awakeFromNib() has not been implemented")
     }
     
     // MARK: Lifecycles
@@ -43,6 +54,7 @@ final class WrapperBaseOnboardingViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.setupData()
         self.pageControl?.addTarget(
             self,
