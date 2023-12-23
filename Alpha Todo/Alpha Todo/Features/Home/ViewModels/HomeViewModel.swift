@@ -12,7 +12,7 @@ final class HomeViewModel {
         .init(name: "Personal", imageName: "person.fill", isSelected: false),
         .init(name: "Work", imageName: "tv.fill", isSelected: false),
         .init(name: "Health", imageName: "heart.fill", isSelected: false),
-        .init(name: "Finance", imageName: "dollarsign.fill", isSelected: false),
+        .init(name: "Finance", imageName: "dollarsign.circle.fill", isSelected: false),
         .init(name: "Study", imageName: "book.fill", isSelected: false),
         .init(name: "Social", imageName: "person.3.fill", isSelected: false),
     ]
