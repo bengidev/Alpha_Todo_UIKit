@@ -11,12 +11,8 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     // MARK: Properties
-    private var homeView = HomeView()
-    private var selectedCategory: Set<Category> = []
-    
+    private let homeView = HomeView()
     private let homeViewModel = HomeViewModel()
-    
-    
     
     // MARK: Initializers
     init() { super.init(nibName: nil, bundle: nil) }
@@ -49,15 +45,6 @@ final class HomeViewController: UIViewController {
     }
     
     // MARK: Functionalities
-    @objc
-    private func didTapCategoryButton(_ sender: UIButton) -> Void {
-        // Retrieve the indexPath using the tag
-        let indexPath = IndexPath(item: sender.tag, section: 0)
-        
-        // Access the data or perform any action with the indexPath
-        print("Category Button tapped in cell at indexPath: \(indexPath)")
-    }
-    
     private func setupViews() -> Void {
         self.view = self.homeView
         
@@ -67,54 +54,15 @@ final class HomeViewController: UIViewController {
     private func setupCategoryCollectionController() -> Void {
         let categoryCollectionController = CategoryCollectionViewController(
             categories: self.homeViewModel.categories
-        )
+        ) { [weak self] (indexPath) in
+            print("IndexPath from setupCategoryCollectionController: \(indexPath)")
+        }
         
         // Include that child view controller in the parent's view controller life cycle.
         self.add(categoryCollectionController)
         
         self.homeView.updateCategoryCollectionController(categoryCollectionController)
-    }
-}
-
-extension HomeViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.homeViewModel.categories.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: CategoryCollectionViewCell.identifier,
-            for: indexPath
-        ) as? CategoryCollectionViewCell else { return .init() }
-        
-        
-        cell.updateCategoryButton(with: self.homeViewModel.categories[indexPath.item])
-        let categoryButton = cell.getCategoryButton()
-        categoryButton.tag = indexPath.item
-        categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
-        
-        return cell
-    }
-}
-
-extension HomeViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-    }
-}
-
-extension HomeViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 20.0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
-    }
+    }    
 }
 
 #if DEBUG
