@@ -32,6 +32,8 @@
 		B6C7AFEF2B32C673007619AF /* AppUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C7AFEE2B32C673007619AF /* AppUserDefaults.swift */; };
 		B6CE41412B3640B6009C4867 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41402B3640B6009C4867 /* OnboardingViewModel.swift */; };
 		B6CE41432B364DED009C4867 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41422B364DED009C4867 /* OnboardingView.swift */; };
+		B6CE41452B36809C009C4867 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41442B36809C009C4867 /* HomeView.swift */; };
+		B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +63,8 @@
 		B6C7AFEE2B32C673007619AF /* AppUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUserDefaults.swift; sourceTree = "<group>"; };
 		B6CE41402B3640B6009C4867 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		B6CE41422B364DED009C4867 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B6CE41442B36809C009C4867 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -252,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				B6C7AFEB2B32BDE5007619AF /* HomeViewController.swift */,
+				B6CE41442B36809C009C4867 /* HomeView.swift */,
+				B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */,
 				B6B7914E2B33F5C4003013DC /* CategoryCollectionViewCell.swift */,
 			);
 			path = Views;
@@ -397,6 +403,7 @@
 			files = (
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
+				B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */,
 				B6B791522B3440AD003013DC /* Category.swift in Sources */,
 				B6B791552B344124003013DC /* HomeViewModel.swift in Sources */,
 				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
@@ -416,6 +423,7 @@
 				B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */,
 				B6CE41412B3640B6009C4867 /* OnboardingViewModel.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
+				B6CE41452B36809C009C4867 /* HomeView.swift in Sources */,
 				B6CE41432B364DED009C4867 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
