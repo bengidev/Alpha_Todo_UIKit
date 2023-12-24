@@ -104,8 +104,8 @@ final class AppViewFactory: NSObject {
         return vw
     }
     
-    class func buildTableView() -> UITableView {
-        let vw = UITableView(frame: .zero, style: .plain)
+    class func buildTableView(with style: UITableView.Style = .plain) -> UITableView {
+        let vw = UITableView(frame: .zero, style: style)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.separatorStyle = .none
@@ -128,7 +128,7 @@ final class AppViewFactory: NSObject {
         return vw
     }
     
-    class func imageView() -> UIImageView {
+    class func buildImageView() -> UIImageView {
         let vw = UIImageView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
