@@ -20,7 +20,10 @@ final class AppViewFactory: NSObject {
         return vw
     }
     
-    class func buildImageTextButton(isImageOnRight: Bool = false) -> UIButton {
+    class func buildImageTextButton(
+        with font: UIFont = .preferredFont(forTextStyle: .headline),
+        isImageOnRight: Bool = false
+    ) -> UIButton {
         let bt = UIButton(type: .system)
         bt.translatesAutoresizingMaskIntoConstraints = false
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -37,11 +40,11 @@ final class AppViewFactory: NSObject {
         return bt
     }
     
-    class func buildTextButton() -> UIButton {
+    class func buildTextButton(with font: UIFont = .preferredFont(forTextStyle: .headline)) -> UIButton {
         let bt = UIButton(type: .system)
         bt.translatesAutoresizingMaskIntoConstraints = false
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        bt.titleLabel?.font = .preferredFont(forTextStyle: .headline).rounded()
+        bt.titleLabel?.font = font
         bt.titleLabel?.adjustsFontSizeToFitWidth = true
         bt.titleLabel?.textAlignment = .center
         bt.tintColor = .label
@@ -51,19 +54,13 @@ final class AppViewFactory: NSObject {
         return bt
     }
     
-    class func buildImageButton() -> UIButton {
+    class func buildImageButton(with font: UIFont = .preferredFont(forTextStyle: .headline)) -> UIButton {
         let bt = UIButton(type: .system)
         bt.translatesAutoresizingMaskIntoConstraints = false
         bt.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         bt.tintColor = .label
         bt.backgroundColor = .systemBlue
-        bt.setPreferredSymbolConfiguration(
-            .init(
-                font: .preferredFont(forTextStyle: .headline).rounded(),
-                scale: .default
-            ),
-            forImageIn: .normal
-        )
+        bt.setPreferredSymbolConfiguration(.init(font: font,scale: .default),forImageIn: .normal)
         
         return bt
     }
