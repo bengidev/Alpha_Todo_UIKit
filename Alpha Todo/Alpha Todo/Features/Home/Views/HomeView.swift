@@ -61,6 +61,16 @@ final class HomeView: UIView {
         return vw
     }()
     
+    private lazy var plusButton: UIButton = {
+        let bt = AppViewFactory.buildImageButton(with: .preferredFont(forTextStyle: .title2).bold().rounded())
+        bt.setImage(.init(systemName: "plus"), for: .normal)
+        bt.layer.cornerRadius = 15.0
+        bt.backgroundColor = .appPrimary
+        bt.tintColor = .appSecondary
+        
+        return bt
+    }()
+
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -117,6 +127,7 @@ final class HomeView: UIView {
     private func setupViews() -> Void {
         self.backgroundColor = .appSecondary
         self.addSubview(self.containerVStackView)
+        self.addSubview(self.plusButton)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
         self.containerVStackView.setCustomSpacing(50.0, after: self.oneHStackView)
@@ -145,6 +156,12 @@ final class HomeView: UIView {
         
         self.nameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.plusButton.snp.makeConstraints { make in
+            make.width.height.equalTo(50.0)
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
     }
 }
