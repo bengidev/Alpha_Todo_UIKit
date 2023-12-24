@@ -13,6 +13,8 @@ final class TodoTableViewCell: UITableViewCell {
     // MARK: Properties
     static let identifier = "TodoTableViewCellIdentifier"
     
+    private var todo: Todo?
+    
     // MARK: View Components
     private lazy var taskLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
@@ -34,7 +36,7 @@ final class TodoTableViewCell: UITableViewCell {
     }()
 
     private lazy var timeClockView: UIImageView = {
-        let vw = AppViewFactory.imageView()
+        let vw = AppViewFactory.buildImageView()
         vw.image = .init(systemName: "clock")
         vw.tintColor = .gray
         
@@ -61,7 +63,7 @@ final class TodoTableViewCell: UITableViewCell {
         return bt
     }()
     
-    private lazy var taskTypeButton: UIButton = {
+    private lazy var importantButton: UIButton = {
         let bt = AppViewFactory.buildImageButton(with: .preferredFont(forTextStyle: .title1).rounded())
         bt.setImage(.init(systemName: "bookmark.fill"), for: .normal)
         bt.backgroundColor = .clear
@@ -170,7 +172,7 @@ final class TodoTableViewCell: UITableViewCell {
     }
     
     // MARK: Functionalities
-    func updateTaskLabel(hasStrikethrough: Bool = false) -> Void {
+    func updateTodoCell(with todo: Todo) -> Void {
         let attributeString: NSMutableAttributedString = .init()
         attributeString.addAttribute(
             .strikethroughStyle,
@@ -181,7 +183,21 @@ final class TodoTableViewCell: UITableViewCell {
             )
         )
         
-        self.taskLabel.attributedText = attributeString
+        self.taskLabel.attributedText = todo.hasCompleted ? attributeString : nil
+        self.taskLabel.text = todo.title
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let startTime = formatter.string(from: todo.timeStart)
+        let endTime = formatter.string(from: todo.timeEnd)
+        
+        self.timeLabel.text = startTime + " - " + endTime
+        
+        self.descriptionLabel.text = todo.description
+        
+        self.importantButton.backgroundColor = todo.isImportant ? .appPrimary : .gray.withAlphaComponent(0.5)
+        
+        self.checkButton.tintColor = todo.hasCompleted ? .appPrimary : .gray.withAlphaComponent(0.5)
     }
     
     private func setupViews() -> Void {
@@ -211,11 +227,11 @@ final class TodoTableViewCell: UITableViewCell {
         self.oneHStackView.addArrangedSubview(self.timeClockView)
         self.oneHStackView.addArrangedSubview(self.timeLabel)
         
-        self.twoVStackView.addArrangedSubview(self.taskTypeButton)
-        self.twoVStackView.setCustomSpacing(20.0, after: self.taskTypeButton)
+        self.twoVStackView.addArrangedSubview(self.importantButton)
+        self.twoVStackView.setCustomSpacing(20.0, after: self.importantButton)
         self.twoVStackView.addArrangedSubview(self.checkButton)
         
-        self.taskTypeButton.snp.makeConstraints { make in
+        self.importantButton.snp.makeConstraints { make in
             make.width.height.equalTo(30.0)
         }
         
