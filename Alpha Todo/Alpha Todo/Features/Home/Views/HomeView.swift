@@ -14,14 +14,14 @@ final class HomeView: UIView {
     private lazy var containerVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         vw.axis = .vertical
-        vw.backgroundColor = .red
+        
         return vw
     }()
     
     private lazy var oneHStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         vw.axis = .horizontal
-        vw.backgroundColor = .blue
+        
         return vw
     }()
     
@@ -61,6 +61,7 @@ final class HomeView: UIView {
         return vw
     }()
     
+    // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setupViews()
@@ -81,7 +82,7 @@ final class HomeView: UIView {
     }
     
     // MARK: Functionalities
-    func updateCategoryCollectionController(_ controller: CategoryCollectionViewController) -> Void {
+    func updateCategoryCollectionViewController(_ controller: CategoryCollectionViewController) -> Void {
         lazy var categoryCollectionView: UIView = {
             guard let vw = controller.view else { return .init() }
             vw.translatesAutoresizingMaskIntoConstraints = false
@@ -91,8 +92,24 @@ final class HomeView: UIView {
         }()
         
         self.containerVStackView.addArrangedSubview(categoryCollectionView)
+        self.containerVStackView.setCustomSpacing(20.0, after: categoryCollectionView)
         categoryCollectionView.snp.makeConstraints { make in
             make.height.equalTo(65.0)
+            make.horizontalEdges.equalToSuperview()
+        }
+    }
+    
+    func updateTodoTableViewController(_ controller: TodoTableViewController) -> Void {
+        lazy var todoTableView: UIView = {
+            guard let vw = controller.view else { return .init() }
+            vw.translatesAutoresizingMaskIntoConstraints = false
+            vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            
+            return vw
+        }()
+        
+        self.containerVStackView.addArrangedSubview(todoTableView)
+        todoTableView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview().inset(10.0)
         }
     }
@@ -102,9 +119,11 @@ final class HomeView: UIView {
         self.addSubview(self.containerVStackView)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
+        self.containerVStackView.setCustomSpacing(50.0, after: self.oneHStackView)
         self.containerVStackView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.edges.equalToSuperview()
+            make.top.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
         }
         
         self.oneHStackView.addArrangedSubview(self.oneVStackView)
