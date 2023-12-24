@@ -16,7 +16,7 @@ final class HomeViewController: UIViewController {
     
     private var selectedTask: Task? {
         didSet {
-            self.setupTodoTableViewController()
+            self.setupTodoTableViewController(with: selectedTask)
         }
     }
     
@@ -48,36 +48,31 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        self.homeView.tasks = self.homeViewModel.tasks
+        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks)
+        self.setupTodoTableViewController(with: self.homeViewModel.tasks[0])
     }
     
     // MARK: Functionalities
     private func setupViews() -> Void {
         self.view = self.homeView
-        
-        self.setupCategoryCollectionViewController()
     }
     
-    private func setupCategoryCollectionViewController() -> Void {
-        let controller = CategoryCollectionViewController(
-            tasks: self.homeViewModel.tasks
-        ) { [weak self] (indexPath) in
+    private func setupCategoryCollectionViewController(with tasks: [Task]?) -> Void {
+        let controller = CategoryCollectionViewController(tasks: tasks) { [weak self] (indexPath) in
             self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
-            
-            print("Selected Task from CategoryCollectionController: \(String(describing: self?.selectedTask))")
         }
         
         // Include that child view controller in the parent's view controller life cycle.
         self.add(controller)
-        
         self.homeView.updateCategoryCollectionViewController(controller)
     }
     
-    private func setupTodoTableViewController() -> Void {
-        let controller = TodoTableViewController(task: self.selectedTask)
+    private func setupTodoTableViewController(with task: Task?) -> Void {
+        let controller = TodoTableViewController(task: task)
         
         // Include that child view controller in the parent's view controller life cycle.
         self.add(controller)
-        
         self.homeView.updateTodoTableViewController(controller)
     }
 }
