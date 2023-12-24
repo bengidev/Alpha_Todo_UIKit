@@ -203,7 +203,7 @@ final class TodoTableViewCell: UITableViewCell {
         self.containerHStackView.addArrangedSubview(self.fourTransparentView)
         
         self.oneVStackView.addArrangedSubview(self.taskLabel)
-        self.oneVStackView.setCustomSpacing(10.0, after: self.taskLabel)
+        self.oneVStackView.setCustomSpacing(20.0, after: self.taskLabel)
         self.oneVStackView.addArrangedSubview(self.oneHStackView)
         self.oneVStackView.setCustomSpacing(10.0, after: self.oneHStackView)
         self.oneVStackView.addArrangedSubview(self.descriptionLabel)
@@ -224,12 +224,12 @@ final class TodoTableViewCell: UITableViewCell {
         }
         
         self.oneTransparentView.snp.makeConstraints { make in
-            make.height.equalTo(10.0)
+            make.height.equalTo(20.0)
             make.horizontalEdges.equalToSuperview()
         }
         
         self.twoTransparentView.snp.makeConstraints { make in
-            make.height.equalTo(10.0)
+            make.height.equalTo(20.0)
             make.horizontalEdges.equalToSuperview()
         }
         
