@@ -48,21 +48,31 @@ final class HomeViewController: UIViewController {
     private func setupViews() -> Void {
         self.view = self.homeView
         
-        self.setupCategoryCollectionController()
+        self.setupCategoryCollectionViewController()
+        self.setupTodoTableViewController()
     }
     
-    private func setupCategoryCollectionController() -> Void {
-        let categoryCollectionController = CategoryCollectionViewController(
+    private func setupCategoryCollectionViewController() -> Void {
+        let controller = CategoryCollectionViewController(
             categories: self.homeViewModel.categories
         ) { [weak self] (indexPath) in
             print("IndexPath from setupCategoryCollectionController: \(indexPath)")
         }
         
         // Include that child view controller in the parent's view controller life cycle.
-        self.add(categoryCollectionController)
+        self.add(controller)
         
-        self.homeView.updateCategoryCollectionController(categoryCollectionController)
-    }    
+        self.homeView.updateCategoryCollectionViewController(controller)
+    }
+    
+    private func setupTodoTableViewController() -> Void {
+        let controller = TodoTableViewController()
+        
+        // Include that child view controller in the parent's view controller life cycle.
+        self.add(controller)
+        
+        self.homeView.updateTodoTableViewController(controller)
+    }
 }
 
 #if DEBUG
