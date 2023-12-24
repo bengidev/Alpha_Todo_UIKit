@@ -10,6 +10,13 @@ import SwiftUI
 import UIKit
 
 final class HomeView: UIView {
+    // MARK: Properties
+    private var isTaskLoaded: Bool = false {
+        didSet {
+            self.updateEmptyTaskView()
+        }
+    }
+    
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
@@ -53,7 +60,7 @@ final class HomeView: UIView {
     }()
     
     private lazy var profileImageView: UIImageView = {
-        let vw = AppViewFactory.imageView()
+        let vw = AppViewFactory.buildImageView()
         vw.image = .init(named: "Building")
         vw.layer.cornerRadius = 10.0
         vw.clipsToBounds = true
@@ -70,11 +77,31 @@ final class HomeView: UIView {
         
         return bt
     }()
+    
+    private lazy var emptyTaskView: UIStackView = {
+        let sv = AppViewFactory.buildStackView()
+        sv.axis = .vertical
+        
+        let ig = AppViewFactory.buildImageView()
+        ig.image = .init(named: "EmptyData")
+        ig.contentMode = .scaleAspectFit
+        
+        let lb = AppViewFactory.buildLabel()
+        lb.text = "Your data was empty. Please create new one."
+        lb.font = .preferredFont(forTextStyle: .title2).bold().rounded()
+        
+        sv.addArrangedSubview(ig)
+        sv.addArrangedSubview(lb)
+        
+        return sv
+    }()
 
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         self.setupViews()
+        self.updateEmptyTaskView()
     }
     
     @available (*, unavailable)
@@ -102,7 +129,6 @@ final class HomeView: UIView {
         }()
         
         self.containerVStackView.addArrangedSubview(categoryCollectionView)
-        self.containerVStackView.setCustomSpacing(20.0, after: categoryCollectionView)
         categoryCollectionView.snp.makeConstraints { make in
             make.height.equalTo(65.0)
             make.horizontalEdges.equalToSuperview()
@@ -118,22 +144,35 @@ final class HomeView: UIView {
             return vw
         }()
         
-        self.containerVStackView.addArrangedSubview(todoTableView)
+        self.addSubview(todoTableView)
         todoTableView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(10.0)
+            make.top.equalTo(self.containerVStackView.snp.bottom).inset(-20.0)
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
         }
     }
     
+    private func updateEmptyTaskView() -> Void {
+        if !self.isTaskLoaded {
+            self.addSubview(self.emptyTaskView)
+            self.emptyTaskView.snp.makeConstraints { make in
+                make.width.height.equalTo(UIScreen.main.bounds.height / 2.5)
+                make.center.equalToSuperview()
+            }
+        } else {
+            self.emptyTaskView.removeFromSuperview()
+        }
+    }
+
     private func setupViews() -> Void {
         self.backgroundColor = .appSecondary
         self.addSubview(self.containerVStackView)
         self.addSubview(self.plusButton)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
-        self.containerVStackView.setCustomSpacing(50.0, after: self.oneHStackView)
+        self.containerVStackView.setCustomSpacing(30.0, after: self.oneHStackView)
         self.containerVStackView.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide).inset(20.0)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
             make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
         }
         
@@ -160,7 +199,7 @@ final class HomeView: UIView {
         
         self.plusButton.snp.makeConstraints { make in
             make.width.height.equalTo(50.0)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
             make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
     }
