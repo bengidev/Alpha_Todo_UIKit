@@ -11,7 +11,7 @@ import UIKit
 
 final class HomeView: UIView {
     // MARK: Properties
-    private var isTaskLoaded: Bool = false {
+    var tasks: [Task]? {
         didSet {
             self.updateEmptyTaskView()
         }
@@ -87,7 +87,7 @@ final class HomeView: UIView {
         ig.contentMode = .scaleAspectFit
         
         let lb = AppViewFactory.buildLabel()
-        lb.text = "Your data was empty. Please create new one."
+        lb.text = "Your data is empty. Please create new one."
         lb.font = .preferredFont(forTextStyle: .title2).bold().rounded()
         
         sv.addArrangedSubview(ig)
@@ -153,13 +153,13 @@ final class HomeView: UIView {
     }
     
     private func updateEmptyTaskView() -> Void {
-        if !self.isTaskLoaded {
-            self.addSubview(self.emptyTaskView)
-            self.emptyTaskView.snp.makeConstraints { make in
-                make.width.height.equalTo(UIScreen.main.bounds.height / 2.5)
-                make.center.equalToSuperview()
-            }
-        } else {
+        self.addSubview(self.emptyTaskView)
+        self.emptyTaskView.snp.makeConstraints { make in
+            make.width.height.equalTo(UIScreen.main.bounds.height / 2.5)
+            make.center.equalToSuperview()
+        }
+        
+        if self.tasks != nil {
             self.emptyTaskView.removeFromSuperview()
         }
     }
