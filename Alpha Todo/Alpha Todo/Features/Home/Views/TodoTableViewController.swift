@@ -11,10 +11,13 @@ import UIKit
 
 final class TodoTableViewController: UITableViewController {
     // MARK: Properties
+    private var task: Task?
     
     // MARK: Initializers
-    init() {
+    init(task: Task? = nil) {
         super.init(nibName: nil, bundle: nil)
+        
+        self.task = task
         
         self.setupController()
     }
@@ -53,13 +56,14 @@ final class TodoTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.tableView.reloadData()
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
     
     // MARK: Functionalities
     private func setupController() -> Void {
-        self.tableView = AppViewFactory.buildTableView()
+        self.tableView = AppViewFactory.buildTableView(with: .plain)
         self.tableView.allowsSelection = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.dataSource = self
@@ -71,27 +75,23 @@ final class TodoTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        tableView.beginUpdates()
-        tableView.endUpdates()
-    }
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
+
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 100
+        guard let task else { return 0 }
+        
+        return task.todos.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let task else { return .init() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as? TodoTableViewCell else { return .init() }
 
         // Configure the cell...
-        
-        tableView.beginUpdates()
-        tableView.endUpdates()
+        cell.updateTodoCell(with: task.todos[indexPath.row])
         
         return cell
     }
