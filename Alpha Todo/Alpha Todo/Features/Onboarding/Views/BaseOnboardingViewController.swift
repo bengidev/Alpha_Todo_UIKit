@@ -25,7 +25,7 @@ final class BaseOnboardingViewController: UIViewController {
     }()
     
     private lazy var onboardingImageView: UIImageView = {
-        let vw = AppViewFactory.imageView()
+        let vw = AppViewFactory.buildImageView()
         vw.image = .init(named: self.onboardingImage ?? "")
         
         return vw
