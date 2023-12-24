@@ -11,14 +11,14 @@ import UIKit
 
 final class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
-    private var categories: [Category]?
+    private var tasks: [Task]?
     private var categoryButtonHandler: ((IndexPath) -> Void)?
     
     // MARK: Initializers
-    init(categories: [Category]? = nil, categoryButtonHandler: ((IndexPath) -> Void)? = nil) {
+    init(tasks: [Task]? = nil, categoryButtonHandler: ((IndexPath) -> Void)? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        self.categories = categories
+        self.tasks = tasks
         self.categoryButtonHandler = categoryButtonHandler
         
         self.setupController()
@@ -62,14 +62,15 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     @objc
     private func didTapCategoryButton(_ sender: UIButton) -> Void {
         // Change selected category value when tap
-        self.categories?[sender.tag].toggleIsSelected()
+        self.tasks?[sender.tag].category.toggleIsSelected()
+        
         self.categoryButtonHandler?(.init(item: sender.tag, section: 0))
         
         // Reset another categories to prevent multiple selected category
-        if let categories {
-            for (index, _) in categories.enumerated() {
+        if let tasks {
+            for (index, _) in tasks.enumerated() {
                 if index != sender.tag {
-                    self.categories?[index].isSelected = false
+                    self.tasks?[index].category.isSelected = false
                     self.collectionView.reloadItems(at: [.init(item: index, section: 0)])
                 }
             }
@@ -88,10 +89,13 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return self.categories?.count ?? 0
+        guard let tasks else { return 0 }
+        
+        return tasks.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let tasks else { return .init() }
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CategoryCollectionViewCell.identifier,
             for: indexPath
@@ -101,7 +105,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         categoryButton.tag = indexPath.item
         categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
         
-        cell.updateCategoryButton(with: self.categories?[indexPath.item] ?? .empty)
+        cell.updateCategoryButton(with: tasks[indexPath.item].category)
         
         return cell
     }
