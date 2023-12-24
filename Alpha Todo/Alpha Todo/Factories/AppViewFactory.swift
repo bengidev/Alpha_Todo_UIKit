@@ -105,7 +105,7 @@ final class AppViewFactory: NSObject {
     }
     
     class func buildTableView() -> UITableView {
-        let vw = UITableView(frame: .zero, style: .grouped)
+        let vw = UITableView(frame: .zero, style: .plain)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         vw.separatorStyle = .none
@@ -118,8 +118,6 @@ final class AppViewFactory: NSObject {
     class func buildCollectionView(scrollDirection: UICollectionView.ScrollDirection = .vertical) -> UICollectionView {
         let fl = UICollectionViewFlowLayout()
         fl.scrollDirection = scrollDirection
-        fl.minimumInteritemSpacing = 10.0
-        fl.minimumLineSpacing = 10.0
         fl.itemSize = UICollectionViewFlowLayout.automaticSize
         fl.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
