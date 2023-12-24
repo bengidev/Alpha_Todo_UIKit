@@ -9,7 +9,7 @@ import SnapKit
 import SwiftUI
 import UIKit
 
-final class CategoryCollectionViewController: UICollectionViewController {
+final class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
     private var categories: [Category]?
     private var categoryButtonHandler: ((IndexPath) -> Void)?
@@ -49,6 +49,7 @@ final class CategoryCollectionViewController: UICollectionViewController {
     // MARK: Functionalities
     private func setupController() -> Void {
         self.collectionView = AppViewFactory.buildCollectionView(scrollDirection: .horizontal)
+        self.collectionView.backgroundColor = .appSecondary
         self.collectionView.showsHorizontalScrollIndicator = false
         self.collectionView.dataSource = self
         self.collectionView.delegate = self
@@ -116,7 +117,7 @@ final class CategoryCollectionViewController: UICollectionViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return .init(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
+        return .init(top: 0.0, left: 10.0, bottom: 0.0, right: 10.0)
     }
 }
 
