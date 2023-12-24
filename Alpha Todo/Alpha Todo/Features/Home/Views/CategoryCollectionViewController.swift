@@ -22,6 +22,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         self.categoryButtonHandler = categoryButtonHandler
         
         self.setupController()
+        self.setupInitialSelectedCategory()
     }
     
     @available(*, unavailable)
@@ -59,13 +60,16 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         )
     }
     
+    private func setupInitialSelectedCategory() -> Void {
+        // Change selected category initial value when first opened
+        self.tasks?[0].category.toggleIsSelected()
+        
+        // Update UICollectionView to reflect changed data for initial IndexPath
+        self.collectionView.reloadItems(at: [.init(item: 0, section: 0)])
+    }
+
     @objc
     private func didTapCategoryButton(_ sender: UIButton) -> Void {
-        // Change selected category value when tap
-        self.tasks?[sender.tag].category.toggleIsSelected()
-        
-        self.categoryButtonHandler?(.init(item: sender.tag, section: 0))
-        
         // Reset another categories to prevent multiple selected category
         if let tasks {
             for (index, _) in tasks.enumerated() {
@@ -75,6 +79,12 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
                 }
             }
         }
+        
+        // Change selected category value when tap
+        self.tasks?[sender.tag].category.toggleIsSelected()
+        
+        // Call the passed callback if available
+        self.categoryButtonHandler?(.init(item: sender.tag, section: 0))
         
         // Update UICollectionView to reflect changed data for selected IndexPath
         self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
