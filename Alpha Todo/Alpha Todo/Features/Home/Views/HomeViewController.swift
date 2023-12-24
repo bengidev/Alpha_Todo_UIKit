@@ -14,6 +14,12 @@ final class HomeViewController: UIViewController {
     private let homeView = HomeView()
     private let homeViewModel = HomeViewModel()
     
+    private var selectedTask: Task? {
+        didSet {
+            self.setupTodoTableViewController()
+        }
+    }
+    
     // MARK: Initializers
     init() { super.init(nibName: nil, bundle: nil) }
     
@@ -49,14 +55,15 @@ final class HomeViewController: UIViewController {
         self.view = self.homeView
         
         self.setupCategoryCollectionViewController()
-        self.setupTodoTableViewController()
     }
     
     private func setupCategoryCollectionViewController() -> Void {
         let controller = CategoryCollectionViewController(
-            categories: self.homeViewModel.categories
+            tasks: self.homeViewModel.tasks
         ) { [weak self] (indexPath) in
-            print("IndexPath from setupCategoryCollectionController: \(indexPath)")
+            self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
+            
+            print("Selected Task from CategoryCollectionController: \(String(describing: self?.selectedTask))")
         }
         
         // Include that child view controller in the parent's view controller life cycle.
@@ -66,7 +73,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupTodoTableViewController() -> Void {
-        let controller = TodoTableViewController()
+        let controller = TodoTableViewController(task: self.selectedTask)
         
         // Include that child view controller in the parent's view controller life cycle.
         self.add(controller)
