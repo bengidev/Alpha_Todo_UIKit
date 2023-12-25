@@ -90,11 +90,17 @@ final class HomeViewController: UIViewController {
             self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
         }
         
-        // Include that child view controller in the parent's view controller life cycle.
+        // Remove the current controller from parent if available.
+        //
+        // This is for the purpose of replacing the old controller and its view
+        // with the new controller and its view.
+        //
         if hasNewTasks {
             controller.remove()
         }
         
+        // Include that child view controller in the parent's view controller life cycle.
+        //
         self.add(controller)
         self.homeView.updateCategoryCollectionViewController(controller, hasRenewView: hasNewTasks)
     }
