@@ -131,7 +131,17 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     
     // MARK: Flow Layout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        
+        // Value minimumLineSpacingForSectionAt and minimumInteritemSpacingForSectionAt
+        // should match for making UICollectionViewCell shows correctly.
         return 20.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        
+        // Value minimumLineSpacingForSectionAt and minimumInteritemSpacingForSectionAt
+        // should match for making UICollectionViewCell shows correctly.
+        20.0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
