@@ -11,12 +11,10 @@ import UIKit
 
 final class HomeView: UIView {
     // MARK: Properties
-    var tasks: [Task]? {
-        didSet {
-            self.updateEmptyTaskView()
-        }
-    }
-    var addButtonHandler: (() -> Void)?
+    private var tasks: [Task]?
+    private var addButtonHandler: (() -> Void)?
+    
+    private let categoryCollectionViewTag = 1
     
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
@@ -121,14 +119,31 @@ final class HomeView: UIView {
     }
     
     // MARK: Functionalities
-    func updateCategoryCollectionViewController(_ controller: CategoryCollectionViewController) -> Void {
+    func updateDataTasks(_ tasks: [Task]?) -> Void {
+        self.tasks = tasks
+        
+        self.updateEmptyTaskView()
+    }
+    
+    func updateAddButtonHandler(_ action: (() -> Void)?) -> Void {
+        self.addButtonHandler = action
+    }
+    
+    func updateCategoryCollectionViewController(_ controller: CategoryCollectionViewController, hasRenewView: Bool = false) -> Void {
         lazy var categoryCollectionView: UIView = {
             guard let vw = controller.view else { return .init() }
             vw.translatesAutoresizingMaskIntoConstraints = false
             vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            vw.tag = self.categoryCollectionViewTag
             
             return vw
         }()
+        
+        if hasRenewView {
+            if let categoryView = self.viewWithTag(self.categoryCollectionViewTag) {
+                categoryView.removeFromSuperview()
+            }
+        }
         
         self.containerVStackView.addArrangedSubview(categoryCollectionView)
         categoryCollectionView.snp.makeConstraints { make in
