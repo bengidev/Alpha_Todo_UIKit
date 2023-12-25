@@ -61,6 +61,8 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     }
     
     private func setupInitialSelectedCategory() -> Void {
+        guard let tasks, !tasks.isEmpty else { return }
+        
         // Change selected category initial value when first opened
         self.tasks?[0].category.toggleIsSelected()
         
@@ -79,6 +81,8 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
                 }
             }
         }
+        
+        guard let tasks, !tasks.isEmpty else { return }
         
         // Change selected category value when tap
         self.tasks?[sender.tag].category.toggleIsSelected()
