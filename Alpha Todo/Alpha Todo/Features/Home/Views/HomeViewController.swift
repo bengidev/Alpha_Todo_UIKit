@@ -62,21 +62,23 @@ final class HomeViewController: UIViewController {
         self.homeView.updateAddButtonHandler { [weak self] in
             print("Add Button was tapped")
             
-            let newTask: Task = .init(
-                category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
-                todos: [.init(
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    timeStart: .init(),
-                    timeEnd: .init(),
-                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
-                    isImportant: false,
-                    hasCompleted: false
-                ),
-                ]
-            )
+            self?.showTaskViewController()
             
-            self?.homeViewModel.addNewTask(newTask)
-            self?.setupCategoryCollectionViewController(with: self?.homeViewModel.tasks, hasNewTasks: true)
+//            let newTask: Task = .init(
+//                category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
+//                todos: [.init(
+//                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+//                    timeStart: .init(),
+//                    timeEnd: .init(),
+//                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
+//                    isImportant: false,
+//                    hasCompleted: false
+//                ),
+//                ]
+//            )
+//            
+//            self?.homeViewModel.addNewTask(newTask)
+//            self?.setupCategoryCollectionViewController(with: self?.homeViewModel.tasks, hasNewTasks: true)
         }
         
         guard !self.homeViewModel.tasks.isEmpty else { return }
@@ -112,6 +114,16 @@ final class HomeViewController: UIViewController {
         self.add(controller)
         self.homeView.updateTodoTableViewController(controller)
     }
+    
+    private func showTaskViewController() -> Void {
+        let vc = TaskViewController()
+        vc.modalTransitionStyle = .coverVertical
+        vc.modalPresentationStyle = .pageSheet
+        vc.isModalInPresentation = true
+        
+        self.present(vc, animated: true)
+    }
+
 }
 
 #if DEBUG
