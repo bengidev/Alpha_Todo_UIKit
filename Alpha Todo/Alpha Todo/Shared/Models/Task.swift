@@ -13,4 +13,8 @@ struct Task: Hashable, Identifiable {
     var todos: [Todo]
     
     static let empty: Task = .init(category: .empty, todos: [.empty])
+    
+    mutating func addNewTodo(_ todo: Todo) -> Void {
+        self.todos.append(todo)
+    }
 }
