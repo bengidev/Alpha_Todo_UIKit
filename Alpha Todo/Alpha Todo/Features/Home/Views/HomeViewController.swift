@@ -11,14 +11,14 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     // MARK: Properties
-    private let homeView = HomeView()
-    private let homeViewModel = HomeViewModel()
-    
+    private var homeView = HomeView()
     private var selectedTask: Task? {
         didSet {
             self.setupTodoTableViewController(with: selectedTask)
         }
     }
+    
+    private let homeViewModel = HomeViewModel()
     
     // MARK: Initializers
     init() { super.init(nibName: nil, bundle: nil) }
@@ -47,8 +47,13 @@ final class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
         self.homeView.tasks = self.homeViewModel.tasks
+        self.homeView.addButtonHandler = { [weak self] in
+            print("Add Button was tapped")
+        }
+        
+        guard !self.homeViewModel.tasks.isEmpty else { return }
+        
         self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks)
         self.setupTodoTableViewController(with: self.homeViewModel.tasks[0])
     }
