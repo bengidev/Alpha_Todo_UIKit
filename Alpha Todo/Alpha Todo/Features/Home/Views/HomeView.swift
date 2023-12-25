@@ -16,6 +16,7 @@ final class HomeView: UIView {
             self.updateEmptyTaskView()
         }
     }
+    var addButtonHandler: (() -> Void)?
     
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
@@ -68,12 +69,13 @@ final class HomeView: UIView {
         return vw
     }()
     
-    private lazy var plusButton: UIButton = {
+    private lazy var addButton: UIButton = {
         let bt = AppViewFactory.buildImageButton(with: .preferredFont(forTextStyle: .title2).bold().rounded())
         bt.setImage(.init(systemName: "plus"), for: .normal)
         bt.layer.cornerRadius = 15.0
         bt.backgroundColor = .appPrimary
         bt.tintColor = .appSecondary
+        bt.addTarget(self, action: #selector(self.didTapAddButton(_:)), for: .primaryActionTriggered)
         
         return bt
     }()
@@ -133,6 +135,8 @@ final class HomeView: UIView {
             make.height.equalTo(65.0)
             make.horizontalEdges.equalToSuperview()
         }
+        
+        self.updateAddButton()
     }
     
     func updateTodoTableViewController(_ controller: TodoTableViewController) -> Void {
@@ -150,7 +154,24 @@ final class HomeView: UIView {
             make.bottom.equalTo(self.safeAreaLayoutGuide)
             make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
         }
+        
+        self.updateAddButton()
     }
+    
+    private func updateAddButton() -> Void {
+        self.addSubview(self.addButton)
+        self.addButton.snp.makeConstraints { make in
+            make.width.height.equalTo(50.0)
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+        }
+    }
+    
+    @objc
+    private func didTapAddButton(_ sender: UIButton) -> Void {
+        self.addButtonHandler?()
+    }
+
     
     private func updateEmptyTaskView() -> Void {
         self.addSubview(self.emptyTaskView)
@@ -159,7 +180,7 @@ final class HomeView: UIView {
             make.center.equalToSuperview()
         }
         
-        if self.tasks != nil {
+        if let tasks, !tasks.isEmpty {
             self.emptyTaskView.removeFromSuperview()
         }
     }
@@ -167,7 +188,6 @@ final class HomeView: UIView {
     private func setupViews() -> Void {
         self.backgroundColor = .appSecondary
         self.addSubview(self.containerVStackView)
-        self.addSubview(self.plusButton)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
         self.containerVStackView.setCustomSpacing(30.0, after: self.oneHStackView)
@@ -195,12 +215,6 @@ final class HomeView: UIView {
         
         self.nameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-        }
-        
-        self.plusButton.snp.makeConstraints { make in
-            make.width.height.equalTo(50.0)
-            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
-            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
     }
 }
