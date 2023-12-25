@@ -54,9 +54,9 @@ final class TodoTableViewCell: UITableViewCell {
     }()
     
     private lazy var checkButton: UIButton = {
-        let bt = AppViewFactory.buildImageButton(with: .preferredFont(forTextStyle: .headline).rounded())
+        let bt = AppViewFactory.buildImageButton(with: .preferredFont(forTextStyle: .footnote).rounded())
         bt.setImage(.init(systemName: "checkmark"), for: .normal)
-        bt.layer.cornerRadius = 15.0
+        bt.layer.cornerRadius = 12.5
         bt.backgroundColor = .appPrimary
         bt.tintColor = .appSecondary
         
@@ -195,9 +195,12 @@ final class TodoTableViewCell: UITableViewCell {
         
         self.descriptionLabel.text = todo.description
         
-        self.importantButton.backgroundColor = todo.isImportant ? .appPrimary : .gray.withAlphaComponent(0.5)
+        self.importantButton.tintColor = todo.isImportant ? .appPrimary : .systemGray.withAlphaComponent(0.2)
         
-        self.checkButton.tintColor = todo.hasCompleted ? .appPrimary : .gray.withAlphaComponent(0.5)
+        self.checkButton.tintColor = todo.hasCompleted ? .appSecondary : .systemGray.withAlphaComponent(0.5)
+        self.checkButton.backgroundColor = todo.hasCompleted ? .appPrimary : nil
+        self.checkButton.layer.borderColor = todo.hasCompleted ? nil : UIColor.systemGray.withAlphaComponent(0.5).cgColor
+        self.checkButton.layer.borderWidth = todo.hasCompleted ? 0.0 : 1.0
     }
     
     private func setupViews() -> Void {
@@ -225,6 +228,7 @@ final class TodoTableViewCell: UITableViewCell {
         self.oneVStackView.addArrangedSubview(self.descriptionLabel)
         
         self.oneHStackView.addArrangedSubview(self.timeClockView)
+        self.oneHStackView.setCustomSpacing(5.0, after: self.timeClockView)
         self.oneHStackView.addArrangedSubview(self.timeLabel)
         
         self.twoVStackView.addArrangedSubview(self.importantButton)
@@ -236,7 +240,7 @@ final class TodoTableViewCell: UITableViewCell {
         }
         
         self.checkButton.snp.makeConstraints { make in
-            make.width.height.equalTo(30.0)
+            make.width.height.equalTo(25.0)
         }
         
         self.oneTransparentView.snp.makeConstraints { make in
