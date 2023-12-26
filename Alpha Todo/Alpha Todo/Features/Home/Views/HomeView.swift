@@ -12,7 +12,6 @@ import UIKit
 final class HomeView: UIView {
     // MARK: Properties
     private var tasks: [Task]?
-    private var addButtonHandler: (() -> Void)?
     
     private let categoryCollectionViewTag = 1
     
@@ -125,10 +124,6 @@ final class HomeView: UIView {
         self.updateEmptyTaskView()
     }
     
-    func updateAddButtonHandler(_ action: (() -> Void)?) -> Void {
-        self.addButtonHandler = action
-    }
-    
     func updateCategoryCollectionViewController(_ controller: CategoryCollectionViewController, hasRenewView: Bool = false) -> Void {
         lazy var categoryCollectionView: UIView = {
             guard let vw = controller.view else { return .init() }
@@ -182,12 +177,6 @@ final class HomeView: UIView {
         }
     }
     
-    @objc
-    private func didTapAddButton(_ sender: UIButton) -> Void {
-        self.addButtonHandler?()
-    }
-
-    
     private func updateEmptyTaskView() -> Void {
         self.addSubview(self.emptyTaskView)
         self.emptyTaskView.snp.makeConstraints { make in
@@ -231,6 +220,14 @@ final class HomeView: UIView {
         self.nameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
         }
+    }
+    
+    @objc
+    private func didTapAddButton(_ sender: UIButton) -> Void {
+        NotificationCenter.default.post(
+            name: .HomeDidTapAddButton,
+            object: nil
+        )
     }
 }
 
