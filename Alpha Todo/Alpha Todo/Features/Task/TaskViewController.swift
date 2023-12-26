@@ -11,11 +11,14 @@ import UIKit
 
 final class TaskViewController: UIViewController {
     // MARK: Properties
-    private var taskView = TaskView()
+    private var taskView: TaskView?
+    private var height: CGFloat?
     
     // MARK: Initializers
-    init() {
+    init(height: CGFloat? = nil) {
         super.init(nibName: nil, bundle: nil)
+        
+        self.height = height
     }
     
     @available(*, unavailable)
@@ -41,15 +44,15 @@ final class TaskViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Do any additional setup after loading the view.
     }
     
     // MARK: Functionalities
     private func setupViews() -> Void {
+        self.taskView = TaskView(height: self.height)
         self.view = self.taskView
     }
-
 }
 
 #if DEBUG
