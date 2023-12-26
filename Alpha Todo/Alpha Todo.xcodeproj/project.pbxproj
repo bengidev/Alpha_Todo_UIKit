@@ -40,6 +40,8 @@
 		B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */; };
 		B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987522B394B9E00F20171 /* TaskViewController.swift */; };
 		B6D987552B39863500F20171 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987542B39863500F20171 /* TaskView.swift */; };
+		B6E060372B3A8E650030A2B9 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E060362B3A8E650030A2B9 /* UIView+Extension.swift */; };
+		B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
 		B6D987522B394B9E00F20171 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		B6D987542B39863500F20171 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		B6E060362B3A8E650030A2B9 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extension.swift"; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -227,6 +231,8 @@
 			children = (
 				B6AEB61D2B313E5700FE492D /* UIFont+Extension.swift */,
 				B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */,
+				B6E060362B3A8E650030A2B9 /* UIView+Extension.swift */,
+				B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -428,6 +434,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
+				B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
 				B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */,
 				B6D987552B39863500F20171 /* TaskView.swift in Sources */,
@@ -453,6 +460,7 @@
 				B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */,
 				B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */,
 				B67106902B38073B00B24482 /* Todo.swift in Sources */,
+				B6E060372B3A8E650030A2B9 /* UIView+Extension.swift in Sources */,
 				B6CE41412B3640B6009C4867 /* OnboardingViewModel.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
 				B6CE41452B36809C009C4867 /* HomeView.swift in Sources */,
