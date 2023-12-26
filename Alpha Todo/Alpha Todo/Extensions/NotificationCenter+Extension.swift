@@ -8,6 +8,8 @@
 import Foundation
 
 extension Notification.Name {
-    static let TaskDidTapSaveButton = Notification.Name("TaskDidTapSaveButton")
+    static let HomeSelectedTask = Notification.Name("HomeSelectedTask")
     static let HomeDidTapAddButton = Notification.Name("HomeDidTapAddButton")
+    static let TodoDataTaskChanged = Notification.Name("TodoDataTaskChanged")
+    static let TaskDidTapSaveButton = Notification.Name("TaskDidTapSaveButton")
 }
