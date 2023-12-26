@@ -14,11 +14,8 @@ final class HomeViewController: UIViewController {
     private var homeView = HomeView()
     private var categoryCollectionController = CategoryCollectionViewController()
     private var todoTableController = TodoTableViewController()
-    private var selectedTask: Task? {
-        didSet {
-            self.setupTodoTableViewController(with: selectedTask)
-        }
-    }
+    private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
+    private var selectedTask: Task?
     
     private let homeViewModel = HomeViewModel()
     
@@ -66,16 +63,16 @@ final class HomeViewController: UIViewController {
         )
         
         self.homeView.updateDataTasks(self.homeViewModel.tasks)
+        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks)
         
         guard !self.homeViewModel.tasks.isEmpty else { return }
-        
-        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks)
-        self.setupTodoTableViewController(with: self.homeViewModel.tasks[0])
+        self.setupTodoTableViewController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
     }
     
     private func setupCategoryCollectionViewController(with tasks: [Task]?, hasNewTasks: Bool = false) -> Void {
         let controller = CategoryCollectionViewController(tasks: tasks) { [weak self] (indexPath) in
             self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
+            self?.selectedIndexPath = indexPath
         }
         
         // Remove the current controller from parent if available.
@@ -109,12 +106,18 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
-        let vc = TaskViewController(height: 350.0)
+        let vc = TaskViewController(height: UIScreen.main.bounds.height * 0.15)
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .overCurrentContext
         vc.isModalInPresentation = true
         
-        self.present(vc, animated: true)
+        self.present(vc, animated: true) {
+            NotificationCenter.default.post(
+                name: .HomeSelectedTask,
+                object: self.selectedTask ?? self.homeViewModel.tasks.first ?? Task.empty,
+                userInfo: nil
+            )
+        }
     }
     
     @objc
@@ -126,26 +129,48 @@ final class HomeViewController: UIViewController {
     @objc
     private func didTapAddButton(_ notification: Notification) -> Void {
         print("Add Button pressed from: \(notification.name)")
-    
+        
         let newTask: Task = .init(
             category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
-            todos: [.init(
-                title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                timeStart: .init(),
-                timeEnd: .init(),
-                description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
-                isImportant: false,
-                hasCompleted: false
-            ),
+            todos: [
+                .init(
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    timeStart: .init(),
+                    timeEnd: .init(),
+                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
+                    isImportant: false,
+                    hasCompleted: false
+                ),
+                .init(
+                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                    timeStart: .init(),
+                    timeEnd: .init(),
+                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
+                    isImportant: false,
+                    hasCompleted: false
+                ),
             ]
         )
         
-        self.homeViewModel.addNewTask(newTask)
-        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks, hasNewTasks: true)
+        if self.homeViewModel.tasks.contains(where: { $0.category == self.selectedTask?.category }) {
+            self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath , with: newTask.todos)
+        } else {
+            self.homeViewModel.addNewTask(newTask)
+            self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks, hasNewTasks: true)
+            self.setupTodoTableViewController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
+            
+            self.homeView.updateDataTasks(self.homeViewModel.tasks)
+        }
         
+        print("Total todos: \(self.homeViewModel.tasks[self.selectedIndexPath.row].todos.count)")
+        print("Selected task: \(String(describing: self.selectedTask))")
         
+        NotificationCenter.default.post(
+            name: .TodoDataTaskChanged,
+            object: self.selectedTask
+        )
         
-//        self.showTaskViewController()
+        //        self.showTaskViewController()
     }
 }
 
