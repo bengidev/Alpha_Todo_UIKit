@@ -92,8 +92,6 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         
         // Update UICollectionView to reflect changed data for selected IndexPath
         self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
-        
-        print("Category Button was tapped at: \(String(describing: sender.titleLabel?.text))")
     }
 
     
