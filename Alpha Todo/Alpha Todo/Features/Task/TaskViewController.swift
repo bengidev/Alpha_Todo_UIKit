@@ -19,6 +19,13 @@ final class TaskViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         self.height = height
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.selectedTask(_:)),
+            name: .HomeSelectedTask,
+            object: nil
+        )
     }
     
     @available(*, unavailable)
@@ -52,6 +59,13 @@ final class TaskViewController: UIViewController {
     private func setupViews() -> Void {
         self.taskView = TaskView(height: self.height)
         self.view = self.taskView
+    }
+    
+    @objc
+    private func selectedTask(_ notification: Notification) -> Void {
+        if let task = notification.object as? Task {
+            print("Selected Task: \(String(describing: notification.object))")
+        }
     }
 }
 
