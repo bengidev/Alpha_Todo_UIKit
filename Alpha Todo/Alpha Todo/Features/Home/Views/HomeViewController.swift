@@ -58,28 +58,14 @@ final class HomeViewController: UIViewController {
     }
     
     private func updateViewComponents() -> Void {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapAddButton(_:)),
+            name: .HomeDidTapAddButton,
+            object: nil
+        )
+        
         self.homeView.updateDataTasks(self.homeViewModel.tasks)
-        self.homeView.updateAddButtonHandler { [weak self] in
-            print("Add Button was tapped")
-            
-            self?.showTaskViewController()
-            
-//            let newTask: Task = .init(
-//                category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
-//                todos: [.init(
-//                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-//                    timeStart: .init(),
-//                    timeEnd: .init(),
-//                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
-//                    isImportant: false,
-//                    hasCompleted: false
-//                ),
-//                ]
-//            )
-//            
-//            self?.homeViewModel.addNewTask(newTask)
-//            self?.setupCategoryCollectionViewController(with: self?.homeViewModel.tasks, hasNewTasks: true)
-        }
         
         guard !self.homeViewModel.tasks.isEmpty else { return }
         
@@ -116,14 +102,51 @@ final class HomeViewController: UIViewController {
     }
     
     private func showTaskViewController() -> Void {
-        let vc = TaskViewController()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapSaveButton(_:)),
+            name: .TaskDidTapSaveButton,
+            object: nil
+        )
+        
+        let vc = TaskViewController(height: 350.0)
         vc.modalTransitionStyle = .coverVertical
-        vc.modalPresentationStyle = .pageSheet
+        vc.modalPresentationStyle = .overCurrentContext
         vc.isModalInPresentation = true
         
         self.present(vc, animated: true)
     }
-
+    
+    @objc
+    private func didTapSaveButton(_ notification: Notification) -> Void {
+        print("Save Button pressed from: \(notification.name)")
+        self.dismiss(animated: true)
+    }
+    
+    @objc
+    private func didTapAddButton(_ notification: Notification) -> Void {
+        print("Add Button pressed from: \(notification.name)")
+    
+        let newTask: Task = .init(
+            category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
+            todos: [.init(
+                title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+                timeStart: .init(),
+                timeEnd: .init(),
+                description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
+                isImportant: false,
+                hasCompleted: false
+            ),
+            ]
+        )
+        
+        self.homeViewModel.addNewTask(newTask)
+        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks, hasNewTasks: true)
+        
+        
+        
+//        self.showTaskViewController()
+    }
 }
 
 #if DEBUG
