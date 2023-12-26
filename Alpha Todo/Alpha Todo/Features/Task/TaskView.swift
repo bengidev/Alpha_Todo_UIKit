@@ -12,6 +12,11 @@ import UIKit
 final class TaskView: UIView {
     // MARK: Properties
     private var height: CGFloat?
+    private var task: Task?
+    
+    private let taskCategoryTag = 1
+    private let taskTitleTag = 2
+    private let taskDescriptionTag = 3
     
     // MARK: View Components
     private lazy var baseVStackView: UIStackView = {
@@ -62,6 +67,27 @@ final class TaskView: UIView {
         lb.textAlignment = .left
         
         return lb
+    }()
+    
+    private lazy var taskCategoryLabel: UILabel = {
+        let lb = AppViewFactory.buildLabel()
+        lb.text = "Task Category"
+        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
+        lb.textColor = .systemGray
+        lb.textAlignment = .left
+        
+        return lb
+    }()
+
+    private lazy var taskCategoryTextField: UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Task Category"
+        tf.borderStyle = .roundedRect
+        tf.font = .preferredFont(forTextStyle: .callout)
+        tf.textColor = .systemGray
+        tf.delegate = self
+        
+        return tf
     }()
     
     private lazy var taskTitleLabel: UILabel = {
@@ -206,6 +232,10 @@ final class TaskView: UIView {
     }
 
     // MARK: Functionalities
+    func updateSelectedTask(_ task: Task) -> Void {
+        self.task = task
+    }
+    
     private func setupViews() -> Void {
         self.addSubview(self.baseVStackView)
         
@@ -233,6 +263,9 @@ final class TaskView: UIView {
 
         self.containerVStackView.addArrangedSubview(self.taskHeaderLabel)
         self.containerVStackView.setCustomSpacing(20.0, after: self.taskHeaderLabel)
+        self.containerVStackView.addArrangedSubview(self.taskCategoryLabel)
+        self.containerVStackView.addArrangedSubview(self.taskCategoryTextField)
+        self.containerVStackView.setCustomSpacing(10.0, after: self.taskCategoryTextField)
         self.containerVStackView.addArrangedSubview(self.taskTitleLabel)
         self.containerVStackView.addArrangedSubview(self.taskTitleTextField)
         self.containerVStackView.setCustomSpacing(10.0, after: self.taskTitleTextField)
@@ -251,6 +284,15 @@ final class TaskView: UIView {
         }
         
         self.taskHeaderLabel.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.taskCategoryLabel.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.taskCategoryTextField.snp.makeConstraints { make in
+            make.height.equalTo(50.0)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -315,6 +357,27 @@ final class TaskView: UIView {
             name: .TaskDidTapSaveButton,
             object: nil
         )
+    }
+}
+
+extension TaskView: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField.tag {
+        case self.taskCategoryTag:
+            self.task?.category.name = textField.text ?? ""
+        case self.taskTitleTag:
+            self.task?.todos[0].title = textField.text ?? ""
+        case self.taskDescriptionTag:
+            self.task?.todos[0].description = textField.text ?? ""
+        default:
+            break
+        }
+        
+        print("TextField value: \(String(describing: textField.text))")
     }
 }
 
