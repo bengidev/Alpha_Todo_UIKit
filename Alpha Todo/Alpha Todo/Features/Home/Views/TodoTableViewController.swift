@@ -20,6 +20,13 @@ final class TodoTableViewController: UITableViewController {
         self.task = task
         
         self.setupController()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.dataTaskChanged(_:)),
+            name: .TodoDataTaskChanged,
+            object: nil
+        )
     }
     
     @available(*, unavailable)
@@ -73,6 +80,15 @@ final class TodoTableViewController: UITableViewController {
             forCellReuseIdentifier: TodoTableViewCell.identifier
         )
     }
+    
+    @objc
+    private func dataTaskChanged(_ notification: Notification) -> Void {
+        if let task = notification.object as? Task {
+            self.task = task
+            self.tableView.reloadData()
+        }
+    }
+
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
