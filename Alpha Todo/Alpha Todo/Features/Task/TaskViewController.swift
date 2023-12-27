@@ -13,19 +13,13 @@ final class TaskViewController: UIViewController {
     // MARK: Properties
     private var taskView: TaskView?
     private var height: CGFloat?
+    private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
     
     // MARK: Initializers
     init(height: CGFloat? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         self.height = height
-        
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.selectedTask(_:)),
-            name: .HomeSelectedTask,
-            object: nil
-        )
     }
     
     @available(*, unavailable)
@@ -58,14 +52,16 @@ final class TaskViewController: UIViewController {
     // MARK: Functionalities
     private func setupViews() -> Void {
         self.taskView = TaskView(height: self.height)
-        self.view = self.taskView
-    }
-    
-    @objc
-    private func selectedTask(_ notification: Notification) -> Void {
-        if let task = notification.object as? Task {
-            print("Selected Task: \(String(describing: notification.object))")
+        self.taskView?.updateSaveButtonHandler { task in
+            
+            // Send trigger into HomeController for tap Save Button
+            NotificationCenter.default.post(
+                name: .TaskDidTapSaveButton,
+                object: task
+            )
         }
+        
+        self.view = self.taskView
     }
 }
 
