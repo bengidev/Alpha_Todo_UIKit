@@ -160,60 +160,38 @@ final class TaskView: UIView {
         return vw
     }()
     
-    private lazy var taskDateButton: UIButton = {
-        let bt = AppViewFactory.buildImageTextButton(with: .preferredFont(forTextStyle: .headline))
-        bt.setTitle("Select a date", for: .normal)
-        bt.setImage(.init(systemName: "calendar.badge.plus"), for: .normal)
-        bt.tintColor = .appSecondary
-        bt.backgroundColor = .appPrimary
+    private lazy var datePicker: UIDatePicker = {
+        let picker = UIDatePicker(frame: .zero)
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        picker.datePickerMode = .date
+        picker.contentHorizontalAlignment = .leading
         
-        return bt
+        return picker
     }()
+    
+    private lazy var timePicker: UIDatePicker = {
+        let picker = UIDatePicker(frame: .zero)
+        picker.translatesAutoresizingMaskIntoConstraints = false
+        picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        picker.datePickerMode = .time
+        picker.contentHorizontalAlignment = .leading
 
-    private lazy var taskTimeButton: UIButton = {
-        let bt = AppViewFactory.buildImageTextButton(with: .preferredFont(forTextStyle: .headline))
-        bt.setTitle("Select time", for: .normal)
-        bt.setImage(.init(systemName: "clock"), for: .normal)
-        bt.tintColor = .appSecondary
-        bt.backgroundColor = .appPrimary
-        
-        return bt
+        return picker
     }()
     
-    private lazy var twoHSTackView: UIStackView = {
-        let vw = AppViewFactory.buildStackView()
-        vw.axis = .horizontal
-        vw.distribution = .fillProportionally
-        
-        return vw
-    }()
-    
-    private lazy var taskDateTextField: UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Selected Date"
-        tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .subheadline)
-        tf.isUserInteractionEnabled = false
-        
-        return tf
-    }()
-    
-    private lazy var taskTimeTextField: UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Selected Time"
-        tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .subheadline)
-        tf.isUserInteractionEnabled = false
-        
-        return tf
-    }()
-
     private lazy var saveButton: UIButton = {
         let bt = AppViewFactory.buildTextButton(with: .preferredFont(forTextStyle: .headline))
         bt.setTitle("Save", for: .normal)
         bt.tintColor = .appSecondary
         bt.backgroundColor = .appPrimary
-        bt.addTarget(self, action: #selector(self.didTapSaveButton(_:)), for: .primaryActionTriggered)
+        bt.addTarget(
+            self,
+            action: #selector(
+                self.didTapSaveButton(_:)
+            ),
+            for: .primaryActionTriggered
+        )
         
         return bt
     }()
@@ -223,7 +201,7 @@ final class TaskView: UIView {
         
         return vw
     }()
-
+    
     // MARK: Initializers
     init(height: CGFloat? = nil) {
         super.init(frame: .zero)
@@ -296,9 +274,7 @@ final class TaskView: UIView {
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDescriptionTextField)
         self.containerVStackView.addArrangedSubview(self.taskDateTimeLabel)
         self.containerVStackView.addArrangedSubview(self.oneHSTackView)
-        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.01, after: self.oneHSTackView)
-        self.containerVStackView.addArrangedSubview(self.twoHSTackView)
-        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.04, after: self.twoHSTackView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.06, after: self.oneHSTackView)
         self.containerVStackView.addArrangedSubview(self.saveButton)
         self.containerVStackView.addArrangedSubview(self.spacingView)
         self.containerVStackView.snp.makeConstraints { make in
@@ -332,7 +308,7 @@ final class TaskView: UIView {
         }
         
         self.taskDescriptionTextField.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
+            make.height.equalTo(UIScreen.height * 0.12)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -340,34 +316,19 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.oneHSTackView.addArrangedSubview(self.taskDateButton)
-        self.oneHSTackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDateButton)
-        self.oneHSTackView.addArrangedSubview(self.taskTimeButton)
+        self.oneHSTackView.addArrangedSubview(self.datePicker)
+        self.oneHSTackView.setCustomSpacing(UIScreen.height * 0.02, after: self.datePicker)
+        self.oneHSTackView.addArrangedSubview(self.timePicker)
         self.oneHSTackView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.taskDateButton.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
+        self.datePicker.snp.makeConstraints { make in
+            make.width.equalTo(UIScreen.width * 0.35)
         }
         
-        self.taskTimeButton.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
-        }
-        
-        self.twoHSTackView.addArrangedSubview(self.taskDateTextField)
-        self.twoHSTackView.setCustomSpacing(10.0, after: self.taskDateTextField)
-        self.twoHSTackView.addArrangedSubview(self.taskTimeTextField)
-        self.twoHSTackView.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
-        }
-        
-        self.taskDateTextField.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
-        }
-        
-        self.taskTimeTextField.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
+        self.timePicker.snp.makeConstraints { make in
+            make.width.equalTo(UIScreen.width)
         }
         
         self.saveButton.snp.makeConstraints { make in
@@ -402,9 +363,12 @@ final class TaskView: UIView {
         self.todo.description = sender.text ?? ""
     }
     
+    @objc
     private func didTapDateButton(_ sender: UIButton) -> Void {
-
-        
+    }
+    
+    @objc
+    private func didTapTimeButton(_ sender: UIButton) -> Void {
     }
 
     
