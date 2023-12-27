@@ -24,7 +24,17 @@ final class HomeViewController: UIViewController {
     private let homeViewModel = HomeViewModel()
     
     // MARK: Initializers
-    init() { super.init(nibName: nil, bundle: nil) }
+    init() { 
+        super.init(nibName: nil, bundle: nil)
+        
+        // Receive trigger for tap Saved Button from TaskController
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapSaveButton(_:)),
+            name: .TaskDidTapSaveButton,
+            object: nil
+        )
+    }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
@@ -116,25 +126,13 @@ final class HomeViewController: UIViewController {
     }
 
     private func showTaskViewController() -> Void {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.didTapSaveButton(_:)),
-            name: .TaskDidTapSaveButton,
-            object: nil
-        )
-        
-        let vc = TaskViewController(height: UIScreen.main.bounds.height * 0.15)
+        let vc = TaskViewController(height: UIScreen.main.bounds.height * 0.3)
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .overCurrentContext
         vc.isModalInPresentation = true
         
-        self.present(vc, animated: true) {
-            NotificationCenter.default.post(
-                name: .HomeSelectedTask,
-                object: self.selectedTask,
-                userInfo: nil
-            )
-        }
+        
+        self.present(vc, animated: true)
     }
     
     @objc
@@ -184,17 +182,21 @@ final class HomeViewController: UIViewController {
             ]
         )
         
+        // If selected task category name match to new task category name,
+        // update task with new todos, otherwise create new task
         if self.selectedTask?.category.name.lowercased() == newTask.category.name.lowercased() {
             self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath, with: newTask.todos)
         } else {
             self.homeViewModel.addNewTask(newTask)
         }
         
+        // Send trigger into TodoController for change selectedTask
         NotificationCenter.default.post(
             name: .TodoDataTaskChanged,
             object: self.selectedTask
         )
         
+        // Send trigger into CategoryController for change tasks and selectedIndexPath
         NotificationCenter.default.post(
             name: .CategoryDataTasksChanged,
             object: nil,
@@ -204,7 +206,7 @@ final class HomeViewController: UIViewController {
             ]
         )
         
-        //        self.showTaskViewController()
+        self.showTaskViewController()
     }
 }
 
