@@ -12,10 +12,14 @@ import UIKit
 final class HomeViewController: UIViewController {
     // MARK: Properties
     private var homeView = HomeView()
-    private var categoryCollectionController = CategoryCollectionViewController()
-    private var todoTableController = TodoTableViewController()
     private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
-    private var selectedTask: Task?
+    private var categoryController: CategoryCollectionViewController?
+    private var todoController: TodoTableViewController?
+    private var newTask: Task?
+    
+    private var selectedTask: Task? {
+        return self.homeViewModel.tasks[self.selectedIndexPath.row]
+    }
     
     private let homeViewModel = HomeViewModel()
     
@@ -75,20 +79,26 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoryController(with tasks: [Task]?, hasNewTasks: Bool = false) -> Void {
-        let controller = CategoryCollectionViewController(tasks: tasks)
+        self.categoryController = CategoryCollectionViewController(tasks: tasks)
+        
+        // If previous controller available, remove it first
+        self.categoryController?.remove()
         
         // Include that child view controller in the parent's view controller life cycle.
         //
-        self.add(controller)
-        self.homeView.updateCategoryController(controller)
+        self.add(self.categoryController ?? .init())
+        self.homeView.updateCategoryController(self.categoryController ?? .init())
     }
     
     private func setupTodoController(with task: Task?) -> Void {
-        let controller = TodoTableViewController(task: task)
+        self.todoController = TodoTableViewController(task: task)
+        
+        // If previous controller available, remove it first
+        self.todoController?.remove()
         
         // Include that child view controller in the parent's view controller life cycle.
-        self.add(controller)
-        self.homeView.updateTodoController(controller)
+        self.add(self.todoController ?? .init())
+        self.homeView.updateTodoController(self.todoController ?? .init())
     }
     
     private func updateViewVisibilities() -> Void {
@@ -121,7 +131,7 @@ final class HomeViewController: UIViewController {
         self.present(vc, animated: true) {
             NotificationCenter.default.post(
                 name: .HomeSelectedTask,
-                object: self.selectedTask ?? self.homeViewModel.tasks.first ?? Task.empty,
+                object: self.selectedTask,
                 userInfo: nil
             )
         }
@@ -138,11 +148,16 @@ final class HomeViewController: UIViewController {
         print("Category Button pressed from: \(notification.name)")
         
         guard let indexPath = notification.object as? IndexPath else { return }
-        self.selectedTask = self.homeViewModel.tasks[indexPath.row]
         self.selectedIndexPath = indexPath
+        
+        NotificationCenter.default.post(
+            name: .TodoDataTaskChanged,
+            object: self.homeViewModel.tasks[indexPath.row]
+        )
+        
+        print("Selected IndexPath: \(selectedIndexPath)")
     }
 
-    
     @objc
     private func didTapAddButton(_ notification: Notification) -> Void {
         print("Add Button pressed from: \(notification.name)")
@@ -169,22 +184,24 @@ final class HomeViewController: UIViewController {
             ]
         )
         
-        if self.homeViewModel.tasks.contains(where: { $0.category == self.selectedTask?.category }) {
-            self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath , with: newTask.todos)
+        if self.selectedTask?.category.name.lowercased() == newTask.category.name.lowercased() {
+            self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath, with: newTask.todos)
         } else {
             self.homeViewModel.addNewTask(newTask)
-            self.setupCategoryController(with: self.homeViewModel.tasks, hasNewTasks: true)
-            self.setupTodoController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
-            
-            self.homeView.updateDataTasks(self.homeViewModel.tasks)
         }
-        
-        print("Total todos: \(self.homeViewModel.tasks[self.selectedIndexPath.row].todos.count)")
-        print("Selected task: \(String(describing: self.selectedTask))")
         
         NotificationCenter.default.post(
             name: .TodoDataTaskChanged,
             object: self.selectedTask
+        )
+        
+        NotificationCenter.default.post(
+            name: .CategoryDataTasksChanged,
+            object: nil,
+            userInfo: [
+                "Tasks" : self.homeViewModel.tasks,
+                "IndexPath" : self.selectedIndexPath,
+            ]
         )
         
         //        self.showTaskViewController()
