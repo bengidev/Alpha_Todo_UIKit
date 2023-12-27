@@ -21,4 +21,8 @@ struct Task: Hashable, Identifiable {
     mutating func addNewTodos(_ todos: [Todo]) -> Void {
         self.todos.append(contentsOf: todos)
     }
+    
+    mutating func clearTodos() -> Void {
+        self.todos.removeAll()
+    }
 }
