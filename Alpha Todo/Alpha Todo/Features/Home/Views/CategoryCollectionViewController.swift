@@ -12,14 +12,12 @@ import UIKit
 final class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
     private var tasks: [Task]?
-    private var categoryButtonHandler: ((IndexPath) -> Void)?
     
     // MARK: Initializers
-    init(tasks: [Task]? = nil, categoryButtonHandler: ((IndexPath) -> Void)? = nil) {
+    init(tasks: [Task]? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         self.tasks = tasks
-        self.categoryButtonHandler = categoryButtonHandler
         
         self.setupController()
         self.setupInitialSelectedCategory()
@@ -82,13 +80,18 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
             }
         }
         
+        NotificationCenter.default.post(
+            name: .CategoryDidTapCategoryButton,
+            object: IndexPath(
+                item: sender.tag,
+                section: 0
+            )
+        )
+        
         guard let tasks, !tasks.isEmpty else { return }
         
         // Change selected category value when tap
         self.tasks?[sender.tag].category.toggleIsSelected()
-        
-        // Call the passed callback if available
-        self.categoryButtonHandler?(.init(item: sender.tag, section: 0))
         
         // Update UICollectionView to reflect changed data for selected IndexPath
         self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
