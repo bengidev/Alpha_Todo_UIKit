@@ -62,42 +62,45 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
-        self.homeView.updateDataTasks(self.homeViewModel.tasks)
-        self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks)
-        
-        guard !self.homeViewModel.tasks.isEmpty else { return }
-        self.setupTodoTableViewController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
+        self.setupCategoryController(with: self.homeViewModel.tasks)
+        self.setupTodoController(with: self.homeViewModel.tasks.first)
+        self.updateViewVisibilities()
     }
     
-    private func setupCategoryCollectionViewController(with tasks: [Task]?, hasNewTasks: Bool = false) -> Void {
+    private func setupCategoryController(with tasks: [Task]?, hasNewTasks: Bool = false) -> Void {
         let controller = CategoryCollectionViewController(tasks: tasks) { [weak self] (indexPath) in
             self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
             self?.selectedIndexPath = indexPath
         }
         
-        // Remove the current controller from parent if available.
-        //
-        // This is for the purpose of replacing the old controller and its view
-        // with the new controller and its view.
-        //
-        if hasNewTasks {
-            controller.remove()
-        }
-        
         // Include that child view controller in the parent's view controller life cycle.
         //
         self.add(controller)
-        self.homeView.updateCategoryCollectionViewController(controller, hasRenewView: hasNewTasks)
+        self.homeView.updateCategoryController(controller)
     }
     
-    private func setupTodoTableViewController(with task: Task?) -> Void {
+    private func setupTodoController(with task: Task?) -> Void {
         let controller = TodoTableViewController(task: task)
         
         // Include that child view controller in the parent's view controller life cycle.
         self.add(controller)
-        self.homeView.updateTodoTableViewController(controller)
+        self.homeView.updateTodoController(controller)
     }
     
+    private func updateViewVisibilities() -> Void {
+        if self.homeViewModel.tasks.isEmpty {
+            self.homeView.isHiddenCategoryView(true)
+            self.homeView.isHiddenTodoView(true)
+            self.homeView.isHiddenEmptyTaskView(false)
+            self.homeView.isHiddenSpacerView(false)
+        } else {
+            self.homeView.isHiddenCategoryView(false)
+            self.homeView.isHiddenTodoView(false)
+            self.homeView.isHiddenEmptyTaskView(true)
+            self.homeView.isHiddenSpacerView(true)
+        }
+    }
+
     private func showTaskViewController() -> Void {
         NotificationCenter.default.addObserver(
             self,
@@ -156,8 +159,8 @@ final class HomeViewController: UIViewController {
             self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath , with: newTask.todos)
         } else {
             self.homeViewModel.addNewTask(newTask)
-            self.setupCategoryCollectionViewController(with: self.homeViewModel.tasks, hasNewTasks: true)
-            self.setupTodoTableViewController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
+            self.setupCategoryController(with: self.homeViewModel.tasks, hasNewTasks: true)
+            self.setupTodoController(with: self.homeViewModel.tasks[self.selectedIndexPath.row ])
             
             self.homeView.updateDataTasks(self.homeViewModel.tasks)
         }
