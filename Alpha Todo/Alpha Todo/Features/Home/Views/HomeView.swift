@@ -13,7 +13,8 @@ final class HomeView: UIView {
     // MARK: Properties
     private var tasks: [Task]?
     
-    private let categoryCollectionViewTag = 1
+    private let categoryViewTag = 1
+    private let todoViewTag = 2
     
     // MARK: View Components
     private lazy var containerVStackView: UIStackView = {
@@ -52,7 +53,6 @@ final class HomeView: UIView {
         lb.textAlignment = .left
         lb.text = "Lorem Ipsum Torum"
         lb.font = .preferredFont(forTextStyle: .title1).bold().rounded()
-        lb.textColor = .black
         
         return lb
     }()
@@ -94,13 +94,19 @@ final class HomeView: UIView {
         
         return sv
     }()
+    
+    private lazy var spacerView: UIView = {
+        let vw = AppViewFactory.buildView()
+        
+        return vw
+    }()
+
 
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         self.setupViews()
-        self.updateEmptyTaskView()
     }
     
     @available (*, unavailable)
@@ -121,83 +127,75 @@ final class HomeView: UIView {
     func updateDataTasks(_ tasks: [Task]?) -> Void {
         self.tasks = tasks
         
-        self.updateEmptyTaskView()
     }
     
-    func updateCategoryCollectionViewController(_ controller: CategoryCollectionViewController, hasRenewView: Bool = false) -> Void {
+    func updateCategoryController(_ controller: CategoryCollectionViewController) -> Void {
         lazy var categoryCollectionView: UIView = {
             guard let vw = controller.view else { return .init() }
             vw.translatesAutoresizingMaskIntoConstraints = false
             vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            vw.tag = self.categoryCollectionViewTag
+            vw.tag = self.categoryViewTag
             
             return vw
         }()
-        
-        if hasRenewView {
-            if let categoryView = self.viewWithTag(self.categoryCollectionViewTag) {
-                categoryView.removeFromSuperview()
-            }
-        }
         
         self.containerVStackView.addArrangedSubview(categoryCollectionView)
         categoryCollectionView.snp.makeConstraints { make in
             make.height.equalTo(65.0)
             make.horizontalEdges.equalToSuperview()
         }
-        
-        self.updateAddButton()
     }
     
-    func updateTodoTableViewController(_ controller: TodoTableViewController) -> Void {
+    func isHiddenCategoryView(_ isHidden: Bool = false) -> Void {
+        if let view = self.viewWithTag(self.categoryViewTag) {
+            view.isHidden = isHidden
+        }
+    }
+    
+    func updateTodoController(_ controller: TodoTableViewController) -> Void {
         lazy var todoTableView: UIView = {
             guard let vw = controller.view else { return .init() }
             vw.translatesAutoresizingMaskIntoConstraints = false
             vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            vw.tag = self.todoViewTag
             
             return vw
         }()
         
-        self.addSubview(todoTableView)
+        self.containerVStackView.addArrangedSubview(todoTableView)
         todoTableView.snp.makeConstraints { make in
-            make.top.equalTo(self.containerVStackView.snp.bottom).inset(-20.0)
-            make.bottom.equalTo(self.safeAreaLayoutGuide)
-            make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
-        }
-        
-        self.updateAddButton()
-    }
-    
-    private func updateAddButton() -> Void {
-        self.addSubview(self.addButton)
-        self.addButton.snp.makeConstraints { make in
-            make.width.height.equalTo(50.0)
-            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
-            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
-        }
-    }
-    
-    private func updateEmptyTaskView() -> Void {
-        self.addSubview(self.emptyTaskView)
-        self.emptyTaskView.snp.makeConstraints { make in
-            make.width.height.equalTo(UIScreen.main.bounds.height / 2.5)
-            make.center.equalToSuperview()
-        }
-        
-        if let tasks, !tasks.isEmpty {
-            self.emptyTaskView.removeFromSuperview()
+            make.horizontalEdges.equalToSuperview()
         }
     }
 
+    func isHiddenTodoView(_ isHidden: Bool = false) -> Void {
+        if let view = self.viewWithTag(self.todoViewTag) {
+            view.isHidden = isHidden
+        }
+    }
+    
+    func isHiddenEmptyTaskView(_ isHidden: Bool = false) -> Void {
+        self.emptyTaskView.isHidden = isHidden
+    }
+    
+    func isHiddenSpacerView(_ isHidden: Bool = false) -> Void {
+        self.spacerView.isHidden = isHidden
+        self.containerVStackView.setCustomSpacing(
+            isHidden ? 30.0 : UIScreen.height * 0.15,
+            after: self.oneHStackView
+        )
+    }
+    
     private func setupViews() -> Void {
         self.backgroundColor = .appSecondary
         self.addSubview(self.containerVStackView)
+        self.addSubview(self.addButton)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
-        self.containerVStackView.setCustomSpacing(30.0, after: self.oneHStackView)
+        self.containerVStackView.addArrangedSubview(self.emptyTaskView)
+        self.containerVStackView.addArrangedSubview(self.spacerView)
         self.containerVStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide).inset(20.0)
-            make.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
+            make.edges.equalTo(self.safeAreaLayoutGuide)
         }
         
         self.oneHStackView.addArrangedSubview(self.oneVStackView)
@@ -219,6 +217,20 @@ final class HomeView: UIView {
         
         self.nameLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.emptyTaskView.snp.makeConstraints { make in
+            make.width.height.equalTo(UIScreen.height * 0.3)
+        }
+        
+        self.spacerView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.addButton.snp.makeConstraints { make in
+            make.width.height.equalTo(50.0)
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+            make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
     }
     
