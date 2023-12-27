@@ -57,6 +57,13 @@ final class HomeViewController: UIViewController {
     private func updateViewComponents() -> Void {
         NotificationCenter.default.addObserver(
             self,
+            selector: #selector(self.didTapCategoryButton(_:)),
+            name: .CategoryDidTapCategoryButton,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
             selector: #selector(self.didTapAddButton(_:)),
             name: .HomeDidTapAddButton,
             object: nil
@@ -68,10 +75,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupCategoryController(with tasks: [Task]?, hasNewTasks: Bool = false) -> Void {
-        let controller = CategoryCollectionViewController(tasks: tasks) { [weak self] (indexPath) in
-            self?.selectedTask = self?.homeViewModel.tasks[indexPath.row]
-            self?.selectedIndexPath = indexPath
-        }
+        let controller = CategoryCollectionViewController(tasks: tasks)
         
         // Include that child view controller in the parent's view controller life cycle.
         //
@@ -128,6 +132,16 @@ final class HomeViewController: UIViewController {
         print("Save Button pressed from: \(notification.name)")
         self.dismiss(animated: true)
     }
+    
+    @objc
+    private func didTapCategoryButton(_ notification: Notification) -> Void {
+        print("Category Button pressed from: \(notification.name)")
+        
+        guard let indexPath = notification.object as? IndexPath else { return }
+        self.selectedTask = self.homeViewModel.tasks[indexPath.row]
+        self.selectedIndexPath = indexPath
+    }
+
     
     @objc
     private func didTapAddButton(_ notification: Notification) -> Void {
