@@ -58,9 +58,6 @@ final class HomeViewModel {
     }
     
     func updateCurrentTask(for indexPath: IndexPath, with todos: [Todo]) -> Void {
-        for todo in todos {
-            self.tasks[indexPath.row].addNewTodo(todo)
-        }
-        
+        self.tasks[indexPath.row].addNewTodos(todos)
     }
 }
