@@ -21,6 +21,13 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         
         self.setupController()
         self.setupInitialSelectedCategory()
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.dataTasksChanged(_:)),
+            name: .CategoryDataTasksChanged,
+            object: nil
+        )
     }
     
     @available(*, unavailable)
@@ -95,9 +102,42 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         
         // Update UICollectionView to reflect changed data for selected IndexPath
         self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
+        
+        // Move scroll into the tap category button IndexPath
+        self.collectionView.scrollToItem(
+            at: .init(item: sender.tag, section: 0),
+            at: .centeredHorizontally,
+            animated: true
+        )
     }
 
-    
+    @objc
+    private func dataTasksChanged(_ notification: Notification) -> Void {
+        if let tasks = notification.userInfo?["Tasks"] as? [Task],
+            let indexPath = notification.userInfo?["IndexPath"] as? IndexPath {
+
+            // Update current tasks into new tasks
+            self.tasks = tasks
+            
+            // Update UICollectionView data with new tasks and
+            // scroll it to the previous selected category button
+            self.collectionView.reloadData()
+            
+            // Set the previous selected category button into selected form
+            self.tasks?[indexPath.item].category.isSelected = true
+            
+            // Give the spare time for scrolling through the previous
+            // selected category button
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.collectionView.scrollToItem(
+                    at: indexPath,
+                    at: .centeredHorizontally,
+                    animated: true
+                )
+            }
+        }
+    }
+
     // MARK: DataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -110,7 +150,6 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let tasks else { return .init() }
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: CategoryCollectionViewCell.identifier,
             for: indexPath
@@ -120,7 +159,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         categoryButton.tag = indexPath.item
         categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
         
-        cell.updateCategoryButton(with: tasks[indexPath.item].category)
+        cell.updateCategoryButton(with: self.tasks?[indexPath.item].category ?? .empty)
         
         return cell
     }
