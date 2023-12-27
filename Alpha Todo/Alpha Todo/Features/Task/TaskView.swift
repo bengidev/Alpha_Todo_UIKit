@@ -12,11 +12,10 @@ import UIKit
 final class TaskView: UIView {
     // MARK: Properties
     private var height: CGFloat?
-    private var task: Task?
-    
-    private let taskCategoryTag = 1
-    private let taskTitleTag = 2
-    private let taskDescriptionTag = 3
+    private var saveButtonHandler: ((Task?) -> Void)?
+    private var tapGesture: UITapGestureRecognizer?
+    private var task: Task = .empty
+    private var todo: Todo = .empty
     
     // MARK: View Components
     private lazy var baseVStackView: UIStackView = {
@@ -63,7 +62,6 @@ final class TaskView: UIView {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Create a Task"
         lb.font = .preferredFont(forTextStyle: .title1).bold().rounded()
-        lb.textColor = .black
         lb.textAlignment = .left
         
         return lb
@@ -72,7 +70,7 @@ final class TaskView: UIView {
     private lazy var taskCategoryLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Task Category"
-        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
+        lb.font = .preferredFont(forTextStyle: .headline).rounded()
         lb.textColor = .systemGray
         lb.textAlignment = .left
         
@@ -83,9 +81,13 @@ final class TaskView: UIView {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Task Category"
         tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .callout)
-        tf.textColor = .systemGray
+        tf.font = .preferredFont(forTextStyle: .subheadline)
         tf.delegate = self
+        tf.addTarget(
+            self,
+            action: #selector(self.didEditCategoryTextField(_:)),
+            for: .editingDidEnd
+        )
         
         return tf
     }()
@@ -93,7 +95,7 @@ final class TaskView: UIView {
     private lazy var taskTitleLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Task Title"
-        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
+        lb.font = .preferredFont(forTextStyle: .headline).rounded()
         lb.textColor = .systemGray
         lb.textAlignment = .left
         
@@ -104,8 +106,13 @@ final class TaskView: UIView {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Task Title"
         tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .callout)
-        tf.textColor = .systemGray
+        tf.font = .preferredFont(forTextStyle: .subheadline)
+        tf.delegate = self
+        tf.addTarget(
+            self,
+            action: #selector(self.didEditTitleTextField(_:)),
+            for: .editingDidEnd
+        )
         
         return tf
     }()
@@ -113,7 +120,7 @@ final class TaskView: UIView {
     private lazy var taskDescriptionLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Task Description"
-        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
+        lb.font = .preferredFont(forTextStyle: .headline).rounded()
         lb.textColor = .systemGray
         lb.textAlignment = .left
         
@@ -124,8 +131,13 @@ final class TaskView: UIView {
         let tf = UITextField(frame: .zero)
         tf.placeholder = "Task Description"
         tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .callout)
-        tf.textColor = .systemGray
+        tf.font = .preferredFont(forTextStyle: .subheadline)
+        tf.delegate = self
+        tf.addTarget(
+            self,
+            action: #selector(self.didEditDescriptionTextField(_:)),
+            for: .editingDidEnd
+        )
         
         return tf
     }()
@@ -133,7 +145,7 @@ final class TaskView: UIView {
     private lazy var taskDateTimeLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Choose Date and Time"
-        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
+        lb.font = .preferredFont(forTextStyle: .headline).rounded()
         lb.textColor = .systemGray
         lb.textAlignment = .left
 
@@ -176,23 +188,26 @@ final class TaskView: UIView {
         return vw
     }()
     
-    private lazy var getAlertLabel: UILabel = {
-        let lb = AppViewFactory.buildLabel()
-        lb.text = "Get alert for this task"
-        lb.font = .preferredFont(forTextStyle: .title3).bold().rounded()
-        lb.textColor = .black
-        lb.textAlignment = .left
+    private lazy var taskDateTextField: UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Selected Date"
+        tf.borderStyle = .roundedRect
+        tf.font = .preferredFont(forTextStyle: .subheadline)
+        tf.isUserInteractionEnabled = false
         
-        return lb
+        return tf
     }()
     
-    private lazy var alertSwitch: UISwitch = {
-        let sw = UISwitch(frame: .zero)
-        sw.onTintColor = .appPrimary
+    private lazy var taskTimeTextField: UITextField = {
+        let tf = UITextField(frame: .zero)
+        tf.placeholder = "Selected Time"
+        tf.borderStyle = .roundedRect
+        tf.font = .preferredFont(forTextStyle: .subheadline)
+        tf.isUserInteractionEnabled = false
         
-        return sw
+        return tf
     }()
-    
+
     private lazy var saveButton: UIButton = {
         let bt = AppViewFactory.buildTextButton(with: .preferredFont(forTextStyle: .headline))
         bt.setTitle("Save", for: .normal)
@@ -214,6 +229,7 @@ final class TaskView: UIView {
         super.init(frame: .zero)
         
         self.height = height
+        self.setupTapGesture()
         self.setupViews()
     }
     
@@ -232,10 +248,15 @@ final class TaskView: UIView {
     }
 
     // MARK: Functionalities
-    func updateSelectedTask(_ task: Task) -> Void {
-        self.task = task
+    func updateSaveButtonHandler(_ action: ((Task?) -> Void)?) -> Void {
+        self.saveButtonHandler = action
     }
     
+    private func setupTapGesture() -> Void {
+        self.tapGesture = .init(target: self, action: #selector(self.dismissKeyboard(_:)))
+        self.addGestureRecognizer(self.tapGesture ?? .init())
+    }
+
     private func setupViews() -> Void {
         self.addSubview(self.baseVStackView)
         
@@ -252,31 +273,32 @@ final class TaskView: UIView {
         
         self.oneBaseContainerView.addSubview(self.twoBaseContainerView)
         self.oneBaseContainerView.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.main.bounds.height)
+            make.height.equalTo(UIScreen.height)
             make.horizontalEdges.equalToSuperview()
         }
         
         self.twoBaseContainerView.addSubview(self.containerVStackView)
         self.twoBaseContainerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.height.equalTo(UIScreen.height)
+            make.horizontalEdges.equalToSuperview()
         }
 
         self.containerVStackView.addArrangedSubview(self.taskHeaderLabel)
-        self.containerVStackView.setCustomSpacing(20.0, after: self.taskHeaderLabel)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.03, after: self.taskHeaderLabel)
         self.containerVStackView.addArrangedSubview(self.taskCategoryLabel)
         self.containerVStackView.addArrangedSubview(self.taskCategoryTextField)
-        self.containerVStackView.setCustomSpacing(10.0, after: self.taskCategoryTextField)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskCategoryTextField)
         self.containerVStackView.addArrangedSubview(self.taskTitleLabel)
         self.containerVStackView.addArrangedSubview(self.taskTitleTextField)
-        self.containerVStackView.setCustomSpacing(10.0, after: self.taskTitleTextField)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskTitleTextField)
         self.containerVStackView.addArrangedSubview(self.taskDescriptionLabel)
         self.containerVStackView.addArrangedSubview(self.taskDescriptionTextField)
-        self.containerVStackView.setCustomSpacing(10.0, after: self.taskDescriptionTextField)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDescriptionTextField)
         self.containerVStackView.addArrangedSubview(self.taskDateTimeLabel)
         self.containerVStackView.addArrangedSubview(self.oneHSTackView)
-        self.containerVStackView.setCustomSpacing(20.0, after: self.oneHSTackView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.01, after: self.oneHSTackView)
         self.containerVStackView.addArrangedSubview(self.twoHSTackView)
-        self.containerVStackView.setCustomSpacing(30.0, after: self.twoHSTackView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.04, after: self.twoHSTackView)
         self.containerVStackView.addArrangedSubview(self.saveButton)
         self.containerVStackView.addArrangedSubview(self.spacingView)
         self.containerVStackView.snp.makeConstraints { make in
@@ -292,7 +314,7 @@ final class TaskView: UIView {
         }
         
         self.taskCategoryTextField.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -301,7 +323,7 @@ final class TaskView: UIView {
         }
         
         self.taskTitleTextField.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -310,7 +332,7 @@ final class TaskView: UIView {
         }
         
         self.taskDescriptionTextField.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -319,65 +341,87 @@ final class TaskView: UIView {
         }
         
         self.oneHSTackView.addArrangedSubview(self.taskDateButton)
-        self.oneHSTackView.setCustomSpacing(10.0, after: self.taskDateButton)
+        self.oneHSTackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDateButton)
         self.oneHSTackView.addArrangedSubview(self.taskTimeButton)
         self.oneHSTackView.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
             make.horizontalEdges.equalToSuperview()
         }
         
         self.taskDateButton.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
         }
         
         self.taskTimeButton.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
         }
         
-        self.twoHSTackView.addArrangedSubview(self.getAlertLabel)
-        self.twoHSTackView.addArrangedSubview(self.alertSwitch)
+        self.twoHSTackView.addArrangedSubview(self.taskDateTextField)
+        self.twoHSTackView.setCustomSpacing(10.0, after: self.taskDateTextField)
+        self.twoHSTackView.addArrangedSubview(self.taskTimeTextField)
         self.twoHSTackView.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.alertSwitch.snp.makeConstraints { make in
-            make.width.equalTo(50.0)
+        self.taskDateTextField.snp.makeConstraints { make in
+            make.height.equalTo(UIScreen.height * 0.06)
+        }
+        
+        self.taskTimeTextField.snp.makeConstraints { make in
+            make.height.equalTo(UIScreen.height * 0.06)
         }
         
         self.saveButton.snp.makeConstraints { make in
-            make.height.equalTo(50.0)
+            make.height.equalTo(UIScreen.height * 0.06)
             make.horizontalEdges.equalToSuperview().inset(50.0)
         }
     }
     
     @objc
     private func didTapSaveButton(_ sender: UIButton) -> Void {
-        NotificationCenter.default.post(
-            name: .TaskDidTapSaveButton,
-            object: nil
-        )
+        var newTask = self.task
+        newTask.clearTodos()
+        newTask.addNewTodo(self.todo)
+        
+        print("New Task: \(newTask)")
+        
+        self.saveButtonHandler?(newTask)
     }
+    
+    @objc
+    private func didEditCategoryTextField(_ sender: UITextField) -> Void {
+        self.task.category.name = sender.text ?? ""
+    }
+    
+    @objc
+    private func didEditTitleTextField(_ sender: UITextField) -> Void {
+        self.todo.title = sender.text ?? ""
+    }
+    
+    @objc
+    private func didEditDescriptionTextField(_ sender: UITextField) -> Void {
+        self.todo.description = sender.text ?? ""
+    }
+    
+    private func didTapDateButton(_ sender: UIButton) -> Void {
+
+        
+    }
+
+    
+    @objc
+    private func dismissKeyboard(_ sender: UITapGestureRecognizer) -> Void {
+        self.taskCategoryTextField.endEditing(true)
+        self.taskTitleTextField.endEditing(true)
+        self.taskDescriptionTextField.endEditing(true)
+    }
+
 }
 
 extension TaskView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-    }
-    
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        switch textField.tag {
-        case self.taskCategoryTag:
-            self.task?.category.name = textField.text ?? ""
-        case self.taskTitleTag:
-            self.task?.todos[0].title = textField.text ?? ""
-        case self.taskDescriptionTag:
-            self.task?.todos[0].description = textField.text ?? ""
-        default:
-            break
-        }
+        textField.endEditing(true)
         
-        print("TextField value: \(String(describing: textField.text))")
+        return true
     }
 }
 
