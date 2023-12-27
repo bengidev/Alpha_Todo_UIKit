@@ -17,4 +17,8 @@ struct Task: Hashable, Identifiable {
     mutating func addNewTodo(_ todo: Todo) -> Void {
         self.todos.append(todo)
     }
+    
+    mutating func addNewTodos(_ todos: [Todo]) -> Void {
+        self.todos.append(contentsOf: todos)
+    }
 }
