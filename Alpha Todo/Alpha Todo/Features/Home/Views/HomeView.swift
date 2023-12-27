@@ -146,6 +146,14 @@ final class HomeView: UIView {
         }
     }
     
+    func getCategoryView() -> UIView {
+        if let view = self.viewWithTag(self.categoryViewTag) {
+            return view
+        }
+        
+        return .init(frame: .zero)
+    }
+    
     func isHiddenCategoryView(_ isHidden: Bool = false) -> Void {
         if let view = self.viewWithTag(self.categoryViewTag) {
             view.isHidden = isHidden
@@ -166,6 +174,14 @@ final class HomeView: UIView {
         todoTableView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
         }
+    }
+    
+    func getTodoView() -> UIView {
+        if let view = self.viewWithTag(self.todoViewTag) {
+            return view
+        }
+        
+        return .init(frame: .zero)
     }
 
     func isHiddenTodoView(_ isHidden: Bool = false) -> Void {
