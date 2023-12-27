@@ -20,7 +20,7 @@ final class TodoTableViewController: UITableViewController {
         self.task = task
         
         self.setupController()
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.dataTaskChanged(_:)),
@@ -88,7 +88,6 @@ final class TodoTableViewController: UITableViewController {
             self.tableView.reloadData()
         }
     }
-
 
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
