@@ -47,6 +47,18 @@ final class TaskViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillShow(_:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.keyboardWillHide(_:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     // MARK: Functionalities
@@ -63,6 +75,27 @@ final class TaskViewController: UIViewController {
         
         self.view = self.taskView
     }
+    
+    @objc
+    private func keyboardWillShow(_ notification: Notification) -> Void {
+        if let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue {
+            self.taskView?.updateScrollDownTaskView(with: keyboardSize.height)
+            self.taskView?.layoutIfNeeded()
+        }
+    }
+    
+    @objc
+    private func keyboardWillHide(_ notification: Notification) -> Void {
+        if let keyboardSize = (
+            notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
+        )?.cgRectValue {
+            self.taskView?.updateScrollUpTaskView(with: keyboardSize.height)
+            self.taskView?.layoutIfNeeded()
+        }
+    }
+
 }
 
 #if DEBUG
