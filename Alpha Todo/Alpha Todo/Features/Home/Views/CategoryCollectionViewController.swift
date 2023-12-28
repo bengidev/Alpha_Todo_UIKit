@@ -74,7 +74,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         // Update UICollectionView to reflect changed data for initial IndexPath
         self.collectionView.reloadItems(at: [.init(item: 0, section: 0)])
     }
-
+    
     @objc
     private func didTapCategoryButton(_ sender: UIButton) -> Void {
         // Reset another categories to prevent multiple selected category
@@ -110,34 +110,35 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
             animated: true
         )
     }
-
+    
     @objc
     private func dataTasksChanged(_ notification: Notification) -> Void {
-        if let tasks = notification.userInfo?["Tasks"] as? [Task],
-            let indexPath = notification.userInfo?["IndexPath"] as? IndexPath {
-
-            // Update current tasks into new tasks
-            self.tasks = tasks
-            
-            // Update UICollectionView data with new tasks and
-            // scroll it to the previous selected category button
-            self.collectionView.reloadData()
-            
-            // Set the previous selected category button into selected form
-            self.tasks?[indexPath.item].category.isSelected = true
-            
-            // Give the spare time for scrolling through the previous
-            // selected category button
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                self.collectionView.scrollToItem(
-                    at: indexPath,
-                    at: .centeredHorizontally,
-                    animated: true
-                )
-            }
+        guard let tasks = notification.userInfo?["Tasks"] as? [Task],
+              let indexPath = notification.userInfo?["IndexPath"] as? IndexPath,
+              !tasks.isEmpty
+        else { return }
+        
+        // Update current tasks into new tasks
+        self.tasks = tasks
+        
+        // Update UICollectionView data with new tasks and
+        // scroll it to the previous selected category button
+        self.collectionView.reloadData()
+        
+        // Set the previous selected category button into selected form
+        self.tasks?[indexPath.item].category.isSelected = true
+        
+        // Give the spare time for scrolling through the previous
+        // selected category button
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.collectionView.scrollToItem(
+                at: indexPath,
+                at: .centeredHorizontally,
+                animated: true
+            )
         }
     }
-
+    
     // MARK: DataSource
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
