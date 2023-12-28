@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		08B490FE962C8B43F0F7D20A /* Pods_Alpha_Todo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */; };
+		B61A21E52B3D22A80044068E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A21E42B3D22A80044068E /* Date+Extension.swift */; };
 		B671068C2B379AC000B24482 /* TodoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068B2B379AC000B24482 /* TodoTableViewController.swift */; };
 		B671068E2B379BD600B24482 /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068D2B379BD600B24482 /* TodoTableViewCell.swift */; };
 		B67106902B38073B00B24482 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068F2B38073B00B24482 /* Todo.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B61A21E42B3D22A80044068E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B671068B2B379AC000B24482 /* TodoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewController.swift; sourceTree = "<group>"; };
 		B671068D2B379BD600B24482 /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
 		B671068F2B38073B00B24482 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */,
 				B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */,
 				B68D6B512B3B9C4C00E3C07B /* UIScreen+Extension.swift */,
+				B61A21E42B3D22A80044068E /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */,
 				B6A4938F2B31126C00A41402 /* OnboardingViewController.swift in Sources */,
 				B6C7AFEC2B32BDE5007619AF /* HomeViewController.swift in Sources */,
+				B61A21E52B3D22A80044068E /* Date+Extension.swift in Sources */,
 				B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */,
 				B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */,
 				B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */,
