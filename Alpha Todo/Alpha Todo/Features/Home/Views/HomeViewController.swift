@@ -15,16 +15,17 @@ final class HomeViewController: UIViewController {
     private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
     private var categoryController: CategoryCollectionViewController?
     private var todoController: TodoTableViewController?
-    private var newTask: Task?
     
     private var selectedTask: Task? {
-        return self.homeViewModel.tasks[self.selectedIndexPath.row]
+        return !self.homeViewModel.tasks.isEmpty ?
+        self.homeViewModel.tasks[self.selectedIndexPath.row] :
+        nil
     }
     
     private let homeViewModel = HomeViewModel()
     
     // MARK: Initializers
-    init() { 
+    init() {
         super.init(nibName: nil, bundle: nil)
         
         // Receive trigger for tap Saved Button from TaskController
@@ -124,7 +125,7 @@ final class HomeViewController: UIViewController {
             self.homeView.isHiddenSpacerView(true)
         }
     }
-
+    
     private func showTaskViewController() -> Void {
         let vc = TaskViewController(height: UIScreen.height * 0.3)
         vc.modalTransitionStyle = .coverVertical
@@ -133,12 +134,6 @@ final class HomeViewController: UIViewController {
         
         
         self.present(vc, animated: true)
-    }
-    
-    @objc
-    private func didTapSaveButton(_ notification: Notification) -> Void {
-        print("Save Button pressed from: \(notification.name)")
-        self.dismiss(animated: true)
     }
     
     @objc
@@ -155,58 +150,48 @@ final class HomeViewController: UIViewController {
         
         print("Selected IndexPath: \(selectedIndexPath)")
     }
-
+    
     @objc
     private func didTapAddButton(_ notification: Notification) -> Void {
         print("Add Button pressed from: \(notification.name)")
         
-        let newTask: Task = .init(
-            category: .init(name: "Weather", imageName: "cloud.sun.rain", isSelected: false),
-            todos: [
-                .init(
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    timeStart: .init(),
-                    timeEnd: .init(),
-                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
-                    isImportant: false,
-                    hasCompleted: false
-                ),
-                .init(
-                    title: "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-                    timeStart: .init(),
-                    timeEnd: .init(),
-                    description: "Duis non odio arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum feugiat neque vitae nisl mattis, quis efficitur libero gravida. Quisque faucibus magna eu hendrerit placerat. Mauris laoreet dictum nisl, quis vestibulum magna. Proin vehicula, nulla at aliquam efficitur, nibh dui fringilla erat, pretium aliquam odio tellus maximus augue. Donec malesuada odio at neque sollicitudin, id cursus mauris euismod.",
-                    isImportant: false,
-                    hasCompleted: false
-                ),
-            ]
-        )
+        self.showTaskViewController()
+    }
+    
+    @objc
+    private func didTapSaveButton(_ notification: Notification) -> Void {
+        print("Save Button pressed from: \(notification.name)")
         
-        // If selected task category name match to new task category name,
-        // update task with new todos, otherwise create new task
-        if self.selectedTask?.category.name.lowercased() == newTask.category.name.lowercased() {
-            self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath, with: newTask.todos)
-        } else {
-            self.homeViewModel.addNewTask(newTask)
+        if let task = notification.object as? Task {
+            
+            // If selected task category name match to new task category name,
+            // update task with new todos, otherwise create new task
+            if self.selectedTask?.category.name.lowercased() == task.category.name.lowercased() {
+                self.homeViewModel.updateCurrentTask(for: self.selectedIndexPath, with: task.todos)
+            } else {
+                self.homeViewModel.addNewTask(task)
+            }
         }
         
-        // Send trigger into TodoController for change selectedTask
-        NotificationCenter.default.post(
-            name: .TodoDataTaskChanged,
-            object: self.selectedTask
-        )
-        
-        // Send trigger into CategoryController for change tasks and selectedIndexPath
-        NotificationCenter.default.post(
-            name: .CategoryDataTasksChanged,
-            object: nil,
-            userInfo: [
-                "Tasks" : self.homeViewModel.tasks,
-                "IndexPath" : self.selectedIndexPath,
-            ]
-        )
-        
-        self.showTaskViewController()
+        self.dismiss(animated: true) {
+            self.updateViewVisibilities()
+            
+            // Send trigger into TodoController for change selectedTask
+            NotificationCenter.default.post(
+                name: .TodoDataTaskChanged,
+                object: self.selectedTask
+            )
+            
+            // Send trigger into CategoryController for change tasks and selectedIndexPath
+            NotificationCenter.default.post(
+                name: .CategoryDataTasksChanged,
+                object: nil,
+                userInfo: [
+                    "Tasks" : self.homeViewModel.tasks,
+                    "IndexPath" : self.selectedIndexPath,
+                ]
+            )
+        }
     }
 }
 
