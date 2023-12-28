@@ -126,7 +126,7 @@ final class HomeViewController: UIViewController {
     }
 
     private func showTaskViewController() -> Void {
-        let vc = TaskViewController(height: UIScreen.main.bounds.height * 0.3)
+        let vc = TaskViewController(height: UIScreen.height * 0.3)
         vc.modalTransitionStyle = .coverVertical
         vc.modalPresentationStyle = .overCurrentContext
         vc.isModalInPresentation = true

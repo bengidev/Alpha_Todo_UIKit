@@ -324,15 +324,15 @@ final class TaskView: UIView {
         }
         
         self.datePicker.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.width * 0.35)
+            make.width.lessThanOrEqualTo(UIScreen.width).priority(.required)
         }
         
         self.timePicker.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.width)
+            make.width.greaterThanOrEqualTo(UIScreen.width).priority(.low)
         }
         
         self.saveButton.snp.makeConstraints { make in
-            make.height.equalTo(UIScreen.height * 0.06)
+            make.height.equalTo(UIScreen.height * 0.05)
             make.horizontalEdges.equalToSuperview().inset(50.0)
         }
     }
