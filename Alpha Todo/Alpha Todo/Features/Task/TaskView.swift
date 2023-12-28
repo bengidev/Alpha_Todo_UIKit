@@ -14,6 +14,8 @@ final class TaskView: UIView {
     private var height: CGFloat?
     private var saveButtonHandler: ((Task?) -> Void)?
     private var tapGesture: UITapGestureRecognizer?
+    private var selectedDate: Date?
+    private var selectedTime: Date?
     private var task: Task = .empty
     private var todo: Todo = .empty
     
@@ -50,6 +52,14 @@ final class TaskView: UIView {
         return vw
     }()
     
+    private lazy var scrollView: UIScrollView = {
+        let vw = UIScrollView(frame: .zero)
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        return vw
+    }()
+    
     private lazy var containerVStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         vw.axis = .vertical
@@ -79,14 +89,14 @@ final class TaskView: UIView {
 
     private lazy var taskCategoryTextField: UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.placeholder = "Task Category"
+        tf.placeholder = "Enter task category"
         tf.borderStyle = .roundedRect
         tf.font = .preferredFont(forTextStyle: .subheadline)
         tf.delegate = self
         tf.addTarget(
             self,
             action: #selector(self.didEditCategoryTextField(_:)),
-            for: .editingDidEnd
+            for: .editingChanged
         )
         
         return tf
@@ -104,14 +114,14 @@ final class TaskView: UIView {
 
     private lazy var taskTitleTextField: UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.placeholder = "Task Title"
+        tf.placeholder = "Enter task title"
         tf.borderStyle = .roundedRect
         tf.font = .preferredFont(forTextStyle: .subheadline)
         tf.delegate = self
         tf.addTarget(
             self,
             action: #selector(self.didEditTitleTextField(_:)),
-            for: .editingDidEnd
+            for: .editingChanged
         )
         
         return tf
@@ -129,14 +139,14 @@ final class TaskView: UIView {
 
     private lazy var taskDescriptionTextField: UITextField = {
         let tf = UITextField(frame: .zero)
-        tf.placeholder = "Task Description"
+        tf.placeholder = "Enter task description"
         tf.borderStyle = .roundedRect
         tf.font = .preferredFont(forTextStyle: .subheadline)
         tf.delegate = self
         tf.addTarget(
             self,
             action: #selector(self.didEditDescriptionTextField(_:)),
-            for: .editingDidEnd
+            for: .editingChanged
         )
         
         return tf
@@ -166,6 +176,11 @@ final class TaskView: UIView {
         picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         picker.datePickerMode = .date
         picker.contentHorizontalAlignment = .leading
+        picker.addTarget(
+            self,
+            action: #selector(self.didSelectDatePicker(_:)),
+            for: .primaryActionTriggered
+        )
         
         return picker
     }()
@@ -176,7 +191,12 @@ final class TaskView: UIView {
         picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         picker.datePickerMode = .time
         picker.contentHorizontalAlignment = .leading
-
+        picker.addTarget(
+            self,
+            action: #selector(self.didSelectTimePicker(_:)),
+            for: .primaryActionTriggered
+        )
+        
         return picker
     }()
     
@@ -255,12 +275,22 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.twoBaseContainerView.addSubview(self.containerVStackView)
+        self.twoBaseContainerView.addSubview(self.scrollView)
         self.twoBaseContainerView.snp.makeConstraints { make in
             make.height.equalTo(UIScreen.height)
             make.horizontalEdges.equalToSuperview()
         }
 
+        self.scrollView.addSubview(self.containerVStackView)
+        self.scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.containerVStackView.snp.makeConstraints { make in
+            make.width.equalToSuperview().inset(10.0)
+            make.top.bottom.leading.trailing.equalToSuperview().inset(10.0)
+        }
+        
         self.containerVStackView.addArrangedSubview(self.taskHeaderLabel)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.03, after: self.taskHeaderLabel)
         self.containerVStackView.addArrangedSubview(self.taskCategoryLabel)
@@ -335,17 +365,11 @@ final class TaskView: UIView {
             make.height.equalTo(UIScreen.height * 0.05)
             make.horizontalEdges.equalToSuperview().inset(50.0)
         }
-    }
-    
-    @objc
-    private func didTapSaveButton(_ sender: UIButton) -> Void {
-        var newTask = self.task
-        newTask.clearTodos()
-        newTask.addNewTodo(self.todo)
         
-        print("New Task: \(newTask)")
-        
-        self.saveButtonHandler?(newTask)
+        self.spacingView.snp.makeConstraints { make in
+            make.height.equalTo(self.height ?? 0.0)
+            make.horizontalEdges.equalToSuperview()
+        }
     }
     
     @objc
@@ -364,13 +388,27 @@ final class TaskView: UIView {
     }
     
     @objc
-    private func didTapDateButton(_ sender: UIButton) -> Void {
+    private func didSelectDatePicker(_ sender: UIDatePicker) -> Void {
+        self.selectedDate = sender.date
     }
     
     @objc
-    private func didTapTimeButton(_ sender: UIButton) -> Void {
+    private func didSelectTimePicker(_ sender: UIDatePicker) -> Void {
+        self.selectedTime = sender.date
     }
-
+    
+    @objc
+    private func didTapSaveButton(_ sender: UIButton) -> Void {
+        if let selectedDate, let selectedTime {
+            self.todo.dueDate = Date.combine(date: selectedDate, time: selectedTime) ?? .init()
+        }
+        
+        var newTask = self.task
+        newTask.clearTodos()
+        newTask.addNewTodo(self.todo)
+        
+        self.saveButtonHandler?(newTask)
+    }
     
     @objc
     private func dismissKeyboard(_ sender: UITapGestureRecognizer) -> Void {
