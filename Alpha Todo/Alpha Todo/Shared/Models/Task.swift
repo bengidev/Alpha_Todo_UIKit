@@ -22,7 +22,11 @@ struct Task: Hashable, Identifiable {
         self.todos.append(contentsOf: todos)
     }
     
-    mutating func clearTodos() -> Void {
+    mutating func removeTodo(at indexPath: IndexPath) -> Void {
+        self.todos.remove(at: indexPath.row)
+    }
+    
+    mutating func removeAllTodos() -> Void {
         self.todos.removeAll()
     }
 }
