@@ -11,13 +11,21 @@ import UIKit
 
 final class TaskView: UIView {
     // MARK: Properties
-    private var height: CGFloat?
+    private var containerBlurHeight: CGFloat?
     private var saveButtonHandler: ((Task?) -> Void)?
     private var tapGesture: UITapGestureRecognizer?
     private var selectedDate: Date?
     private var selectedTime: Date?
     private var task: Task = .empty
     private var todo: Todo = .empty
+    private var hasEditingCategory = false {
+        willSet {
+            print("isEditingCategory: \(hasEditingCategory)")
+        }
+        didSet {
+            print("isEditingCategory: \(hasEditingCategory)")
+        }
+    }
     
     // MARK: View Components
     private lazy var baseVStackView: UIStackView = {
@@ -137,7 +145,7 @@ final class TaskView: UIView {
         return lb
     }()
 
-    private lazy var taskDescriptionTextField: UITextView = {
+    private lazy var taskDescriptionTextView: UITextView = {
         let vw = UITextView(frame: .zero)
         vw.translatesAutoresizingMaskIntoConstraints = false
         vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -217,7 +225,7 @@ final class TaskView: UIView {
         return bt
     }()
 
-    private lazy var spacingView: UIView = {
+    private lazy var spacerView: UIView = {
         let vw = AppViewFactory.buildView()
         
         return vw
@@ -227,7 +235,7 @@ final class TaskView: UIView {
     init(height: CGFloat? = nil) {
         super.init(frame: .zero)
         
-        self.height = height
+        self.containerBlurHeight = height
         self.setupTapGesture()
         self.setupViews()
     }
@@ -251,6 +259,28 @@ final class TaskView: UIView {
         self.saveButtonHandler = action
     }
     
+    func updateScrollUpTaskView(with height: CGFloat = 0.0) -> Void {
+        UIView.animate(withDuration: 0.3) {
+            // Scroll up through inside scroll view with the specified size
+            // or reset the latest offset
+            var offset = self.scrollView.contentOffset
+            offset.y = 0.0
+            self.scrollView.setContentOffset(offset, animated: true)
+        }
+    }
+    
+    func updateScrollDownTaskView(with height: CGFloat = 0.0) -> Void {
+        // Don't update scroll view when edit the first text field/view
+        guard self.hasEditingCategory else { return }
+        
+        UIView.animate(withDuration: 0.3) {
+            // Scroll down through inside scroll view with the specified size
+            var offset = self.scrollView.contentOffset
+            offset.y = height * 0.5
+            self.scrollView.setContentOffset(offset, animated: true)
+        }
+    }
+    
     private func setupTapGesture() -> Void {
         self.tapGesture = .init(target: self, action: #selector(self.dismissKeyboard(_:)))
         self.addGestureRecognizer(self.tapGesture ?? .init())
@@ -266,7 +296,7 @@ final class TaskView: UIView {
         }
         
         self.containerHeightView.snp.makeConstraints { make in
-            make.height.equalTo(self.height ?? 0.0)
+            make.height.equalTo(self.containerBlurHeight ?? 0.0)
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -301,13 +331,13 @@ final class TaskView: UIView {
         self.containerVStackView.addArrangedSubview(self.taskTitleTextField)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskTitleTextField)
         self.containerVStackView.addArrangedSubview(self.taskDescriptionLabel)
-        self.containerVStackView.addArrangedSubview(self.taskDescriptionTextField)
-        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDescriptionTextField)
+        self.containerVStackView.addArrangedSubview(self.taskDescriptionTextView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDescriptionTextView)
         self.containerVStackView.addArrangedSubview(self.taskDateTimeLabel)
         self.containerVStackView.addArrangedSubview(self.oneHSTackView)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.06, after: self.oneHSTackView)
         self.containerVStackView.addArrangedSubview(self.saveButton)
-        self.containerVStackView.addArrangedSubview(self.spacingView)
+        self.containerVStackView.addArrangedSubview(self.spacerView)
         self.containerVStackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10.0)
         }
@@ -338,7 +368,7 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.taskDescriptionTextField.snp.makeConstraints { make in
+        self.taskDescriptionTextView.snp.makeConstraints { make in
             make.height.equalTo(UIScreen.height * 0.12)
             make.horizontalEdges.equalToSuperview()
         }
@@ -367,14 +397,15 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview().inset(50.0)
         }
         
-        self.spacingView.snp.makeConstraints { make in
-            make.height.equalTo(self.height ?? 0.0)
+        self.spacerView.snp.makeConstraints { make in
+            make.height.equalTo(self.containerBlurHeight ?? 0.0)
             make.horizontalEdges.equalToSuperview()
         }
     }
     
     @objc
     private func didEditCategoryTextField(_ sender: UITextField) -> Void {
+        self.hasEditingCategory = false
         self.task.category.name = sender.text ?? ""
     }
     
@@ -410,13 +441,16 @@ final class TaskView: UIView {
     private func dismissKeyboard(_ sender: UITapGestureRecognizer) -> Void {
         self.taskCategoryTextField.endEditing(true)
         self.taskTitleTextField.endEditing(true)
-        self.taskDescriptionTextField.endEditing(true)
+        self.taskDescriptionTextView.endEditing(true)
+        self.taskDescriptionTextView.endEditing(true)
     }
 
 }
 
 extension TaskView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.hasEditingCategory = true
+        
         textField.endEditing(true)
         
         return true
@@ -433,6 +467,11 @@ extension TaskView: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         self.todo.description = textView.text
+        
+        // Hide keyboard when user tap return in keyboard
+        if textView.text == "\n" {
+            textView.endEditing(true)
+        }
     }
 }
 
