@@ -10,16 +10,14 @@ import Foundation
 struct Todo: Hashable, Identifiable {
     let id = UUID()
     var title: String
-    var timeStart: Date
-    var timeEnd: Date
+    var dueDate: Date
     var description: String
     var isImportant: Bool
     var hasCompleted: Bool
     
     static let empty: Todo = .init(
         title: "",
-        timeStart: .init(),
-        timeEnd: .init(),
+        dueDate: .init(),
         description: "",
         isImportant: false,
         hasCompleted: false
