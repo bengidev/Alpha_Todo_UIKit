@@ -221,7 +221,7 @@ final class HomeView: UIView {
         }
         
         self.profileImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(100.0)
+            make.width.height.equalTo(UIScreen.height * 0.12)
         }
         
         self.oneVStackView.addArrangedSubview(self.helloLabel)
@@ -236,7 +236,7 @@ final class HomeView: UIView {
         }
         
         self.emptyTaskView.snp.makeConstraints { make in
-            make.width.height.equalTo(UIScreen.height * 0.3)
+            make.width.height.equalTo(UIScreen.height * 0.35)
         }
         
         self.spacerView.snp.makeConstraints { make in
@@ -244,7 +244,7 @@ final class HomeView: UIView {
         }
         
         self.addButton.snp.makeConstraints { make in
-            make.width.height.equalTo(50.0)
+            make.width.height.equalTo(UIScreen.height * 0.08)
             make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
             make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
