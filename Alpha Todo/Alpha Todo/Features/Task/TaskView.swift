@@ -431,7 +431,7 @@ final class TaskView: UIView {
         }
         
         var newTask = self.task
-        newTask.clearTodos()
+        newTask.removeAllTodos()
         newTask.addNewTodo(self.todo)
         
         self.saveButtonHandler?(newTask)
