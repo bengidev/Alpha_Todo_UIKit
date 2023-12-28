@@ -405,12 +405,12 @@ final class TaskView: UIView {
     
     @objc
     private func didEditCategoryTextField(_ sender: UITextField) -> Void {
-        self.hasEditingCategory = false
         self.task.category.name = sender.text ?? ""
     }
     
     @objc
     private func didEditTitleTextField(_ sender: UITextField) -> Void {
+        self.hasEditingCategory = true
         self.todo.title = sender.text ?? ""
     }
     
@@ -467,6 +467,8 @@ extension TaskView: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         self.todo.description = textView.text
+        
+        self.hasEditingCategory = false
         
         // Hide keyboard when user tap return in keyboard
         if textView.text == "\n" {
