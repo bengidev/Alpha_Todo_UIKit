@@ -137,19 +137,20 @@ final class TaskView: UIView {
         return lb
     }()
 
-    private lazy var taskDescriptionTextField: UITextField = {
-        let tf = UITextField(frame: .zero)
-        tf.placeholder = "Enter task description"
-        tf.borderStyle = .roundedRect
-        tf.font = .preferredFont(forTextStyle: .subheadline)
-        tf.delegate = self
-        tf.addTarget(
-            self,
-            action: #selector(self.didEditDescriptionTextField(_:)),
-            for: .editingChanged
-        )
+    private lazy var taskDescriptionTextField: UITextView = {
+        let vw = UITextView(frame: .zero)
+        vw.translatesAutoresizingMaskIntoConstraints = false
+        vw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        vw.text = "Enter task description"
+        vw.textAlignment = .natural
+        vw.textColor = .systemGray.withAlphaComponent(0.5)
+        vw.font = .preferredFont(forTextStyle: .subheadline)
+        vw.layer.cornerRadius = 5.0
+        vw.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.5).cgColor
+        vw.layer.borderWidth = 1.0
+        vw.delegate = self
         
-        return tf
+        return vw
     }()
 
     private lazy var taskDateTimeLabel: UILabel = {
@@ -383,11 +384,6 @@ final class TaskView: UIView {
     }
     
     @objc
-    private func didEditDescriptionTextField(_ sender: UITextField) -> Void {
-        self.todo.description = sender.text ?? ""
-    }
-    
-    @objc
     private func didSelectDatePicker(_ sender: UIDatePicker) -> Void {
         self.selectedDate = sender.date
     }
@@ -426,6 +422,20 @@ extension TaskView: UITextFieldDelegate {
         return true
     }
 }
+
+extension TaskView: UITextViewDelegate {
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        textView.text = ""
+        textView.textColor = .black
+        
+        return true
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.todo.description = textView.text
+    }
+}
+
 
 #if DEBUG
 @available(iOS 13, *)
