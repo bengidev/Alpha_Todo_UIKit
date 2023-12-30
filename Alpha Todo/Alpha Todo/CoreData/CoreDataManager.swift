@@ -25,6 +25,10 @@ struct CoreDataManager {
         return container
     }()
     
+    var context: NSManagedObjectContext {
+        return self.persistentContainer.viewContext
+    }
+    
     @discardableResult
     func createAlphaTask(_ task: AlphaTask) -> AlphaTask? {
         let context = persistentContainer.viewContext
