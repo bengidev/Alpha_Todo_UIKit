@@ -84,6 +84,13 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapEditTodoButton(_:)),
+            name: .HomeDidTapEditTodoButton,
+            object: nil
+        )
+        
         self.setupCategoryController(with: self.homeViewModel.tasks)
         self.setupTodoController(with: self.selectedTask)
         self.updateViewVisibilities()
@@ -116,11 +123,13 @@ final class HomeViewController: UIViewController {
         if self.homeViewModel.tasks.isEmpty {
             self.homeView.isHiddenCategoryView(true)
             self.homeView.isHiddenTodoView(true)
+            self.homeView.isHiddenEditTodoButton(true)
             self.homeView.isHiddenEmptyTaskView(false)
             self.homeView.isHiddenSpacerView(false)
         } else {
             self.homeView.isHiddenCategoryView(false)
             self.homeView.isHiddenTodoView(false)
+            self.homeView.isHiddenEditTodoButton(false)
             self.homeView.isHiddenEmptyTaskView(true)
             self.homeView.isHiddenSpacerView(true)
         }
@@ -157,6 +166,15 @@ final class HomeViewController: UIViewController {
         print("Add Button pressed from: \(notification.name)")
         
         self.showTaskViewController()
+    }
+    
+    @objc
+    private func didTapEditTodoButton(_ notification: Notification) -> Void {
+        print("Edit Todo Button pressed from: \(notification.name)")
+        
+        UIView.animate(withDuration: 0.3) {
+            self.todoController?.tableView.isEditing.toggle()
+        }
     }
     
     @objc
