@@ -12,6 +12,7 @@ import UIKit
 final class HomeView: UIView {
     // MARK: Properties
     private var tasks: [Task]?
+    private var isEditing: Bool = false
     
     private let categoryViewTag = 1
     private let todoViewTag = 2
@@ -73,6 +74,16 @@ final class HomeView: UIView {
         bt.backgroundColor = .appPrimary
         bt.tintColor = .appSecondary
         bt.addTarget(self, action: #selector(self.didTapAddButton(_:)), for: .primaryActionTriggered)
+        
+        return bt
+    }()
+    
+    private lazy var editTodoButton: UIButton = {
+        let bt = AppViewFactory.buildTextButton(with: .preferredFont(forTextStyle: .headline))
+        bt.setTitle("Edit Todo", for: .normal)
+        bt.backgroundColor = .clear
+        bt.tintColor = .appPrimary
+        bt.addTarget(self, action: #selector(self.didTapEditTodoButton(_:)), for: .primaryActionTriggered)
         
         return bt
     }()
@@ -194,6 +205,10 @@ final class HomeView: UIView {
         self.emptyTaskView.isHidden = isHidden
     }
     
+    func isHiddenEditTodoButton(_ isHidden: Bool = false) -> Void {
+        self.editTodoButton.isHidden = isHidden
+    }
+    
     func isHiddenSpacerView(_ isHidden: Bool = false) -> Void {
         self.spacerView.isHidden = isHidden
         self.containerVStackView.setCustomSpacing(
@@ -206,6 +221,7 @@ final class HomeView: UIView {
         self.backgroundColor = .appSecondary
         self.addSubview(self.containerVStackView)
         self.addSubview(self.addButton)
+        self.addSubview(self.editTodoButton)
         
         self.containerVStackView.addArrangedSubview(self.oneHStackView)
         self.containerVStackView.addArrangedSubview(self.emptyTaskView)
@@ -248,12 +264,28 @@ final class HomeView: UIView {
             make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
             make.trailing.equalTo(self.safeAreaLayoutGuide).inset(20.0)
         }
+        
+        self.editTodoButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+            make.leading.equalTo(self.safeAreaLayoutGuide).inset(20.0)
+        }
     }
     
     @objc
     private func didTapAddButton(_ sender: UIButton) -> Void {
         NotificationCenter.default.post(
             name: .HomeDidTapAddButton,
+            object: nil
+        )
+    }
+    
+    @objc
+    private func didTapEditTodoButton(_ sender: UIButton) -> Void {
+        self.isEditing.toggle()
+        self.editTodoButton.setTitle(self.isEditing ? "Done Edit" : "Edit Todo", for: .normal)
+        
+        NotificationCenter.default.post(
+            name: .HomeDidTapEditTodoButton,
             object: nil
         )
     }
