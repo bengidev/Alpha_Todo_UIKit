@@ -186,7 +186,7 @@ final class TodoTableViewCell: UITableViewCell {
         self.taskLabel.attributedText = todo.hasCompleted ? attributeString : nil
         self.taskLabel.text = todo.title
         
-        self.timeLabel.text = todo.dueDate.description
+        self.timeLabel.text = todo.formattedDate
         
         self.descriptionLabel.text = todo.description
         

@@ -23,6 +23,14 @@ struct Todo: Hashable, Identifiable {
         hasCompleted: false
     )
     
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy 'at' hh:mm a"
+        formatter.locale = .current
+        
+        return formatter.string(from: self.dueDate)
+    }
+    
     mutating func change(to newTodo: Todo) -> Void {
         self = newTodo
     }
