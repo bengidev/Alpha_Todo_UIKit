@@ -38,4 +38,12 @@ final class HomeViewModel {
     func randomSystemName() -> String {
         return self.systemImageNames.randomElement() ?? "person.fill"
     }
+    
+    func removeTodo(with selectedTaskIndexPath: IndexPath, from indexPath: IndexPath) -> Void {
+        self.tasks[selectedTaskIndexPath.row].removeTodo(at: indexPath)
+    }
+    
+    func removeAllTodos( from indexPath: IndexPath) -> Void {
+        self.tasks[indexPath.row].removeAllTodos()
+    }
 }
