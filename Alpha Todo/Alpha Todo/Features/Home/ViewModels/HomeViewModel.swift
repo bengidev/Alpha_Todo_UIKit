@@ -5,45 +5,24 @@
 //  Created by Bambang Tri Rahmat Doni on 21/12/23.
 //
 
+import CoreData
 import Foundation
 
 @MainActor
 final class HomeViewModel {
-    private(set) var tasks: [Task] = []
-    private(set) var systemImageNames: [String] = [
-        "person.fill",
-        "house.fill",
-        "music.note.list",
-        "desktopcomputer",
-        "car.fill",
-        "heart.circle.fill",
-        "cart.fill",
-        "play.rectangle.fill",
-        "cloud.sun.rain.fill",
-    ]
+    private let coreDataManager = CoreDataManager.shared
+    private(set) var tasks: [AlphaTask] = []
     
-    func addNewTask(_ task: Task) -> Void {
-        var tempTask = task
-        tempTask.category.imageName = self.randomSystemName()
-        
-        print("Temp Task: \(tempTask)")
-        
-        self.tasks.append(tempTask)
+    init() {
+        self.tasks = self.coreDataManager.fetchAlphaTasks() ?? []
+        print("Fetched Tasks: \(tasks.count)")
+    }
+
+    var getContext: NSManagedObjectContext {
+        return self.coreDataManager.context
     }
     
-    func updateCurrentTask(for indexPath: IndexPath, with todos: [Todo]) -> Void {
-        self.tasks[indexPath.row].addNewTodos(todos)
-    }
-    
-    func randomSystemName() -> String {
-        return self.systemImageNames.randomElement() ?? "person.fill"
-    }
-    
-    func removeTodo(with selectedTaskIndexPath: IndexPath, from indexPath: IndexPath) -> Void {
-        self.tasks[selectedTaskIndexPath.row].removeTodo(at: indexPath)
-    }
-    
-    func removeAllTodos( from indexPath: IndexPath) -> Void {
-        self.tasks[indexPath.row].removeAllTodos()
+    func updateCurrentTask(with task: AlphaTask) -> Void {
+        self.coreDataManager.updateAlphaTask(with: task)
     }
 }
