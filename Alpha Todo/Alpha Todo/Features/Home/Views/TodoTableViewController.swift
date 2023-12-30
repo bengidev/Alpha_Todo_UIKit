@@ -11,20 +11,29 @@ import UIKit
 
 final class TodoTableViewController: UITableViewController {
     // MARK: Properties
-    private var task: Task?
+    private var homeViewModel: HomeViewModel?
+    private var selectedTask: Task?
+    private var selectedCategoryIndexPath: IndexPath?
     
     // MARK: Initializers
-    init(task: Task? = nil) {
+    init(homeViewModel: HomeViewModel? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        self.task = task
+        self.homeViewModel = homeViewModel
         
         self.setupController()
 
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.dataTaskChanged(_:)),
-            name: .TodoDataTaskChanged,
+            selector: #selector(self.selectedTaskChanged(_:)),
+            name: .TodoSelectedTaskChanged,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.selectedCategoryIndexPathChanged(_:)),
+            name: .TodoSelectedCategoryIndexPathChanged,
             object: nil
         )
     }
@@ -52,12 +61,6 @@ final class TodoTableViewController: UITableViewController {
         super.viewDidLoad()
 
         self.setupController()
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -71,7 +74,6 @@ final class TodoTableViewController: UITableViewController {
     // MARK: Functionalities
     private func setupController() -> Void {
         self.tableView = AppViewFactory.buildTableView(with: .plain)
-        self.tableView.allowsSelection = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -82,13 +84,23 @@ final class TodoTableViewController: UITableViewController {
     }
     
     @objc
-    private func dataTaskChanged(_ notification: Notification) -> Void {
+    private func selectedTaskChanged(_ notification: Notification) -> Void {
         if let task = notification.object as? Task {
-            self.task = task
+            self.selectedTask = task
             self.tableView.reloadData()
+            print("New Task: \(task)")
         }
     }
-
+    
+    @objc
+    private func selectedCategoryIndexPathChanged(_ notification: Notification) -> Void {
+        if let indexPath = notification.object as? IndexPath {
+            self.selectedCategoryIndexPath = indexPath
+            self.tableView.reloadData()
+            print("New IndexPath: \(indexPath)")
+        }
+    }
+    
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
 
@@ -96,17 +108,17 @@ final class TodoTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let task else { return 0 }
-        
-        return task.todos.count
+        guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return 0 }
+        return tasks[self.selectedCategoryIndexPath?.row ?? 0].todos.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let task else { return .init() }
+        guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return .init() }
+        guard let selectedCategoryIndexPath else { return .init() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as? TodoTableViewCell else { return .init() }
 
         // Configure the cell...
-        cell.updateTodoCell(with: task.todos[indexPath.row])
+        cell.updateTodoCell(with: tasks[selectedCategoryIndexPath.row].todos[indexPath.row])
         
         return cell
     }
@@ -114,26 +126,19 @@ final class TodoTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
-    /*
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        guard let selectedCategoryIndexPath else { return }
+        
         if editingStyle == .delete {
             // Delete the row from the data source
+            self.homeViewModel?.removeTodo(with: selectedCategoryIndexPath, from: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-    */
 
     /*
     // Override to support rearranging the table view.
