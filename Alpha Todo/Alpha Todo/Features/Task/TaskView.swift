@@ -5,6 +5,7 @@
 //  Created by Bambang Tri Rahmat Doni on 25/12/23.
 //
 
+import CoreData
 import SnapKit
 import SwiftUI
 import UIKit
@@ -12,20 +13,24 @@ import UIKit
 final class TaskView: UIView {
     // MARK: Properties
     private var containerBlurHeight: CGFloat?
-    private var saveButtonHandler: ((Task?) -> Void)?
+    private var saveButtonHandler: ((AlphaTask?) -> Void)?
     private var tapGesture: UITapGestureRecognizer?
     private var selectedDate: Date?
     private var selectedTime: Date?
-    private var task: Task = .empty
-    private var todo: Todo = .empty
-    private var hasEditingCategory = false {
-        willSet {
-            print("isEditingCategory: \(hasEditingCategory)")
-        }
-        didSet {
-            print("isEditingCategory: \(hasEditingCategory)")
-        }
-    }
+    private var task: AlphaTask?
+    private var todo: Todo?
+    private var isEditingCategory = false
+    private var systemImageNames: [String] = [
+        "person.fill",
+        "house.fill",
+        "music.note.list",
+        "desktopcomputer",
+        "car.fill",
+        "heart.circle.fill",
+        "cart.fill",
+        "play.rectangle.fill",
+        "cloud.sun.rain.fill",
+    ]
     
     // MARK: View Components
     private lazy var baseVStackView: UIStackView = {
@@ -183,8 +188,9 @@ final class TaskView: UIView {
         let picker = UIDatePicker(frame: .zero)
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        picker.datePickerMode = .date
         picker.contentHorizontalAlignment = .leading
+        picker.datePickerMode = .date
+        picker.minimumDate = .init()
         picker.addTarget(
             self,
             action: #selector(self.didSelectDatePicker(_:)),
@@ -198,8 +204,9 @@ final class TaskView: UIView {
         let picker = UIDatePicker(frame: .zero)
         picker.translatesAutoresizingMaskIntoConstraints = false
         picker.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        picker.datePickerMode = .time
         picker.contentHorizontalAlignment = .leading
+        picker.datePickerMode = .time
+        picker.minimumDate = .init()
         picker.addTarget(
             self,
             action: #selector(self.didSelectTimePicker(_:)),
@@ -232,10 +239,13 @@ final class TaskView: UIView {
     }()
     
     // MARK: Initializers
-    init(height: CGFloat? = nil) {
+    init(containerHeight: CGFloat? = nil, context: NSManagedObjectContext? = nil) {
         super.init(frame: .zero)
         
-        self.containerBlurHeight = height
+        self.containerBlurHeight = containerHeight
+        self.task = .init(context: context ?? .init(concurrencyType: .mainQueueConcurrencyType))
+        self.todo = .init(context: context ?? .init(concurrencyType: .mainQueueConcurrencyType))
+        
         self.setupTapGesture()
         self.setupViews()
     }
@@ -255,8 +265,13 @@ final class TaskView: UIView {
     }
 
     // MARK: Functionalities
-    func updateSaveButtonHandler(_ action: ((Task?) -> Void)?) -> Void {
+    func updateSaveButtonHandler(_ action: ((AlphaTask?) -> Void)?) -> Void {
         self.saveButtonHandler = action
+    }
+    
+    func updateObjectContext(_ context: NSManagedObjectContext) -> Void {
+        self.task = .init(context: context)
+        self.todo = .init(context: context)
     }
     
     func updateScrollUpTaskView(with height: CGFloat = 0.0) -> Void {
@@ -271,7 +286,7 @@ final class TaskView: UIView {
     
     func updateScrollDownTaskView(with height: CGFloat = 0.0) -> Void {
         // Don't update scroll view when edit the first text field/view
-        guard self.hasEditingCategory else { return }
+        guard self.isEditingCategory else { return }
         
         UIView.animate(withDuration: 0.3) {
             // Scroll down through inside scroll view with the specified size
@@ -403,15 +418,31 @@ final class TaskView: UIView {
         }
     }
     
+    private func getRandomSystemName() -> String {
+        return self.systemImageNames.randomElement() ?? "person.fill"
+    }
+    
+    private func getSelectedDate() -> Date {
+        if let selectedDate, let selectedTime {
+            return Date.combine(date: selectedDate, time: selectedTime) ?? .init()
+        } else if let selectedDate {
+            return Date.combine(date: selectedDate, time: .init()) ?? .init()
+        } else if let selectedTime {
+            return Date.combine(date: .init(), time: selectedTime) ?? .init()
+        } else {
+            return Date.combine(date: .init(), time: .init()) ?? .init()
+        }
+    }
+    
     @objc
     private func didEditCategoryTextField(_ sender: UITextField) -> Void {
-        self.task.category.name = sender.text ?? ""
+        self.task?.name = sender.text
     }
     
     @objc
     private func didEditTitleTextField(_ sender: UITextField) -> Void {
-        self.hasEditingCategory = true
-        self.todo.title = sender.text ?? ""
+        self.isEditingCategory = true
+        self.todo?.title = sender.text ?? ""
     }
     
     @objc
@@ -426,13 +457,14 @@ final class TaskView: UIView {
     
     @objc
     private func didTapSaveButton(_ sender: UIButton) -> Void {
-        if let selectedDate, let selectedTime {
-            self.todo.dueDate = Date.combine(date: selectedDate, time: selectedTime) ?? .init()
-        }
+        let newTask = self.task
+        newTask?.imageName = self.getRandomSystemName()
         
-        var newTask = self.task
-        newTask.removeAllTodos()
-        newTask.addNewTodo(self.todo)
+        self.todo?.dueDate = self.getSelectedDate()
+        if let todo { newTask?.addToTodos(todo) }
+        
+        print("New Task: \(String(describing: newTask))")
+        print("New Todo: \(String(describing: todo))")
         
         self.saveButtonHandler?(newTask)
     }
@@ -449,7 +481,7 @@ final class TaskView: UIView {
 
 extension TaskView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.hasEditingCategory = true
+        self.isEditingCategory = true
         
         textField.endEditing(true)
         
@@ -466,9 +498,9 @@ extension TaskView: UITextViewDelegate {
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        self.todo.description = textView.text
+        self.todo?.descriptions = textView.text
         
-        self.hasEditingCategory = false
+        self.isEditingCategory = false
         
         // Hide keyboard when user tap return in keyboard
         if textView.text == "\n" {
