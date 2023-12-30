@@ -85,7 +85,7 @@ final class HomeViewController: UIViewController {
         )
         
         self.setupCategoryController(with: self.homeViewModel.tasks)
-        self.setupTodoController(with: self.homeViewModel.tasks.first)
+        self.setupTodoController(with: self.selectedTask)
         self.updateViewVisibilities()
     }
     
@@ -102,7 +102,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func setupTodoController(with task: Task?) -> Void {
-        self.todoController = TodoTableViewController(task: task)
+        self.todoController = TodoTableViewController(homeViewModel: self.homeViewModel)
         
         // If previous controller available, remove it first
         self.todoController?.remove()
@@ -143,9 +143,10 @@ final class HomeViewController: UIViewController {
         guard let indexPath = notification.object as? IndexPath else { return }
         self.selectedIndexPath = indexPath
         
+        // Send trigger into TodoController for change selectedCategoryIndexPath
         NotificationCenter.default.post(
-            name: .TodoDataTaskChanged,
-            object: self.homeViewModel.tasks[indexPath.row]
+            name: .TodoSelectedCategoryIndexPathChanged,
+            object: self.selectedIndexPath
         )
         
         print("Selected IndexPath: \(selectedIndexPath)")
@@ -178,11 +179,17 @@ final class HomeViewController: UIViewController {
             
             // Send trigger into TodoController for change selectedTask
             NotificationCenter.default.post(
-                name: .TodoDataTaskChanged,
+                name: .TodoSelectedTaskChanged,
                 object: self.selectedTask
             )
             
-            // Send trigger into CategoryController for change tasks and selectedIndexPath
+            // Send trigger into TodoController for change selectedCategoryIndexPath
+            NotificationCenter.default.post(
+                name: .TodoSelectedCategoryIndexPathChanged,
+                object: self.selectedIndexPath
+            )
+            
+            // Send trigger into CategoryController for change tasks and selectedCategoryIndexPath
             NotificationCenter.default.post(
                 name: .CategoryDataTasksChanged,
                 object: nil,
