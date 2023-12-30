@@ -11,7 +11,7 @@ import UIKit
 
 final class HomeView: UIView {
     // MARK: Properties
-    private var tasks: [Task]?
+    private var tasks: [AlphaTask]?
     private var isEditing: Bool = false
     
     private let categoryViewTag = 1
@@ -135,7 +135,7 @@ final class HomeView: UIView {
     }
     
     // MARK: Functionalities
-    func updateDataTasks(_ tasks: [Task]?) -> Void {
+    func updateDataTasks(_ tasks: [AlphaTask]?) -> Void {
         self.tasks = tasks
         
     }
