@@ -11,8 +11,6 @@
 		B61A21E52B3D22A80044068E /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B61A21E42B3D22A80044068E /* Date+Extension.swift */; };
 		B671068C2B379AC000B24482 /* TodoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068B2B379AC000B24482 /* TodoTableViewController.swift */; };
 		B671068E2B379BD600B24482 /* TodoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068D2B379BD600B24482 /* TodoTableViewCell.swift */; };
-		B67106902B38073B00B24482 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B671068F2B38073B00B24482 /* Todo.swift */; };
-		B67106922B3816C600B24482 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = B67106912B3816C600B24482 /* Task.swift */; };
 		B68D6B522B3B9C4C00E3C07B /* UIScreen+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B68D6B512B3B9C4C00E3C07B /* UIScreen+Extension.swift */; };
 		B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE32B302E9C006D5044 /* ViewPreview.swift */; };
 		B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6907DE42B302E9C006D5044 /* TabBarControllerPreview.swift */; };
@@ -32,7 +30,6 @@
 		B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB62A2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift */; };
 		B6AEB62D2B318A0600FE492D /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */; };
 		B6B7914F2B33F5C4003013DC /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B7914E2B33F5C4003013DC /* CategoryCollectionViewCell.swift */; };
-		B6B791522B3440AD003013DC /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B791512B3440AD003013DC /* Category.swift */; };
 		B6B791552B344124003013DC /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B791542B344124003013DC /* HomeViewModel.swift */; };
 		B6C7AFEC2B32BDE5007619AF /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C7AFEB2B32BDE5007619AF /* HomeViewController.swift */; };
 		B6C7AFEF2B32C673007619AF /* AppUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6C7AFEE2B32C673007619AF /* AppUserDefaults.swift */; };
@@ -43,14 +40,18 @@
 		B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987522B394B9E00F20171 /* TaskViewController.swift */; };
 		B6D987552B39863500F20171 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987542B39863500F20171 /* TaskView.swift */; };
 		B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */; };
+		B6E8F99A2B3FE050001B8BAE /* AlphaTodo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9982B3FE050001B8BAE /* AlphaTodo.xcdatamodeld */; };
+		B6E8F9A42B3FF357001B8BAE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */; };
+		B6E8F9A92B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */; };
+		B6E8F9AA2B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */; };
+		B6E8F9AB2B3FF456001B8BAE /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */; };
+		B6E8F9AC2B3FF456001B8BAE /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B61A21E42B3D22A80044068E /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		B671068B2B379AC000B24482 /* TodoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewController.swift; sourceTree = "<group>"; };
 		B671068D2B379BD600B24482 /* TodoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTableViewCell.swift; sourceTree = "<group>"; };
-		B671068F2B38073B00B24482 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
-		B67106912B3816C600B24482 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		B68D6B512B3B9C4C00E3C07B /* UIScreen+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Extension.swift"; sourceTree = "<group>"; };
 		B6907DE32B302E9C006D5044 /* ViewPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPreview.swift; sourceTree = "<group>"; };
 		B6907DE42B302E9C006D5044 /* TabBarControllerPreview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarControllerPreview.swift; sourceTree = "<group>"; };
@@ -72,7 +73,6 @@
 		B6AEB62A2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapperBaseOnboardingViewController.swift; sourceTree = "<group>"; };
 		B6AEB62C2B318A0600FE492D /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		B6B7914E2B33F5C4003013DC /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		B6B791512B3440AD003013DC /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		B6B791542B344124003013DC /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		B6C7AFEB2B32BDE5007619AF /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B6C7AFEE2B32C673007619AF /* AppUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUserDefaults.swift; sourceTree = "<group>"; };
@@ -83,6 +83,12 @@
 		B6D987522B394B9E00F20171 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		B6D987542B39863500F20171 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
 		B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extension.swift"; sourceTree = "<group>"; };
+		B6E8F9992B3FE050001B8BAE /* AlphaTodo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlphaTodo.xcdatamodel; sourceTree = "<group>"; };
+		B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlphaTask+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlphaTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -211,6 +217,7 @@
 				B6C7AFED2B32C652007619AF /* Shared */,
 				B6AEB61C2B313E5700FE492D /* Extensions */,
 				B6A2F5A62B30379700432876 /* Resources */,
+				B6E8F9972B3FE023001B8BAE /* CoreData */,
 				B6907DE22B302E9C006D5044 /* PreviewView */,
 				B6907DE82B302E9C006D5044 /* PreviewViewLegacyOSCompileFix */,
 			);
@@ -281,7 +288,6 @@
 		B6C7AFED2B32C652007619AF /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				B6D987502B394B7000F20171 /* Models */,
 				B6C7AFEE2B32C673007619AF /* AppUserDefaults.swift */,
 			);
 			path = Shared;
@@ -295,16 +301,6 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		B6D987502B394B7000F20171 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				B6B791512B3440AD003013DC /* Category.swift */,
-				B671068F2B38073B00B24482 /* Todo.swift */,
-				B67106912B3816C600B24482 /* Task.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		B6D987512B394B8700F20171 /* Task */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +308,19 @@
 				B6D987542B39863500F20171 /* TaskView.swift */,
 			);
 			path = Task;
+			sourceTree = "<group>";
+		};
+		B6E8F9972B3FE023001B8BAE /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */,
+				B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */,
+				B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */,
+				B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */,
+				B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */,
+				B6E8F9982B3FE050001B8BAE /* AlphaTodo.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		E5A591600CCBE33A9B2B8899 /* Frameworks */ = {
@@ -439,10 +448,13 @@
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
 				B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
+				B6E8F9AA2B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift in Sources */,
 				B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */,
+				B6E8F99A2B3FE050001B8BAE /* AlphaTodo.xcdatamodeld in Sources */,
 				B6D987552B39863500F20171 /* TaskView.swift in Sources */,
-				B6B791522B3440AD003013DC /* Category.swift in Sources */,
+				B6E8F9A42B3FF357001B8BAE /* CoreDataManager.swift in Sources */,
 				B6B791552B344124003013DC /* HomeViewModel.swift in Sources */,
+				B6E8F9AC2B3FF456001B8BAE /* Todo+CoreDataProperties.swift in Sources */,
 				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
 				B6C7AFEF2B32C673007619AF /* AppUserDefaults.swift in Sources */,
 				B671068E2B379BD600B24482 /* TodoTableViewCell.swift in Sources */,
@@ -451,7 +463,7 @@
 				B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */,
 				B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */,
 				B68D6B522B3B9C4C00E3C07B /* UIScreen+Extension.swift in Sources */,
-				B67106922B3816C600B24482 /* Task.swift in Sources */,
+				B6E8F9AB2B3FF456001B8BAE /* Todo+CoreDataClass.swift in Sources */,
 				B671068C2B379AC000B24482 /* TodoTableViewController.swift in Sources */,
 				B6AEB6212B31441900FE492D /* MainViewController.swift in Sources */,
 				B6AD6A992B21BD9900D26F72 /* AppDelegate.swift in Sources */,
@@ -464,8 +476,8 @@
 				B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */,
 				B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */,
 				B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */,
-				B67106902B38073B00B24482 /* Todo.swift in Sources */,
 				B6CE41412B3640B6009C4867 /* OnboardingViewModel.swift in Sources */,
+				B6E8F9A92B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
 				B6CE41452B36809C009C4867 /* HomeView.swift in Sources */,
 				B6CE41432B364DED009C4867 /* OnboardingView.swift in Sources */,
@@ -682,6 +694,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B6E8F9982B3FE050001B8BAE /* AlphaTodo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B6E8F9992B3FE050001B8BAE /* AlphaTodo.xcdatamodel */,
+			);
+			currentVersion = B6E8F9992B3FE050001B8BAE /* AlphaTodo.xcdatamodel */;
+			path = AlphaTodo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B6AD6A8D2B21BD9900D26F72 /* Project object */;
 }
