@@ -5,7 +5,6 @@
 //  Created by Bambang Tri Rahmat Doni on 25/12/23.
 //
 
-import CoreData
 import SnapKit
 import SwiftUI
 import UIKit
@@ -239,12 +238,12 @@ final class TaskView: UIView {
     }()
     
     // MARK: Initializers
-    init(containerHeight: CGFloat? = nil, context: NSManagedObjectContext? = nil) {
+    init(containerHeight: CGFloat? = nil) {
         super.init(frame: .zero)
         
         self.containerBlurHeight = containerHeight
-        self.task = .init(context: context ?? .init(concurrencyType: .mainQueueConcurrencyType))
-        self.todo = .init(context: context ?? .init(concurrencyType: .mainQueueConcurrencyType))
+        self.task = .empty
+        self.todo = .empty
         
         self.setupTapGesture()
         self.setupViews()
@@ -267,11 +266,6 @@ final class TaskView: UIView {
     // MARK: Functionalities
     func updateSaveButtonHandler(_ action: ((AlphaTask?) -> Void)?) -> Void {
         self.saveButtonHandler = action
-    }
-    
-    func updateObjectContext(_ context: NSManagedObjectContext) -> Void {
-        self.task = .init(context: context)
-        self.todo = .init(context: context)
     }
     
     func updateScrollUpTaskView(with height: CGFloat = 0.0) -> Void {
@@ -436,7 +430,7 @@ final class TaskView: UIView {
     
     @objc
     private func didEditCategoryTextField(_ sender: UITextField) -> Void {
-        self.task?.name = sender.text
+        self.task?.name = sender.text ?? ""
     }
     
     @objc
@@ -457,14 +451,11 @@ final class TaskView: UIView {
     
     @objc
     private func didTapSaveButton(_ sender: UIButton) -> Void {
-        let newTask = self.task
+        var newTask = self.task
         newTask?.imageName = self.getRandomSystemName()
         
         self.todo?.dueDate = self.getSelectedDate()
-        if let todo { newTask?.addToTodos(todo) }
-        
-        print("New Task: \(String(describing: newTask))")
-        print("New Todo: \(String(describing: todo))")
+        if let todo { newTask?.todos = [todo] }
         
         self.saveButtonHandler?(newTask)
     }
