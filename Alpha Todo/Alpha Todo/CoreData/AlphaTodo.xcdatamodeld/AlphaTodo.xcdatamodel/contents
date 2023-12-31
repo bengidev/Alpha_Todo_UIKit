@@ -4,7 +4,7 @@
         <attribute name="imageName" attributeType="String" defaultValueString=""/>
         <attribute name="isSelected" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" defaultValueString=""/>
-        <relationship name="todos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDTodo" inverseName="task" inverseEntity="CDTodo"/>
+        <relationship name="todos" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="CDTodo" inverseName="task" inverseEntity="CDTodo"/>
     </entity>
     <entity name="CDTodo" representedClassName="CDTodo" syncable="YES">
         <attribute name="descriptions" attributeType="String" defaultValueString=""/>

@@ -19,7 +19,7 @@ extension CDAlphaTask {
     @NSManaged public var imageName: String?
     @NSManaged public var isSelected: Bool
     @NSManaged public var name: String?
-    @NSManaged public var todos: NSSet?
+    @NSManaged public var todos: NSOrderedSet?
 
     var wrappedName: String {
         return self.name ?? ""
@@ -34,13 +34,30 @@ extension CDAlphaTask {
     }
     
     var wrappedTodos: [CDTodo] {
-        return self.todos?.allObjects as? [CDTodo] ?? []
+        return (self.todos?.array as? [CDTodo]) ?? []
     }
-    
 }
 
 // MARK: Generated accessors for todos
 extension CDAlphaTask {
+
+    @objc(insertObject:inTodosAtIndex:)
+    @NSManaged public func insertIntoTodos(_ value: CDTodo, at idx: Int)
+
+    @objc(removeObjectFromTodosAtIndex:)
+    @NSManaged public func removeFromTodos(at idx: Int)
+
+    @objc(insertTodos:atIndexes:)
+    @NSManaged public func insertIntoTodos(_ values: [CDTodo], at indexes: NSIndexSet)
+
+    @objc(removeTodosAtIndexes:)
+    @NSManaged public func removeFromTodos(at indexes: NSIndexSet)
+
+    @objc(replaceObjectInTodosAtIndex:withObject:)
+    @NSManaged public func replaceTodos(at idx: Int, with value: CDTodo)
+
+    @objc(replaceTodosAtIndexes:withTodos:)
+    @NSManaged public func replaceTodos(at indexes: NSIndexSet, with values: [CDTodo])
 
     @objc(addTodosObject:)
     @NSManaged public func addToTodos(_ value: CDTodo)
@@ -49,10 +66,10 @@ extension CDAlphaTask {
     @NSManaged public func removeFromTodos(_ value: CDTodo)
 
     @objc(addTodos:)
-    @NSManaged public func addToTodos(_ values: NSSet)
+    @NSManaged public func addToTodos(_ values: NSOrderedSet)
 
     @objc(removeTodos:)
-    @NSManaged public func removeFromTodos(_ values: NSSet)
+    @NSManaged public func removeFromTodos(_ values: NSOrderedSet)
 
 }
 
