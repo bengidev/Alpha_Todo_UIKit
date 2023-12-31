@@ -30,7 +30,7 @@ final class HomeViewModel {
         self.coreDataManager.createCDAlphaTask(task)
     }
     
-    func updateCurrentTask(with task: AlphaTask) -> Void {
+    func updateCurrentTask(_ task: AlphaTask) -> Void {
         self.coreDataManager.updateCDAlphaTask(with: task)
     }
     
