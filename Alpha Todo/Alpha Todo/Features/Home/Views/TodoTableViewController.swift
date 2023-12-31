@@ -12,8 +12,8 @@ import UIKit
 final class TodoTableViewController: UITableViewController {
     // MARK: Properties
     private var homeViewModel: HomeViewModel?
-    private var selectedTask: Task?
-    private var selectedCategoryIndexPath: IndexPath?
+    private var selectedTask: CDAlphaTask?
+    private var selectedCategoryIndexPath: IndexPath = .init(row: 0, section: 0)
     
     // MARK: Initializers
     init(homeViewModel: HomeViewModel? = nil) {
@@ -83,7 +83,7 @@ final class TodoTableViewController: UITableViewController {
     
     @objc
     private func selectedTaskChanged(_ notification: Notification) -> Void {
-        if let task = notification.object as? Task {
+        if let task = notification.object as? CDAlphaTask {
             self.selectedTask = task
             self.tableView.reloadData()
             print("New Task: \(task)")
@@ -101,22 +101,21 @@ final class TodoTableViewController: UITableViewController {
     
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {
-
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return 0 }
-        return tasks[self.selectedCategoryIndexPath?.row ?? 0].todos.count
+        return tasks[self.selectedCategoryIndexPath.row ].wrappedTodos.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return .init() }
-        guard let selectedCategoryIndexPath else { return .init() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as? TodoTableViewCell else { return .init() }
 
         // Configure the cell...
-        cell.updateTodoCell(with: tasks[selectedCategoryIndexPath.row].todos[indexPath.row])
+        cell.updateTodoCell(with: tasks[self.selectedCategoryIndexPath.row]
+            .wrappedTodos[indexPath.row])
         
         return cell
     }
@@ -127,11 +126,11 @@ final class TodoTableViewController: UITableViewController {
 
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        guard let selectedCategoryIndexPath else { return }
+        guard let selectedTask else { return }
         
         if editingStyle == .delete {
             // Delete the row from the data source
-            self.homeViewModel?.removeTodo(with: selectedCategoryIndexPath, from: indexPath)
+            self.homeViewModel?.removeTodo(from: selectedTask, with: indexPath)
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -140,10 +139,9 @@ final class TodoTableViewController: UITableViewController {
 
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        guard var tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return }
-        guard let selectedCategoryIndexPath else { return }
-        
-        tasks[selectedCategoryIndexPath.row].todos.swapAt(fromIndexPath.row, to.row)
+        guard let selectedTask else { return }
+
+        self.homeViewModel?.swapTodo(selectedTask, from: fromIndexPath, to: to)
     }
 
     // Override to support conditional rearranging of the table view.
