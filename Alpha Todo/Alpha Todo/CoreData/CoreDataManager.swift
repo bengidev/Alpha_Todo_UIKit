@@ -37,10 +37,10 @@ struct CoreDataManager {
         // let employee = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context) as! Employee // NSManagedObject
         
         // new way
-
         let newTask = self.convertAlphaTaskIntoCDAlphaTask(task)
         print("Core Data Manager New Task: \(newTask)")
         print("Core Data Manager Todos Count: \(task.todos.count)")
+        print("Core Data Manager Todos Count: \(task.todos)")
         
         do {
             try context.save()
@@ -106,7 +106,20 @@ struct CoreDataManager {
         print("Core Data Manager Delete Task: \(String(describing: willDeleteTask))")
         
         context.delete(willDeleteTask)
-
+        do {
+            try context.save()
+        } catch let error {
+            print("Failed to delete CDAlphaTask: \(error)")
+        }
+    }
+    
+    func deleteCDTodo(from task: CDAlphaTask, with indexPath: IndexPath) {
+        let context = persistentContainer.viewContext
+        
+        let willDeleteTodo = task.wrappedTodos[indexPath.row]
+        task.removeFromTodos(willDeleteTodo)
+        
+        print("Core Data Manager Delete Todo: \(String(describing: willDeleteTodo))")
         do {
             try context.save()
         } catch let error {
@@ -119,7 +132,7 @@ struct CoreDataManager {
 
         // Map Todo into CDTodo for inserting into CDAlphaTodo
         let convertedTodos = task.todos.map({
-            var cdTodo = CDTodo(context: context)
+            let cdTodo = CDTodo(context: context)
             cdTodo.title = $0.title
             cdTodo.dueDate = $0.dueDate
             cdTodo.descriptions = $0.descriptions
