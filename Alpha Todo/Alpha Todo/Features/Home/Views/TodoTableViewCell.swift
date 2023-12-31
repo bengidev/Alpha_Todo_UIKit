@@ -13,7 +13,7 @@ final class TodoTableViewCell: UITableViewCell {
     // MARK: Properties
     static let identifier = "TodoTableViewCellIdentifier"
     
-    private var todo: Todo?
+    private var todo: CDTodo?
     
     // MARK: View Components
     private lazy var taskLabel: UILabel = {
@@ -172,7 +172,7 @@ final class TodoTableViewCell: UITableViewCell {
     }
     
     // MARK: Functionalities
-    func updateTodoCell(with todo: Todo) -> Void {
+    func updateTodoCell(with todo: CDTodo) -> Void {
         let attributeString: NSMutableAttributedString = .init()
         attributeString.addAttribute(
             .strikethroughStyle,
@@ -183,19 +183,19 @@ final class TodoTableViewCell: UITableViewCell {
             )
         )
         
-        self.taskLabel.attributedText = todo.hasCompleted ? attributeString : nil
-        self.taskLabel.text = todo.title
+        self.taskLabel.attributedText = todo.wrappedIsCompleted ? attributeString : nil
+        self.taskLabel.text = todo.wrappedTitle
         
         self.timeLabel.text = todo.formattedDate
         
-        self.descriptionLabel.text = todo.description
+        self.descriptionLabel.text = todo.wrappedDescriptions
         
-        self.importantButton.tintColor = todo.isImportant ? .appPrimary : .systemGray.withAlphaComponent(0.2)
+        self.importantButton.tintColor = todo.wrappedIsImportant ? .appPrimary : .systemGray.withAlphaComponent(0.2)
         
-        self.checkButton.tintColor = todo.hasCompleted ? .appSecondary : .systemGray.withAlphaComponent(0.5)
-        self.checkButton.backgroundColor = todo.hasCompleted ? .appPrimary : nil
-        self.checkButton.layer.borderColor = todo.hasCompleted ? nil : UIColor.systemGray.withAlphaComponent(0.5).cgColor
-        self.checkButton.layer.borderWidth = todo.hasCompleted ? 0.0 : 1.0
+        self.checkButton.tintColor = todo.wrappedIsCompleted ? .appSecondary : .systemGray.withAlphaComponent(0.5)
+        self.checkButton.backgroundColor = todo.wrappedIsCompleted ? .appPrimary : nil
+        self.checkButton.layer.borderColor = todo.wrappedIsCompleted ? nil : UIColor.systemGray.withAlphaComponent(0.5).cgColor
+        self.checkButton.layer.borderWidth = todo.wrappedIsCompleted ? 0.0 : 1.0
     }
     
     private func setupViews() -> Void {
