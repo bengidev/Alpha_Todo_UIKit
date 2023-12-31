@@ -158,7 +158,8 @@ final class HomeViewController: UIViewController {
             object: self.selectedIndexPath
         )
         
-        print("Selected IndexPath: \(selectedIndexPath)")
+        print("Selected IndexPath: \(self.selectedIndexPath)")
+        print("Selected Task: \(String(describing: self.selectedTask?.wrappedName))")
     }
     
     @objc
@@ -184,12 +185,14 @@ final class HomeViewController: UIViewController {
         if let task = notification.object as? AlphaTask {
             // If selected AlphaTask category name match to new AlphaTask category name,
             // update AlphaTask with new todos, otherwise create new AlphaTask
-            if self.selectedTask?.wrappedName.lowercased() == task.name.lowercased() {
-                self.homeViewModel.updateCurrentTask(with: task)
+            if self.selectedTask?.uuid == task.id &&
+                self.selectedTask?.wrappedName.lowercased() == task.name.lowercased() {
+                self.homeViewModel.updateCurrentTask(task)
             } else {
                 self.homeViewModel.addNewTask(task)
             }
             
+            print("Selected Category: \(String(describing: self.selectedTask?.wrappedName))")
             self.homeViewModel.fetchTasks()
         }
         
