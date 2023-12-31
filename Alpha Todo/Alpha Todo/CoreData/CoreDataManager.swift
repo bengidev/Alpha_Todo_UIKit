@@ -113,6 +113,20 @@ struct CoreDataManager {
         }
     }
     
+    func swapCDTodo(_ task: CDAlphaTask, from fromIndex: IndexPath, to toIndex: IndexPath) -> Void {
+        let itemWillMove = task.wrappedTodos[fromIndex.row]
+        task.removeFromTodos(at: fromIndex.row)
+        task.insertIntoTodos(itemWillMove, at: toIndex.row)
+        
+        print("Core Data Manager Swap CDTodo: \(String(describing: itemWillMove))")
+        
+        do {
+            try context.save()
+        } catch let error {
+            print("Failed to delete CDAlphaTask: \(error)")
+        }
+    }
+    
     func deleteCDTodo(from task: CDAlphaTask, with indexPath: IndexPath) {
         let context = persistentContainer.viewContext
         
