@@ -12,14 +12,30 @@ import UIKit
 final class TodoTableViewController: UITableViewController {
     // MARK: Properties
     private var homeViewModel: HomeViewModel?
-    private var selectedTask: CDAlphaTask?
     private var selectedCategoryIndexPath: IndexPath = .init(row: 0, section: 0)
+    
+    // MARK: Computer Properties
+    private var tasks: [CDAlphaTask]? {
+        return self.homeViewModel?.tasks
+    }
+    
+    private var selectedTask: CDAlphaTask? {
+        guard let tasks, !tasks.isEmpty else { return nil }
+        
+        return tasks[self.selectedCategoryIndexPath.row]
+    }
+    
+    private var todos: [CDTodo]? {
+        return self.selectedTask?.wrappedTodos
+    }
     
     // MARK: Initializers
     init(homeViewModel: HomeViewModel? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         self.homeViewModel = homeViewModel
+        self.homeViewModel?.fetchTasks()
+        self.tableView.reloadData()
     }
     
     @available(*, unavailable)
@@ -83,11 +99,8 @@ final class TodoTableViewController: UITableViewController {
     
     @objc
     private func selectedTaskChanged(_ notification: Notification) -> Void {
-        if let task = notification.object as? CDAlphaTask {
-            self.selectedTask = task
-            self.tableView.reloadData()
-            print("New Task: \(task)")
-        }
+        self.tableView.reloadData()
+        print("New Notification: \(notification.name)")
     }
     
     @objc
@@ -105,17 +118,17 @@ final class TodoTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return 0 }
-        return tasks[self.selectedCategoryIndexPath.row ].wrappedTodos.count
+        guard let todos, !todos.isEmpty else { return 0 }
+        
+        return todos.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let tasks = self.homeViewModel?.tasks, !tasks.isEmpty else { return .init() }
+        guard let todos, !todos.isEmpty else { return .init() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: TodoTableViewCell.identifier, for: indexPath) as? TodoTableViewCell else { return .init() }
 
         // Configure the cell...
-        cell.updateTodoCell(with: tasks[self.selectedCategoryIndexPath.row]
-            .wrappedTodos[indexPath.row])
+        cell.updateTodoCell(with: todos[indexPath.row])
         
         return cell
     }
@@ -141,7 +154,9 @@ final class TodoTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         guard let selectedTask else { return }
 
-        self.homeViewModel?.swapTodo(selectedTask, from: fromIndexPath, to: to)
+        self.homeViewModel?.swapTodo(from: selectedTask, from: fromIndexPath, to: to)
+        
+        tableView.reloadData()
     }
 
     // Override to support conditional rearranging of the table view.
