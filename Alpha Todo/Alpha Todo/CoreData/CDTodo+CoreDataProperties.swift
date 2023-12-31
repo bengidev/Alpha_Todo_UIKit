@@ -11,16 +11,17 @@ import CoreData
 
 
 extension CDTodo {
-    
+
     @nonobjc public class func fetchRequest() -> NSFetchRequest<CDTodo> {
         return NSFetchRequest<CDTodo>(entityName: "CDTodo")
     }
-    
+
     @NSManaged public var descriptions: String?
     @NSManaged public var dueDate: Date?
     @NSManaged public var isCompleted: Bool
     @NSManaged public var isImportant: Bool
     @NSManaged public var title: String?
+    @NSManaged public var uuid: UUID?
     @NSManaged public var task: CDAlphaTask?
     
     var wrappedTitle: String {
@@ -52,6 +53,4 @@ extension CDTodo {
     }
 }
 
-extension CDTodo : Identifiable {
-    
-}
+extension CDTodo : Identifiable { }

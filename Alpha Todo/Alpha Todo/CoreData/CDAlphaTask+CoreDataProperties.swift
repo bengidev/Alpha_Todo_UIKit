@@ -19,6 +19,7 @@ extension CDAlphaTask {
     @NSManaged public var imageName: String?
     @NSManaged public var isSelected: Bool
     @NSManaged public var name: String?
+    @NSManaged public var uuid: UUID?
     @NSManaged public var todos: NSOrderedSet?
 
     var wrappedName: String {
@@ -73,6 +74,4 @@ extension CDAlphaTask {
 
 }
 
-extension CDAlphaTask : Identifiable {
-
-}
+extension CDAlphaTask : Identifiable { }
