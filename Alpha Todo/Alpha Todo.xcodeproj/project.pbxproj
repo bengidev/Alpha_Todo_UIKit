@@ -39,13 +39,15 @@
 		B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */; };
 		B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987522B394B9E00F20171 /* TaskViewController.swift */; };
 		B6D987552B39863500F20171 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6D987542B39863500F20171 /* TaskView.swift */; };
+		B6DEC0752B40EEB400308BA7 /* AlphaTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC0742B40EEB400308BA7 /* AlphaTask.swift */; };
+		B6DEC0792B40EF1200308BA7 /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC0782B40EF1200308BA7 /* Todo.swift */; };
+		B6DEC07E2B40F11000308BA7 /* CDAlphaTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC07A2B40F11000308BA7 /* CDAlphaTask+CoreDataClass.swift */; };
+		B6DEC07F2B40F11000308BA7 /* CDAlphaTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC07B2B40F11000308BA7 /* CDAlphaTask+CoreDataProperties.swift */; };
+		B6DEC0802B40F11000308BA7 /* CDTodo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC07C2B40F11000308BA7 /* CDTodo+CoreDataClass.swift */; };
+		B6DEC0812B40F11000308BA7 /* CDTodo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6DEC07D2B40F11000308BA7 /* CDTodo+CoreDataProperties.swift */; };
 		B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */; };
 		B6E8F99A2B3FE050001B8BAE /* AlphaTodo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9982B3FE050001B8BAE /* AlphaTodo.xcdatamodeld */; };
 		B6E8F9A42B3FF357001B8BAE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */; };
-		B6E8F9A92B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */; };
-		B6E8F9AA2B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */; };
-		B6E8F9AB2B3FF456001B8BAE /* Todo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */; };
-		B6E8F9AC2B3FF456001B8BAE /* Todo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,13 +84,15 @@
 		B6CE41462B368459009C4867 /* CategoryCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewController.swift; sourceTree = "<group>"; };
 		B6D987522B394B9E00F20171 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		B6D987542B39863500F20171 /* TaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		B6DEC0742B40EEB400308BA7 /* AlphaTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlphaTask.swift; sourceTree = "<group>"; };
+		B6DEC0782B40EF1200308BA7 /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		B6DEC07A2B40F11000308BA7 /* CDAlphaTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDAlphaTask+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B6DEC07B2B40F11000308BA7 /* CDAlphaTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDAlphaTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		B6DEC07C2B40F11000308BA7 /* CDTodo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDTodo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		B6DEC07D2B40F11000308BA7 /* CDTodo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CDTodo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		B6E060382B3AB13B0030A2B9 /* NotificationCenter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+Extension.swift"; sourceTree = "<group>"; };
 		B6E8F9992B3FE050001B8BAE /* AlphaTodo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AlphaTodo.xcdatamodel; sourceTree = "<group>"; };
 		B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
-		B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlphaTask+CoreDataClass.swift"; sourceTree = "<group>"; };
-		B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlphaTask+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Todo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		BE80C4713EB4CE48BA4BB9AB /* Pods-Alpha Todo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.debug.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.debug.xcconfig"; sourceTree = "<group>"; };
 		D8599289036EC6BF06CB793C /* Pods_Alpha_Todo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Alpha_Todo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E7B7A17D6C0406CB6940EF70 /* Pods-Alpha Todo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Alpha Todo.release.xcconfig"; path = "Target Support Files/Pods-Alpha Todo/Pods-Alpha Todo.release.xcconfig"; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 		B6C7AFE92B32BD6F007619AF /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				B6DEC0732B40EE9C00308BA7 /* Models */,
 				B6B791532B34410F003013DC /* ViewModels */,
 				B6C7AFEA2B32BDC6007619AF /* Views */,
 			);
@@ -310,14 +315,23 @@
 			path = Task;
 			sourceTree = "<group>";
 		};
+		B6DEC0732B40EE9C00308BA7 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B6DEC0742B40EEB400308BA7 /* AlphaTask.swift */,
+				B6DEC0782B40EF1200308BA7 /* Todo.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		B6E8F9972B3FE023001B8BAE /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
 				B6E8F9A32B3FF357001B8BAE /* CoreDataManager.swift */,
-				B6E8F9A52B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift */,
-				B6E8F9A62B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift */,
-				B6E8F9A72B3FF456001B8BAE /* Todo+CoreDataClass.swift */,
-				B6E8F9A82B3FF456001B8BAE /* Todo+CoreDataProperties.swift */,
+				B6DEC07A2B40F11000308BA7 /* CDAlphaTask+CoreDataClass.swift */,
+				B6DEC07B2B40F11000308BA7 /* CDAlphaTask+CoreDataProperties.swift */,
+				B6DEC07C2B40F11000308BA7 /* CDTodo+CoreDataClass.swift */,
+				B6DEC07D2B40F11000308BA7 /* CDTodo+CoreDataProperties.swift */,
 				B6E8F9982B3FE050001B8BAE /* AlphaTodo.xcdatamodeld */,
 			);
 			path = CoreData;
@@ -448,14 +462,15 @@
 				B6AEB61E2B313E5700FE492D /* UIFont+Extension.swift in Sources */,
 				B6E060392B3AB13B0030A2B9 /* NotificationCenter+Extension.swift in Sources */,
 				B6907DED2B302E9C006D5044 /* NavigationControllerPreview.swift in Sources */,
-				B6E8F9AA2B3FF456001B8BAE /* AlphaTask+CoreDataProperties.swift in Sources */,
 				B6CE41472B368459009C4867 /* CategoryCollectionViewController.swift in Sources */,
 				B6E8F99A2B3FE050001B8BAE /* AlphaTodo.xcdatamodeld in Sources */,
 				B6D987552B39863500F20171 /* TaskView.swift in Sources */,
 				B6E8F9A42B3FF357001B8BAE /* CoreDataManager.swift in Sources */,
+				B6DEC0802B40F11000308BA7 /* CDTodo+CoreDataClass.swift in Sources */,
 				B6B791552B344124003013DC /* HomeViewModel.swift in Sources */,
-				B6E8F9AC2B3FF456001B8BAE /* Todo+CoreDataProperties.swift in Sources */,
+				B6DEC07F2B40F11000308BA7 /* CDAlphaTask+CoreDataProperties.swift in Sources */,
 				B6907DEB2B302E9C006D5044 /* TabBarControllerPreview.swift in Sources */,
+				B6DEC0752B40EEB400308BA7 /* AlphaTask.swift in Sources */,
 				B6C7AFEF2B32C673007619AF /* AppUserDefaults.swift in Sources */,
 				B671068E2B379BD600B24482 /* TodoTableViewCell.swift in Sources */,
 				B6AEB62D2B318A0600FE492D /* UIViewController+Extension.swift in Sources */,
@@ -463,7 +478,7 @@
 				B6907DEC2B302E9C006D5044 /* ViewControllerPreview.swift in Sources */,
 				B6907DEA2B302E9C006D5044 /* ViewPreview.swift in Sources */,
 				B68D6B522B3B9C4C00E3C07B /* UIScreen+Extension.swift in Sources */,
-				B6E8F9AB2B3FF456001B8BAE /* Todo+CoreDataClass.swift in Sources */,
+				B6DEC07E2B40F11000308BA7 /* CDAlphaTask+CoreDataClass.swift in Sources */,
 				B671068C2B379AC000B24482 /* TodoTableViewController.swift in Sources */,
 				B6AEB6212B31441900FE492D /* MainViewController.swift in Sources */,
 				B6AD6A992B21BD9900D26F72 /* AppDelegate.swift in Sources */,
@@ -471,14 +486,15 @@
 				B6AD6A9B2B21BD9900D26F72 /* SceneDelegate.swift in Sources */,
 				B6A4938F2B31126C00A41402 /* OnboardingViewController.swift in Sources */,
 				B6C7AFEC2B32BDE5007619AF /* HomeViewController.swift in Sources */,
+				B6DEC0812B40F11000308BA7 /* CDTodo+CoreDataProperties.swift in Sources */,
 				B61A21E52B3D22A80044068E /* Date+Extension.swift in Sources */,
 				B6907DEF2B302E9C006D5044 /* DesignTime+BackDeploy.swift in Sources */,
 				B6AEB6272B315A0900FE492D /* BaseOnboardingViewController.swift in Sources */,
 				B6D987532B394B9E00F20171 /* TaskViewController.swift in Sources */,
 				B6AEB62B2B3187DD00FE492D /* WrapperBaseOnboardingViewController.swift in Sources */,
 				B6CE41412B3640B6009C4867 /* OnboardingViewModel.swift in Sources */,
-				B6E8F9A92B3FF456001B8BAE /* AlphaTask+CoreDataClass.swift in Sources */,
 				B6907DEE2B302E9C006D5044 /* PreviewTabBarItem.swift in Sources */,
+				B6DEC0792B40EF1200308BA7 /* Todo.swift in Sources */,
 				B6CE41452B36809C009C4867 /* HomeView.swift in Sources */,
 				B6CE41432B364DED009C4867 /* OnboardingView.swift in Sources */,
 			);
