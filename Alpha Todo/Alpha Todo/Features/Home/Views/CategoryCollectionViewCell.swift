@@ -61,11 +61,11 @@ final class CategoryCollectionViewCell: UICollectionViewCell {
         self.categoryButton.setTitle(nil, for: .normal)
     }
     
-    func updateCategoryButton(with category: Category) -> Void {
-        self.categoryButton.setTitle(category.name, for: .normal)
-        self.categoryButton.setImage(.init(systemName: category.imageName), for: .normal)
-        self.categoryButton.setTitleColor(category.isSelected ? .systemPink : .appSecondary, for: .normal)
-        self.categoryButton.tintColor = category.isSelected ? .systemPink : .appSecondary
+    func updateCategoryButton(with task: CDAlphaTask?) -> Void {
+        self.categoryButton.setTitle(task?.wrappedName, for: .normal)
+        self.categoryButton.setImage(.init(systemName: task?.wrappedImageName ?? ""), for: .normal)
+        self.categoryButton.setTitleColor((task?.wrappedIsSelected ?? false) ? .systemPink : .appSecondary, for: .normal)
+        self.categoryButton.tintColor = (task?.wrappedIsSelected ?? false) ? .systemPink : .appSecondary
     }
     
     func getCategoryButton() -> UIButton {
