@@ -30,18 +30,17 @@ struct CoreDataManager {
     }
     
     @discardableResult
-    func createAlphaTask(_ task: AlphaTask) -> AlphaTask? {
+    func createCDAlphaTask(_ task: AlphaTask) -> CDAlphaTask? {
         let context = persistentContainer.viewContext
         
         // old way
         // let employee = NSEntityDescription.insertNewObject(forEntityName: "Employee", into: context) as! Employee // NSManagedObject
         
         // new way
-        let newTask = AlphaTask(context: context)
-        newTask.name = task.name
-        newTask.imageName = task.imageName
-        newTask.isSelected = task.isSelected
-        newTask.todos = task.todos
+
+        let newTask = self.convertAlphaTaskIntoCDAlphaTask(task)
+        print("Core Data Manager New Task: \(newTask)")
+        print("Core Data Manager Todos Count: \(task.todos.count)")
         
         do {
             try context.save()
@@ -53,25 +52,26 @@ struct CoreDataManager {
         return nil
     }
 
-    func fetchAlphaTasks() -> [AlphaTask]? {
+    @discardableResult
+    func fetchCDAlphaTasks() -> [CDAlphaTask]? {
         let context = persistentContainer.viewContext
 
-        let fetchRequest = NSFetchRequest<AlphaTask>(entityName: AlphaTask.entityName)
+        let fetchRequest = NSFetchRequest<CDAlphaTask>(entityName: CDAlphaTask.entityName)
 
         do {
             let tasks = try context.fetch(fetchRequest)
             return tasks
         } catch let error {
-            print("Failed to fetch Alpha Tasks: \(error)")
+            print("Failed to fetch CDAlphaTasks: \(error)")
         }
 
         return nil
     }
 
-    func fetchAlphaTask(withName name: String) -> AlphaTask? {
+    func fetchCDAlphaTask(withName name: String) -> CDAlphaTask? {
         let context = persistentContainer.viewContext
 
-        let fetchRequest = NSFetchRequest<AlphaTask>(entityName: AlphaTask.entityName)
+        let fetchRequest = NSFetchRequest<CDAlphaTask>(entityName: CDAlphaTask.entityName)
         fetchRequest.fetchLimit = 1
         fetchRequest.predicate = NSPredicate(format: "name == %@", name)
 
@@ -85,9 +85,12 @@ struct CoreDataManager {
         return nil
     }
 
-    func updateAlphaTask(with task: AlphaTask) {
+    func updateCDAlphaTask(with task: AlphaTask) {
         let context = persistentContainer.viewContext
 
+        let willUpdateTask = self.convertAlphaTaskIntoCDAlphaTask(task, withFetch: true)
+        print("Core Data Manager Update Task: \(String(describing: willUpdateTask))")
+        
         do {
             try context.save()
         } catch let error {
@@ -95,15 +98,58 @@ struct CoreDataManager {
         }
     }
 
-    func deleteAlphaTask(_ task: AlphaTask) {
+    func deleteCDAlphaTask(_ task: AlphaTask) {
         let context = persistentContainer.viewContext
-        context.delete(task)
+        
+        let willDeleteTask = self.fetchCDAlphaTask(withName: task.name) ?? .init(context: context)
+        
+        print("Core Data Manager Delete Task: \(String(describing: willDeleteTask))")
+        
+        context.delete(willDeleteTask)
 
         do {
             try context.save()
         } catch let error {
-            print("Failed to delete Alpha Task: \(error)")
+            print("Failed to delete CDAlphaTask: \(error)")
         }
     }
 
+    func convertAlphaTaskIntoCDAlphaTask(_ task: AlphaTask, withFetch: Bool = false) -> CDAlphaTask {
+        let context = persistentContainer.viewContext
+
+        // Map Todo into CDTodo for inserting into CDAlphaTodo
+        let convertedTodos = task.todos.map({
+            var cdTodo = CDTodo(context: context)
+            cdTodo.title = $0.title
+            cdTodo.dueDate = $0.dueDate
+            cdTodo.descriptions = $0.descriptions
+            cdTodo.isImportant = $0.isImportant
+            cdTodo.isCompleted = $0.isCompleted
+            
+            return cdTodo
+        })
+        
+        // Fetch CDAlphaTask if withFetch was true,
+        // otherwise create new CDAlphaTask.
+        //
+        // Append CDTodo from convertedTodos into CDAlphaTask when withFetch was true
+        // otherwise, create new CDTodo NSSet from convertedTodos.
+        let convertedTask: CDAlphaTask
+        if withFetch {
+            convertedTask = self.fetchCDAlphaTask(withName: task.name) ?? .init(context: context)
+            for todo in convertedTodos {
+                convertedTask.addToTodos(todo)
+            }
+        } else {
+            convertedTask = .init(context: context)
+            convertedTask.todos = .init(array: convertedTodos)
+        }
+        
+        // Assign AlphaTask properties into CDAlphaTask
+        convertedTask.name = task.name
+        convertedTask.imageName = task.imageName
+        convertedTask.isSelected = task.isSelected
+        
+        return convertedTask
+    }
 }
