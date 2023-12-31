@@ -11,15 +11,15 @@ import UIKit
 
 final class TaskViewController: UIViewController {
     // MARK: Properties
+    private var containerHeight: CGFloat?
     private var taskView: TaskView?
-    private var height: CGFloat?
     private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
     
     // MARK: Initializers
-    init(height: CGFloat? = nil) {
+    init(containerHeight: CGFloat? = nil) {
         super.init(nibName: nil, bundle: nil)
         
-        self.height = height
+        self.containerHeight = containerHeight
     }
     
     @available(*, unavailable)
@@ -63,17 +63,17 @@ final class TaskViewController: UIViewController {
     
     // MARK: Functionalities
     private func setupViews() -> Void {
-        self.taskView = TaskView(height: self.height)
-        self.taskView?.updateSaveButtonHandler { task in
-            
-            // Send trigger into HomeController for tap Save Button
-            NotificationCenter.default.post(
-                name: .TaskDidTapSaveButton,
-                object: task
-            )
-        }
-        
+        self.taskView = TaskView(containerHeight: self.containerHeight)
+        self.taskView?.updateSaveButtonHandler(self.didTapSaveButton(_:))
         self.view = self.taskView
+    }
+    
+    private func didTapSaveButton(_ task: AlphaTask?) -> Void {
+        // Send trigger into HomeController for tap Save Button
+        NotificationCenter.default.post(
+            name: .TaskDidTapSaveButton,
+            object: task
+        )
     }
     
     @objc
@@ -82,7 +82,6 @@ final class TaskViewController: UIViewController {
             notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         )?.cgRectValue {
             self.taskView?.updateScrollDownTaskView(with: keyboardSize.height)
-            self.taskView?.layoutIfNeeded()
         }
     }
     
@@ -92,7 +91,6 @@ final class TaskViewController: UIViewController {
             notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue
         )?.cgRectValue {
             self.taskView?.updateScrollUpTaskView(with: keyboardSize.height)
-            self.taskView?.layoutIfNeeded()
         }
     }
 
