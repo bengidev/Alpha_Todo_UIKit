@@ -34,6 +34,10 @@ final class HomeViewModel {
         self.coreDataManager.updateCDAlphaTask(with: task)
     }
     
+    func swapTodo(from task: CDAlphaTask, from fromIndex: IndexPath, to toIndex: IndexPath) -> Void {
+        self.coreDataManager.swapCDTodo(task, from: fromIndex, to: toIndex)
+    }
+    
     func removeTodo(from task: CDAlphaTask, with indexPath: IndexPath) -> Void {
         self.coreDataManager.deleteCDTodo(from: task, with: indexPath)
     }
