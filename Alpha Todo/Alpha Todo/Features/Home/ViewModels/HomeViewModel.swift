@@ -11,10 +11,10 @@ import Foundation
 @MainActor
 final class HomeViewModel {
     private let coreDataManager = CoreDataManager.shared
-    private(set) var tasks: [AlphaTask] = []
+    private(set) var tasks: [CDAlphaTask] = []
     
     init() {
-        self.tasks = self.coreDataManager.fetchAlphaTasks() ?? []
+        self.fetchTasks()
         print("Fetched Tasks: \(tasks.count)")
     }
 
@@ -22,7 +22,15 @@ final class HomeViewModel {
         return self.coreDataManager.context
     }
     
+    func fetchTasks() -> Void {
+        self.tasks = self.coreDataManager.fetchCDAlphaTasks() ?? []
+    }
+    
+    func addNewTask(_ task: AlphaTask) -> Void {
+        self.coreDataManager.createCDAlphaTask(task)
+    }
+    
     func updateCurrentTask(with task: AlphaTask) -> Void {
-        self.coreDataManager.updateAlphaTask(with: task)
+        self.coreDataManager.updateCDAlphaTask(with: task)
     }
 }
