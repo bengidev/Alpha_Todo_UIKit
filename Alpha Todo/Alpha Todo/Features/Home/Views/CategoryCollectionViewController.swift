@@ -11,10 +11,10 @@ import UIKit
 
 final class CategoryCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     // MARK: Properties
-    private var tasks: [Task]?
+    private var tasks: [CDAlphaTask]?
     
     // MARK: Initializers
-    init(tasks: [Task]? = nil) {
+    init(tasks: [CDAlphaTask]? = nil) {
         super.init(nibName: nil, bundle: nil)
         
         self.tasks = tasks
@@ -68,8 +68,14 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     private func setupInitialSelectedCategory() -> Void {
         guard let tasks, !tasks.isEmpty else { return }
         
+        // Reset another categories to prevent multiple selected category
+        // when first open.
+        for (index, _) in tasks.enumerated() {
+            self.tasks?[index].isSelected = false
+        }
+        
         // Change selected category initial value when first opened
-        self.tasks?[0].category.toggleIsSelected()
+        self.tasks?.first?.isSelected = true
         
         // Update UICollectionView to reflect changed data for initial IndexPath
         self.collectionView.reloadItems(at: [.init(item: 0, section: 0)])
@@ -77,11 +83,11 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     
     @objc
     private func didTapCategoryButton(_ sender: UIButton) -> Void {
-        // Reset another categories to prevent multiple selected category
+        // Reset another categories to prevent multiple selected category.
         if let tasks {
             for (index, _) in tasks.enumerated() {
                 if index != sender.tag {
-                    self.tasks?[index].category.isSelected = false
+                    self.tasks?[index].isSelected = false
                     self.collectionView.reloadItems(at: [.init(item: index, section: 0)])
                 }
             }
@@ -98,7 +104,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         guard let tasks, !tasks.isEmpty else { return }
         
         // Change selected category value when tap
-        self.tasks?[sender.tag].category.toggleIsSelected()
+        self.tasks?[sender.tag].isSelected.toggle()
         
         // Update UICollectionView to reflect changed data for selected IndexPath
         self.collectionView.reloadItems(at: [.init(item: sender.tag, section: 0)])
@@ -113,7 +119,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
     
     @objc
     private func dataTasksChanged(_ notification: Notification) -> Void {
-        guard let tasks = notification.userInfo?["Tasks"] as? [Task],
+        guard let tasks = notification.userInfo?["CDAlphaTasks"] as? [CDAlphaTask],
               let indexPath = notification.userInfo?["IndexPath"] as? IndexPath,
               !tasks.isEmpty
         else { return }
@@ -126,7 +132,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         self.collectionView.reloadData()
         
         // Set the previous selected category button into selected form
-        self.tasks?[indexPath.item].category.isSelected = true
+        self.tasks?[indexPath.item].isSelected = true
         
         // Give the spare time for scrolling through the previous
         // selected category button
@@ -160,7 +166,7 @@ final class CategoryCollectionViewController: UICollectionViewController, UIColl
         categoryButton.tag = indexPath.item
         categoryButton.addTarget(self, action: #selector(self.didTapCategoryButton(_:)), for: .touchUpInside)
         
-        cell.updateCategoryButton(with: self.tasks?[indexPath.item].category ?? .empty)
+        cell.updateCategoryButton(with: self.tasks?[indexPath.item])
         
         return cell
     }
