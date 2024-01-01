@@ -64,8 +64,14 @@ final class TaskViewController: UIViewController {
     // MARK: Functionalities
     private func setupViews() -> Void {
         self.taskView = TaskView(containerHeight: self.containerHeight)
+        self.taskView?.updateNewCategorySwitchHandler(self.didTapNewCategorySwitch(_:))
         self.taskView?.updateSaveButtonHandler(self.didTapSaveButton(_:))
         self.view = self.taskView
+    }
+    
+    private func didTapNewCategorySwitch(_ isOn: Bool) -> Void {
+        // Send trigger into HomeController for tap Save Button
+        print("NewCategorySwitch: \(isOn)")
     }
     
     private func didTapSaveButton(_ task: AlphaTask?) -> Void {
