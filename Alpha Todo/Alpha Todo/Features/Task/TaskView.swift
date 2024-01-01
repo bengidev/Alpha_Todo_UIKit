@@ -13,6 +13,8 @@ final class TaskView: UIView {
     // MARK: Properties
     private var containerBlurHeight: CGFloat?
     private var saveButtonHandler: ((AlphaTask?) -> Void)?
+    private var newCategorySwitchHandler: ((Bool) -> Void)?
+    private var isNewCategory: Bool = false
     private var tapGesture: UITapGestureRecognizer?
     private var selectedDate: Date?
     private var selectedTime: Date?
@@ -89,6 +91,23 @@ final class TaskView: UIView {
         return lb
     }()
     
+    private lazy var oneHStackView: UIStackView = {
+        let vw = AppViewFactory.buildStackView()
+        vw.axis = .horizontal
+        vw.distribution = .fillProportionally
+        vw.alignment = .top
+        
+        return vw
+    }()
+    
+    private lazy var oneVStackView: UIStackView = {
+        let vw = AppViewFactory.buildStackView()
+        vw.axis = .vertical
+        vw.distribution = .fillProportionally
+        
+        return vw
+    }()
+    
     private lazy var taskCategoryLabel: UILabel = {
         let lb = AppViewFactory.buildLabel()
         lb.text = "Task Category"
@@ -112,6 +131,37 @@ final class TaskView: UIView {
         )
         
         return tf
+    }()
+    
+    private lazy var twoVStackView: UIStackView = {
+        let vw = AppViewFactory.buildStackView()
+        vw.axis = .vertical
+        vw.distribution = .fillProportionally
+        
+        return vw
+    }()
+
+    private lazy var newCategoryLabel: UILabel = {
+        let lb = AppViewFactory.buildLabel()
+        lb.text = "New Category"
+        lb.font = .preferredFont(forTextStyle: .subheadline).bold().rounded()
+        lb.textColor = .systemGray
+        lb.textAlignment = .left
+        
+        return lb
+    }()
+    
+    private lazy var newCategorySwitch: UISwitch = {
+        let sw = UISwitch(frame: .zero)
+        sw.translatesAutoresizingMaskIntoConstraints = false
+        sw.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        sw.addTarget(
+            self,
+            action: #selector(self.didTapNewCategorySwitch(_:)),
+            for: .primaryActionTriggered
+        )
+        
+        return sw
     }()
     
     private lazy var taskTitleLabel: UILabel = {
@@ -174,8 +224,8 @@ final class TaskView: UIView {
 
         return lb
     }()
-
-    private lazy var oneHSTackView: UIStackView = {
+    
+    private lazy var twoHStackView: UIStackView = {
         let vw = AppViewFactory.buildStackView()
         vw.axis = .horizontal
         vw.distribution = .fillProportionally
@@ -268,6 +318,10 @@ final class TaskView: UIView {
         self.saveButtonHandler = action
     }
     
+    func updateNewCategorySwitchHandler(_ action: ((Bool) -> Void)?) -> Void {
+        self.newCategorySwitchHandler = action
+    }
+    
     func updateScrollUpTaskView(with height: CGFloat = 0.0) -> Void {
         UIView.animate(withDuration: 0.3) {
             // Scroll up through inside scroll view with the specified size
@@ -333,9 +387,8 @@ final class TaskView: UIView {
         
         self.containerVStackView.addArrangedSubview(self.taskHeaderLabel)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.03, after: self.taskHeaderLabel)
-        self.containerVStackView.addArrangedSubview(self.taskCategoryLabel)
-        self.containerVStackView.addArrangedSubview(self.taskCategoryTextField)
-        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskCategoryTextField)
+        self.containerVStackView.addArrangedSubview(self.oneHStackView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.oneHStackView)
         self.containerVStackView.addArrangedSubview(self.taskTitleLabel)
         self.containerVStackView.addArrangedSubview(self.taskTitleTextField)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskTitleTextField)
@@ -343,8 +396,8 @@ final class TaskView: UIView {
         self.containerVStackView.addArrangedSubview(self.taskDescriptionTextView)
         self.containerVStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.taskDescriptionTextView)
         self.containerVStackView.addArrangedSubview(self.taskDateTimeLabel)
-        self.containerVStackView.addArrangedSubview(self.oneHSTackView)
-        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.06, after: self.oneHSTackView)
+        self.containerVStackView.addArrangedSubview(self.twoHStackView)
+        self.containerVStackView.setCustomSpacing(UIScreen.height * 0.06, after: self.twoHStackView)
         self.containerVStackView.addArrangedSubview(self.saveButton)
         self.containerVStackView.addArrangedSubview(self.spacerView)
         self.containerVStackView.snp.makeConstraints { make in
@@ -355,6 +408,18 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview()
         }
         
+        self.oneHStackView.addArrangedSubview(self.oneVStackView)
+        self.oneHStackView.addArrangedSubview(self.twoVStackView)
+        self.oneHStackView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.oneVStackView.addArrangedSubview(self.taskCategoryLabel)
+        self.oneVStackView.addArrangedSubview(self.taskCategoryTextField)
+        self.oneVStackView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview().priority(.low)
+        }
+
         self.taskCategoryLabel.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
         }
@@ -362,6 +427,13 @@ final class TaskView: UIView {
         self.taskCategoryTextField.snp.makeConstraints { make in
             make.height.equalTo(UIScreen.height * 0.06)
             make.horizontalEdges.equalToSuperview()
+        }
+        
+        self.twoVStackView.addArrangedSubview(self.newCategoryLabel)
+        self.twoVStackView.addArrangedSubview(self.newCategorySwitch)
+        self.twoVStackView.snp.makeConstraints { make in
+            make.verticalEdges.equalTo(UIScreen.height * 0.01)
+            make.horizontalEdges.equalTo(UIScreen.width * 0.7)
         }
         
         self.taskTitleLabel.snp.makeConstraints { make in
@@ -386,10 +458,10 @@ final class TaskView: UIView {
             make.horizontalEdges.equalToSuperview()
         }
         
-        self.oneHSTackView.addArrangedSubview(self.datePicker)
-        self.oneHSTackView.setCustomSpacing(UIScreen.height * 0.02, after: self.datePicker)
-        self.oneHSTackView.addArrangedSubview(self.timePicker)
-        self.oneHSTackView.snp.makeConstraints { make in
+        self.twoHStackView.addArrangedSubview(self.datePicker)
+        self.twoHStackView.setCustomSpacing(UIScreen.height * 0.02, after: self.datePicker)
+        self.twoHStackView.addArrangedSubview(self.timePicker)
+        self.twoHStackView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
         }
         
@@ -426,6 +498,16 @@ final class TaskView: UIView {
         } else {
             return Date.combine(date: .init(), time: .init()) ?? .init()
         }
+    }
+    
+    @objc
+    private func didTapNewCategorySwitch(_ sender: UISwitch) -> Void {
+        UIView.animate(withDuration: 0.3) {
+            self.taskCategoryTextField.isEnabled = sender.isOn
+            self.taskCategoryTextField.isOpaque = sender.isOn
+        }
+        
+        self.newCategorySwitchHandler?(sender.isOn)
     }
     
     @objc
