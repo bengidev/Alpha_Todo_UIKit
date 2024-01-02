@@ -30,14 +30,6 @@ final class HomeViewController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
         self.selectedIndexPath = .init(row: 0, section: 0)
-        
-        // Receive trigger for tap Saved Button from AlphaTaskController
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.didTapSaveButton(_:)),
-            name: .TaskDidTapSaveButton,
-            object: nil
-        )
     }
     
     @available(*, unavailable)
@@ -73,6 +65,7 @@ final class HomeViewController: UIViewController {
     }
     
     private func updateViewComponents() -> Void {
+        // Receive trigger for tap CategoryButton
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.didTapCategoryButton(_:)),
@@ -80,6 +73,7 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
+        // Receive trigger for tap AddButton
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.didTapAddButton(_:)),
@@ -87,6 +81,7 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
+        // Receive trigger for tap EditTodoButton
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.didTapEditTodoButton(_:)),
@@ -94,10 +89,19 @@ final class HomeViewController: UIViewController {
             object: nil
         )
         
+        // Receive trigger for tap NewCategorySwitch
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(self.didTapNewCategorySwitch(_:)),
             name: .TaskDidTapNewCategorySwitch,
+            object: nil
+        )
+        
+        // Receive trigger for tap Saved Button
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapSaveButton(_:)),
+            name: .TaskDidTapSaveButton,
             object: nil
         )
         
