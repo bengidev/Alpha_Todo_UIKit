@@ -213,11 +213,11 @@ final class HomeViewController: UIViewController {
             }
             
             print("Selected Category: \(String(describing: self.selectedTask?.wrappedName))")
-            self.homeViewModel.fetchTasks()
         }
         
         self.dismiss(animated: true) {
             self.isNewCategory = false
+            self.homeViewModel.fetchTasks()
             self.updateViewVisibilities()
             
             // Send trigger into TodoController for change selectedAlphaTask
