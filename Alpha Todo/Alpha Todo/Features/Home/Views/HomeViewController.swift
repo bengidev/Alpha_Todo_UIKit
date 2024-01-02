@@ -29,7 +29,9 @@ final class HomeViewController: UIViewController {
     // MARK: Initializers
     init() {
         super.init(nibName: nil, bundle: nil)
+        
         self.selectedIndexPath = .init(row: 0, section: 0)
+        self.homeViewModel.fetchTasks()
     }
     
     @available(*, unavailable)
