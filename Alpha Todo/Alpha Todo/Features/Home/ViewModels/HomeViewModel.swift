@@ -12,11 +12,6 @@ import Foundation
 final class HomeViewModel {
     private let coreDataManager = CoreDataManager.shared
     private(set) var tasks: [CDAlphaTask] = []
-    
-    init() {
-        self.fetchTasks()
-        print("Fetched Tasks: \(tasks.count)")
-    }
 
     var getContext: NSManagedObjectContext {
         return self.coreDataManager.context
@@ -24,6 +19,10 @@ final class HomeViewModel {
     
     func fetchTasks() -> Void {
         self.tasks = self.coreDataManager.fetchCDAlphaTasks() ?? []
+    }
+    
+    func fetchTasks(with task: CDAlphaTask) -> Void {
+        self.tasks = self.coreDataManager.fetchCDAlphaTasks(with: task) ?? []
     }
     
     func fetchTask(withUUID uuid: UUID) -> Void {
