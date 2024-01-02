@@ -123,6 +123,8 @@ final class TaskView: UIView {
         tf.placeholder = "Enter task category"
         tf.borderStyle = .roundedRect
         tf.font = .preferredFont(forTextStyle: .subheadline)
+        tf.isEnabled = false
+        tf.isOpaque = false
         tf.delegate = self
         tf.addTarget(
             self,
