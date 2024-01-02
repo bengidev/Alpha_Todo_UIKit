@@ -26,12 +26,17 @@ final class HomeViewModel {
         self.tasks = self.coreDataManager.fetchCDAlphaTasks() ?? []
     }
     
+    func fetchTask(withUUID uuid: UUID) -> Void {
+        let task = self.coreDataManager.fetchCDAlphaTask(withUUID: uuid)
+        print("HomeViewModel fetchTask: \(String(describing: task?.wrappedName))")
+    }
+    
     func addNewTask(_ task: AlphaTask) -> Void {
         self.coreDataManager.createCDAlphaTask(task)
     }
     
-    func updateCurrentTask(_ task: AlphaTask) -> Void {
-        self.coreDataManager.updateCDAlphaTask(with: task)
+    func updateCurrentTask(uuid: UUID, with task: AlphaTask) -> Void {
+        self.coreDataManager.updateCDAlphaTask(uuid: uuid, with: task)
     }
     
     func swapTodo(from task: CDAlphaTask, from fromIndex: IndexPath, to toIndex: IndexPath) -> Void {
