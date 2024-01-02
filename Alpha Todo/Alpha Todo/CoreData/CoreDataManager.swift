@@ -51,13 +51,14 @@ struct CoreDataManager {
         
         // new way
         let newTask: CDAlphaTask = .init(context: context)
-        newTask.uuid = task.id
+        newTask.uuid = .init()
         newTask.todos = .init(array: convertedTodos)
         newTask.name = task.name
         newTask.imageName = task.imageName
         newTask.isSelected = task.isSelected
         
         print("Core Data Manager New Task: \(newTask.wrappedName)")
+        print("Core Data Manager New Task: \(newTask.wrappedUUID)")
         
         do {
             try context.save()
@@ -105,15 +106,15 @@ struct CoreDataManager {
         return nil
     }
 
-    func updateCDAlphaTask(with task: AlphaTask) {
+    func updateCDAlphaTask(uuid: UUID, with task: AlphaTask) {
         let context = persistentContainer.viewContext
 
-        let willUpdateTask = self.fetchCDAlphaTask(withUUID: task.id)
+        let willUpdateTask = self.fetchCDAlphaTask(withUUID: uuid)
         
         // Map Todo into CDTodo for inserting into CDAlphaTodo
         let convertedTodos = task.todos.map({
             let cdTodo = CDTodo(context: context)
-            cdTodo.uuid = $0.id
+            cdTodo.uuid = .init()
             cdTodo.title = $0.title
             cdTodo.dueDate = $0.dueDate
             cdTodo.descriptions = $0.descriptions
