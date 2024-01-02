@@ -29,6 +29,7 @@ final class HomeViewController: UIViewController {
     // MARK: Initializers
     init() {
         super.init(nibName: nil, bundle: nil)
+        self.selectedIndexPath = .init(row: 0, section: 0)
         
         // Receive trigger for tap Saved Button from AlphaTaskController
         NotificationCenter.default.addObserver(
@@ -205,7 +206,10 @@ final class HomeViewController: UIViewController {
             if self.isNewCategory {
                 self.homeViewModel.addNewTask(task)
             } else {
-                self.homeViewModel.updateCurrentTask(task)
+                self.homeViewModel.updateCurrentTask(
+                    uuid: self.selectedTask?.wrappedUUID ?? .init(),
+                    with: task
+                )
             }
             
             print("Selected Category: \(String(describing: self.selectedTask?.wrappedName))")
@@ -213,6 +217,7 @@ final class HomeViewController: UIViewController {
         }
         
         self.dismiss(animated: true) {
+            self.isNewCategory = false
             self.updateViewVisibilities()
             
             // Send trigger into TodoController for change selectedAlphaTask
