@@ -12,10 +12,11 @@ import UIKit
 
 final class HomeViewController: UIViewController {
     // MARK: Properties
-    private var homeView = HomeView()
-    private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
     private var categoryController: CategoryCollectionViewController?
     private var todoController: TodoTableViewController?
+    private var homeView = HomeView()
+    private var selectedIndexPath: IndexPath = .init(row: 0, section: 0)
+    private var isNewCategory: Bool = false
     
     private var selectedTask: CDAlphaTask? {
         return !self.homeViewModel.tasks.isEmpty ?
@@ -89,6 +90,13 @@ final class HomeViewController: UIViewController {
             self,
             selector: #selector(self.didTapEditTodoButton(_:)),
             name: .HomeDidTapEditTodoButton,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.didTapNewCategorySwitch(_:)),
+            name: .TaskDidTapNewCategorySwitch,
             object: nil
         )
         
@@ -179,17 +187,25 @@ final class HomeViewController: UIViewController {
     }
     
     @objc
+    private func didTapNewCategorySwitch(_ notification: Notification) -> Void {
+        print("New Category Switch pressed from: \(notification.name)")
+        
+        if let isNewCategory = notification.object as? Bool {
+            self.isNewCategory = isNewCategory
+        }
+    }
+    
+    @objc
     private func didTapSaveButton(_ notification: Notification) -> Void {
         print("Save Button pressed from: \(notification.name)")
         
         if let task = notification.object as? AlphaTask {
             // If selected AlphaTask category name match to new AlphaTask category name,
             // update AlphaTask with new todos, otherwise create new AlphaTask
-            if self.selectedTask?.uuid == task.id &&
-                self.selectedTask?.wrappedName.lowercased() == task.name.lowercased() {
-                self.homeViewModel.updateCurrentTask(task)
-            } else {
+            if self.isNewCategory {
                 self.homeViewModel.addNewTask(task)
+            } else {
+                self.homeViewModel.updateCurrentTask(task)
             }
             
             print("Selected Category: \(String(describing: self.selectedTask?.wrappedName))")
