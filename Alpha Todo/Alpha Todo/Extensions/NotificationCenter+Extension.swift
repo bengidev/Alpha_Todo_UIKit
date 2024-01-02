@@ -13,6 +13,7 @@ extension Notification.Name {
     static let HomeDidTapEditTodoButton = Notification.Name("HomeDidTapEditTodoButton")
     static let TodoSelectedTaskChanged = Notification.Name("TodoDataTaskChanged")
     static let TodoSelectedCategoryIndexPathChanged = Notification.Name("TodoSelectedCategoryIndexPathChanged")
+    static let TaskDidTapNewCategorySwitch = Notification.Name("TaskDidTapNewCategorySwitch")
     static let TaskDidTapSaveButton = Notification.Name("TaskDidTapSaveButton")
     static let CategoryDidTapCategoryButton = Notification.Name("CategoryDidTapCategoryButton")
     static let CategoryDataTasksChanged = Notification.Name("CategoryDataTasksChanged")
