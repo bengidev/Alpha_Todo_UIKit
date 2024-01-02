@@ -22,6 +22,10 @@ extension CDAlphaTask {
     @NSManaged public var uuid: UUID?
     @NSManaged public var todos: NSOrderedSet?
 
+    var wrappedUUID: UUID {
+        return self.uuid ?? .init()
+    }
+    
     var wrappedName: String {
         return self.name ?? ""
     }
