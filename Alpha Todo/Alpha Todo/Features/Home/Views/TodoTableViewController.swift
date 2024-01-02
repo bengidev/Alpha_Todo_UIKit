@@ -34,7 +34,6 @@ final class TodoTableViewController: UITableViewController {
         super.init(nibName: nil, bundle: nil)
         
         self.homeViewModel = homeViewModel
-        self.homeViewModel?.fetchTasks()
         self.selectedCategoryIndexPath = .init(row: 0, section: 0)
         self.tableView.reloadData()
     }
