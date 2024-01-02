@@ -85,6 +85,23 @@ struct CoreDataManager {
 
         return nil
     }
+    
+    @discardableResult
+    func fetchCDAlphaTasks(with task: CDAlphaTask) -> [CDAlphaTask]? {
+        let context = persistentContainer.viewContext
+
+        let fetchRequest = NSFetchRequest<CDAlphaTask>(entityName: CDAlphaTask.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", "name", task.wrappedName)
+
+        do {
+            let tasks = try context.fetch(fetchRequest)
+            return tasks
+        } catch let error {
+            print("Failed to fetch CDAlphaTasks: \(error)")
+        }
+
+        return nil
+    }
 
     func fetchCDAlphaTask(withUUID uuid: UUID) -> CDAlphaTask? {
         let context = persistentContainer.viewContext
