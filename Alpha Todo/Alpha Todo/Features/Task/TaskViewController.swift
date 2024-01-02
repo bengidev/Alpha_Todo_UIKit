@@ -70,8 +70,11 @@ final class TaskViewController: UIViewController {
     }
     
     private func didTapNewCategorySwitch(_ isOn: Bool) -> Void {
-        // Send trigger into HomeController for tap Save Button
-        print("NewCategorySwitch: \(isOn)")
+        // Send trigger into HomeController for tap New Category Switch
+        NotificationCenter.default.post(
+            name: .TaskDidTapNewCategorySwitch,
+            object: isOn
+        )
     }
     
     private func didTapSaveButton(_ task: AlphaTask?) -> Void {
